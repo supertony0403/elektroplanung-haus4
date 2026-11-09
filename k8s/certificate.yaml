@@ -1,0 +1,14 @@
+# Let's-Encrypt-Zertifikat über DNS-01 (Cloudflare) – der Cluster ist von außen
+# nicht direkt erreichbar, HTTP-01 fiele aus.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: simonhaus-le
+  namespace: simonhaus
+spec:
+  secretName: simonhaus-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  dnsNames:
+    - simonhaus.benz-sw.de

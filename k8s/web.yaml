@@ -1,0 +1,102 @@
+# Statische Einzeldatei: offizielles nginx-Abbild, die Seite kommt als ConfigMap
+# (deploy.sh legt sie aus index.html an). Kein eigenes Abbild, kein sudo nötig.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: simonhaus-conf
+  namespace: simonhaus
+data:
+  nginx.conf: |
+    worker_processes 1;
+    pid /tmp/nginx.pid;
+    events { worker_connections 512; }
+    http {
+      include /etc/nginx/mime.types;
+      default_type application/octet-stream;
+      sendfile on;
+      keepalive_timeout 65;
+      server_tokens off;
+      gzip on;
+      gzip_types text/html text/css application/javascript;
+      client_body_temp_path /tmp/cb; proxy_temp_path /tmp/px; fastcgi_temp_path /tmp/fc;
+      uwsgi_temp_path /tmp/uw; scgi_temp_path /tmp/sc;
+
+      server {
+        listen 8443 ssl;
+        http2 on;
+        server_name simonhaus.benz-sw.de;
+        ssl_certificate     /certs/tls.crt;
+        ssl_certificate_key /certs/tls.key;
+        ssl_protocols TLSv1.2 TLSv1.3;
+
+        root /seite;
+        index index.html;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Referrer-Policy same-origin always;
+        add_header X-Robots-Tag "noindex, nofollow" always;
+        add_header Cache-Control "no-cache" always;
+        location / { try_files $uri /index.html; }
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simonhaus-web
+  namespace: simonhaus
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: simonhaus-web }
+  template:
+    metadata:
+      labels: { app: simonhaus-web }
+      annotations:
+        pruefsumme/seite: PLATZHALTER
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: nginx
+          image: nginx:1.27.5-alpine
+          ports:
+            - containerPort: 8443
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
+          volumeMounts:
+            - { name: conf, mountPath: /etc/nginx/nginx.conf, subPath: nginx.conf }
+            - { name: seite, mountPath: /seite, readOnly: true }
+            - { name: tls, mountPath: /certs, readOnly: true }
+            - { name: tmp, mountPath: /tmp }
+          readinessProbe:
+            httpGet: { path: /, port: 8443, scheme: HTTPS }
+            initialDelaySeconds: 2
+            periodSeconds: 10
+            timeoutSeconds: 3
+          resources:
+            requests: { cpu: 5m, memory: 16Mi }
+            limits: { memory: 64Mi }
+      volumes:
+        - name: conf
+          configMap: { name: simonhaus-conf }
+        - name: seite
+          configMap: { name: simonhaus-seite }
+        - name: tls
+          secret: { secretName: simonhaus-tls }
+        - name: tmp
+          emptyDir: { sizeLimit: 16Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simonhaus-web
+  namespace: simonhaus
+spec:
+  selector: { app: simonhaus-web }
+  ports:
+    - { port: 443, targetPort: 8443 }
