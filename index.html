@@ -181,6 +181,42 @@ tfoot td{font-weight:600; border-top:1px solid var(--rule-strong)}
 .open{border-left:3px solid var(--accent); padding-left:10px}
 .foot{margin-top:28px; font-family:var(--font-mono); font-size:.72rem; color:var(--muted)}
 
+/* Vollbild + Begehungsmodus */
+.sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+.viewer:fullscreen{height:100%; border:0}
+.viewer.fs-fallback{position:fixed; inset:0; z-index:100; height:auto; min-height:0; border:0}
+html.fs-lock, html.fs-lock body{overflow:hidden}
+.viewer:not(.walking) .walk-only{display:none !important}
+.viewer.walking .orbit-only, .viewer.walking .hint{display:none !important}
+.viewer.walking .toolbar{max-width:calc(100% - 180px)}
+.viewer select.btn{max-width:12rem; padding:5px 6px}
+.walk-hud{position:absolute; inset:0; pointer-events:none; z-index:2}
+.walk-map{position:absolute; top:10px; right:10px; width:150px; background:var(--paper-2); border:1px solid var(--rule-strong)}
+.walk-map canvas{display:block; width:150px; height:176px}
+.walk-where{font:500 .72rem/1.25 var(--font-mono); color:var(--ink); padding:4px 6px; border-top:1px solid var(--rule); min-height:1.5em}
+.walk-cross{position:absolute; left:50%; top:50%; width:24px; height:24px; margin:-12px 0 0 -12px}
+.walk-cross::before, .walk-cross::after{content:""; position:absolute; background:var(--accent); box-shadow:0 0 0 1px var(--paper-2)}
+.walk-cross::before{left:11px; top:2px; width:2px; height:20px}
+.walk-cross::after{top:11px; left:2px; height:2px; width:20px}
+.walk-cross.on{transform:scale(1.35)}
+.walk-bottom{position:absolute; left:50%; bottom:12px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:6px; width:max-content; max-width:calc(100% - 20px)}
+.walk-stairs{pointer-events:auto; display:flex; flex-wrap:wrap; gap:6px; align-items:center; justify-content:center; background:var(--paper-2); border:2px solid var(--accent); padding:5px 8px; font:500 .8rem/1.2 var(--font-mono); color:var(--ink)}
+.walk-stairs[hidden], .walk-target[hidden]{display:none}
+.walk-target{pointer-events:auto; max-width:100%; text-align:left; cursor:pointer; font:500 .8rem/1.35 var(--font-mono); color:var(--text); background:var(--paper-2); border:1px solid var(--rule-strong); border-left:5px solid var(--cc, var(--ink)); padding:6px 10px}
+.walk-target:hover{background:var(--paper)}
+.walk-tip{font:500 .7rem/1.3 var(--font-mono); color:var(--ink-soft); background:var(--paper-2); padding:2px 6px; border:1px solid var(--rule)}
+.walk-tip:empty{display:none}
+.walk-joy{display:none; position:absolute; left:14px; bottom:14px; width:116px; height:116px; border-radius:50%; border:2px solid var(--rule-strong); background:var(--paper-2); opacity:.88; pointer-events:auto; touch-action:none}
+.walk-knob{position:absolute; left:50%; top:50%; width:48px; height:48px; margin:-24px 0 0 -24px; border-radius:50%; background:var(--ink); pointer-events:none}
+.viewer.touch .walk-joy{display:block}
+.viewer.touch .walk-bottom{left:auto; right:10px; transform:none; align-items:flex-end; max-width:calc(100% - 150px)}
+.viewer.touch .kbd{display:none}
+.viewer.walking.touch .infocard{left:10px; right:10px; top:auto; bottom:10px; max-width:none; max-height:calc(50% - 24px)}
+.walk-help{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:min(460px, calc(100% - 24px)); max-height:calc(100% - 24px); overflow:auto; z-index:4}
+.walk-help[hidden]{display:none}
+.walk-help dl{grid-template-columns:5.5rem 1fr}
+.walk-help .btn{margin-top:10px}
+
 @media (max-width: 960px){
   .stage{grid-template-columns:minmax(0,1fr)}
   .viewer{height:60vh; min-height:280px}
@@ -191,6 +227,10 @@ tfoot td{font-weight:600; border-top:1px solid var(--rule-strong)}
   .layers{grid-template-columns:1fr}
   .sec{padding:12px}
   .legend{grid-template-columns:1fr}
+  .walk-map{width:104px}
+  .walk-map canvas{width:104px; height:118px}
+  .viewer.walking .toolbar{max-width:calc(100% - 128px)}
+  .viewer select.btn{max-width:9.5rem}
 }
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important; animation:none !important; scroll-behavior:auto !important}
@@ -224,11 +264,43 @@ tfoot td{font-weight:600; border-top:1px solid var(--rule-strong)}
   <div class="stage">
     <div class="viewer" id="viewer">
       <div class="toolbar" role="toolbar" aria-label="Ansicht">
-        <button class="btn" id="btnIso" type="button" aria-pressed="true">Isometrie</button>
-        <button class="btn" id="btnTop" type="button" aria-pressed="false">Draufsicht</button>
-        <button class="btn" id="btnReset" type="button">Reset</button>
+        <button class="btn orbit-only" id="btnIso" type="button" aria-pressed="true">Isometrie</button>
+        <button class="btn orbit-only" id="btnTop" type="button" aria-pressed="false">Draufsicht</button>
+        <button class="btn orbit-only" id="btnReset" type="button">Reset</button>
+        <button class="btn" id="btnWalk" type="button" aria-pressed="false" title="Begehungsmodus in Ego-Perspektive (Taste B)">Begehen</button>
+        <button class="btn" id="btnFull" type="button" aria-pressed="false" title="3D-Ansicht im Vollbild">Vollbild</button>
+        <label class="walk-only"><span class="sr-only">Springen zu Raum</span><select class="btn" id="walkJump"><option value="">Springen zu …</option></select></label>
+        <button class="btn walk-only" id="btnWalkHelp" type="button" aria-label="Bedienhilfe Begehung" title="Bedienhilfe">?</button>
       </div>
-      <div class="hint" id="viewHint">Ziehen: drehen · Rad/Pinch: Zoom · Rechts/2 Finger: verschieben<br>Klick auf Gerät oder Boden: Details</div>
+      <div class="hint" id="viewHint">Ziehen: drehen · Rad/Pinch: Zoom · Rechts/2 Finger: verschieben<br>Klick auf Gerät oder Boden: Details · B (3D-Ansicht fokussiert): Begehen</div>
+      <div class="walk-hud walk-only" id="walkHud">
+        <div class="walk-map"><canvas id="walkMap" aria-hidden="true"></canvas><div class="walk-where" id="walkWhere" aria-live="polite"></div></div>
+        <div class="walk-cross" id="walkCross" aria-hidden="true"></div>
+        <div class="walk-bottom">
+          <div class="walk-stairs" id="walkStairs" role="group" aria-label="Treppe" hidden>
+            <span>Treppe:</span>
+            <button class="btn" id="walkUp" type="button">↑ Hoch<span class="kbd"> (E)</span></button>
+            <button class="btn" id="walkDown" type="button">↓ Runter<span class="kbd"> (Q)</span></button>
+          </div>
+          <button class="walk-target" id="walkTarget" type="button" hidden></button>
+          <div class="walk-tip" id="walkTip"></div>
+        </div>
+        <div class="walk-joy" id="walkJoy" aria-hidden="true"><div class="walk-knob" id="walkKnob"></div></div>
+      </div>
+      <div class="walk-help card walk-only" id="walkHelp" role="dialog" aria-modal="true" aria-labelledby="walkHelpTitle" hidden>
+        <button class="close" type="button" id="walkHelpClose" aria-label="Bedienhilfe schließen">&times;</button>
+        <h3 id="walkHelpTitle">Begehung · Bedienung</h3>
+        <dl>
+          <dt>Maus</dt><dd>Ins Bild klicken: Die Maus steuert den Blick. Esc gibt die Maus wieder frei.</dd>
+          <dt>Tastatur</dt><dd>W A S D oder ↑ ↓ laufen, ← → drehen, Umschalt: schneller.</dd>
+          <dt>Touch</dt><dd>Joystick links unten: laufen. Wischen: umschauen. Tippen auf ein Gerät: Details.</dd>
+          <dt>Treppe</dt><dd>Im Treppenbereich mit E bzw. „↑ Hoch“ ins nächste Geschoss, mit Q bzw. „↓ Runter“ zurück.</dd>
+          <dt>Details</dt><dd>Fadenkreuz auf Dose, Schalter, Leuchte oder Leitung richten. Klick, Leertaste oder Tippen auf das Label öffnet die Infokarte.</dd>
+          <dt>Räume</dt><dd>„Springen zu …“ versetzt Sie direkt in jeden Raum.</dd>
+          <dt>Beenden</dt><dd>„Begehen“ erneut drücken, Taste B oder Esc (bei gefangener Maus zweimal).</dd>
+        </dl>
+        <button class="btn" type="button" id="walkHelpOk">Verstanden</button>
+      </div>
       <div class="infocard card" id="infocard" hidden role="region" aria-live="polite" aria-label="Details">
         <button class="close" type="button" id="infoClose" aria-label="Details schließen">&times;</button>
         <div id="infobody"></div>
@@ -1196,7 +1268,7 @@ const S = {
   layers: { walls: true, zones: false, cables: true, devices: true, net: true, sketch: false, roof: false },
   hl: null, pinned: null,
 };
-const G = { ok: false, floors: {}, circMats: {}, mats: {}, texts: [], pick: [], cableRoot: null };
+const G = { ok: false, floors: {}, circMats: {}, mats: {}, texts: [], pick: [], cableRoot: null, wallFill: {}, walkCeil: {} };
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#888';
 const DS = 1.45; // Gerätesymbole leicht überhöht darstellen
@@ -1302,6 +1374,9 @@ function makeMaterials() {
   M.cabinet = new THREE.MeshLambertMaterial({ transparent: true, opacity: 0.92 });
   M.sketch = new THREE.LineDashedMaterial({ dashSize: 0.14, gapSize: 0.09, transparent: true, opacity: 0.95 });
   M.sym = {};
+  // Begehung: opake, beleuchtete Wände und Decken (Phong = Licht je Pixel, wichtig für die Kameraleuchte)
+  M.walkWall = new THREE.MeshPhongMaterial({ side: THREE.DoubleSide, shininess: 0, specular: 0x000000, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+  M.walkCeil = new THREE.MeshPhongMaterial({ side: THREE.DoubleSide, shininess: 0, specular: 0x000000 });
   for (const id of Object.keys(CIRC).concat('F')) G.circMats[id] = new THREE.MeshLambertMaterial({ transparent: true });
 }
 function applyThemeColors() {
@@ -1325,6 +1400,10 @@ function applyThemeColors() {
   for (const t of G.texts) redrawText(t);
   G.hemi.color.set(css('--scene-light-sky')); G.hemi.groundColor.set(css('--scene-light-ground'));
   for (const [k, m] of Object.entries(M.sym)) { m.map.dispose(); m.map = symbolTexture(k, css('--scene-sketch')); m.needsUpdate = true; }
+  M.walkWall.color.set(css('--paper-2'));
+  M.walkCeil.color.set(css('--paper'));
+  M.walkCeil.emissive.set(css('--paper')).multiplyScalar(0.35);   // Decke wird von unten kaum beleuchtet
+  walkThemeChanged();
   requestRender();
 }
 
@@ -1651,6 +1730,8 @@ function initScene() {
   G.controls.listenToKeyEvents(R.domElement); // Pfeiltasten verschieben, wenn die 3D-Ansicht den Fokus hat
   G.hemi = new THREE.HemisphereLight(0xffffff, 0x8890a0, 0.95); G.scene.add(G.hemi);
   const dl = new THREE.DirectionalLight(0xffffff, 0.35); dl.position.set(4, 10, 6); G.scene.add(dl);
+  // Leuchte an der Kamera: nur in der Begehung hell (immer vorhanden, damit kein Shader-Neubau beim Umschalten nötig ist)
+  G.walkLight = new THREE.PointLight(0xffffff, 0, 9, 1.2); G.camera.add(G.walkLight); G.scene.add(G.camera);
   G.adGeo = new THREE.BoxGeometry(0.075, 0.075, 0.075);
   makeMaterials();
   for (const f of FLOORS) {
@@ -1659,7 +1740,9 @@ function initScene() {
     grp.userData.L = L;
     G.floors[f.id] = grp;
     G.scene.add(grp);
-    L.walls.add(buildWalls(f.id));
+    const walls = buildWalls(f.id);
+    L.walls.add(walls);
+    G.wallFill[f.id] = walls.children[0];
     buildFloorPlates(f.id, L.plates);
     buildFixtures(f.id, L.fixtures);
     buildDevices(f.id, { devices: L.devices, net: L.net });
@@ -1674,6 +1757,7 @@ function initScene() {
     const w = host.clientWidth, h = host.clientHeight;
     if (!w || !h) return;
     R.setSize(w, h, false); G.camera.aspect = w / h; G.camera.updateProjectionMatrix();
+    if (W.active) { walkFov(); W.dirty = true; }
     if (!G.sized) { G.sized = true; setView(S.view || 'iso'); } else requestRender();
   }).observe(host);
   setupPicking(R.domElement);
@@ -1681,8 +1765,14 @@ function initScene() {
 }
 let renderQueued = false;
 function requestRender() { if (G.ok && !renderQueued) { renderQueued = true; requestAnimationFrame(renderFrame); } }
-function renderFrame() {
+function renderFrame(now) {
   renderQueued = false;
+  if (W.active) {
+    const busy = walkFrame(now);
+    G.renderer.render(G.scene, G.camera);
+    if (busy) requestRender();
+    return;
+  }
   const moving = G.controls.update();
   G.renderer.render(G.scene, G.camera);
   if (moving && G.controls.enableDamping) requestRender();
@@ -1726,6 +1816,7 @@ function applyVisibility() {
     g.userData.L.roof.visible = S.layers.roof;
   }
   rebuildCables();
+  for (const f of FLOORS) if (G.walkCeil[f.id]) G.walkCeil[f.id].visible = W.active && W.floor === f.id;
   applyHighlight();
 }
 function applyHighlight() {
@@ -1744,8 +1835,9 @@ function applyHighlight() {
 function setupPicking(el) {
   const ray = new THREE.Raycaster(), ptr = new THREE.Vector2();
   let down = null;
-  el.addEventListener('pointerdown', e => { down = { x: e.clientX, y: e.clientY }; });
+  el.addEventListener('pointerdown', e => { down = W.active ? null : { x: e.clientX, y: e.clientY }; });
   el.addEventListener('pointerup', e => {
+    if (W.active) return;
     if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) { down = null; return; }
     down = null;
     const r = el.getBoundingClientRect();
@@ -1825,7 +1917,7 @@ function renderChips() {
 function pinCircuit(id) {
   S.pinned = id;
   document.querySelectorAll('[data-chip]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.chip === id)));
-  if (id && CIRC[id] && S.floor !== 'ALL' && CIRC[id].floor !== S.floor) setFloor(CIRC[id].floor);
+  if (id && CIRC[id] && !W.active && S.floor !== 'ALL' && CIRC[id].floor !== S.floor) setFloor(CIRC[id].floor);
   applyHighlight();
   showCircuitDetail(id);
 }
@@ -1836,10 +1928,13 @@ function circuitMeta(id) {
 function showCircuitDetail(id) {
   const box = $('circuitDetail');
   if (!id) { box.className = 'small'; box.innerHTML = 'Stromkreis antippen oder überfahren, um ihn hervorzuheben.'; return; }
+  box.className = 'card';
+  box.innerHTML = circuitCardHtml(id);
+}
+function circuitCardHtml(id) {
   const c = circuitMeta(id), r = ROUTES[id];
   const items = r.devs.map(d => `<li>${esc(d.label)} <span class="small">· ${esc(roomName(d.room))}</span></li>`).join('');
-  box.className = 'card';
-  box.innerHTML = `<h3><i class="cdot" data-cid="${id}" style="background:${circuitCss(id)}"></i>${esc(id)} · ${esc(c.name)}</h3>
+  return `<h3><i class="cdot" data-cid="${id}" style="background:${circuitCss(id)}"></i>${esc(id)} · ${esc(c.name)}</h3>
     <dl><dt>Absicherung</dt><dd>${esc(c.prot || (c.net ? 'Patchfeld' : '–'))}${c.prot && !c.net && id !== 'F' ? ' · RCBO 30 mA Typ A' : ''}</dd>
     <dt>Kabel</dt><dd class="mono">${byCableList(r.byCable).map(([k, v]) => `${esc(CABLES[k])}: ${fmt(v)} m`).join('<br>')}${c.net ? '<br>(2 Kabel je Dose)' : ''}</dd>
     <dt>Länge</dt><dd class="mono">${fmt(r.length)} m berechnet · ${fmt(r.length * (1 + ZONE.waste))} m inkl. 15 %</dd>
@@ -1851,6 +1946,7 @@ function showCircuitDetail(id) {
 function openCard(html) { $('infobody').innerHTML = html; $('infocard').hidden = false; }
 function hideCard() { $('infocard').hidden = true; }
 function showDeviceCard(d) {
+  W.lastRoom = d.room; W.lastDev = d;
   const c = d.c ? circuitMeta(d.c) : null, R = RI[d.room];
   const typ = d.t === 'sw' ? Object.entries(d.kinds || {}).map(([k, n]) => `${n}× ${SWITCH_NAME[k] || k}`).join(', ') : TYPE_NAME[d.t];
   let rows = `<dt>Typ</dt><dd>${esc(typ)}${d.t === 'sd' ? ` · ${d.n} ${d.n > 1 ? 'Einsätze' : 'Einsatz'}` : ''}</dd>
@@ -1872,6 +1968,7 @@ function showDeviceCard(d) {
 }
 
 function showRoomCard(rid) {
+  W.lastRoom = rid; W.lastDev = null;
   const R = RI[rid], devs = DEVICES.filter(d => d.room === rid);
   const cids = [...new Set(devs.map(d => d.c).filter(Boolean))];
   const chips = cids.map(id => `<span class="chip" style="cursor:default"><i data-cid="${id}" style="background:${circuitCss(id)}"></i>${id}</span>`).join(' ');
@@ -2052,6 +2149,742 @@ function renderDist() {
   $('distPlans').innerHTML = html;
 }
 
+/* =====================================================================
+   BEGEHUNGSMODUS  (Ego-Perspektive; eigene Steuerung, keine Zusatzbibliothek)
+   Kollision in 2D gegen die Raumkanten (Türen/Durchgänge ausgespart),
+   Treppen als Bereich mit Geschosswechsel (EG- und OG-Treppe teilen sich die Grundfläche).
+   ===================================================================== */
+const WALK = {
+  radius: 0.22, eye: 1.65, speed: 1.4, run: 2.4, turn: 1.9, mouse: 0.0022, drag: 0.005,
+  pitchMax: 1.35, stairMargin: 0.5, stairFoot: 0.6, reach: 9, inside: 0.15, pickEvery: 90,
+};
+const W = {
+  active: false, ready: false, floor: 'EG', x: 0, y: 0, yaw: 0, pitch: 0, eye: WALK.eye,
+  keys: new Set(), joy: { id: null, x: 0, y: 0 }, drag: null, tween: null, saved: null,
+  lastT: 0, lastPick: 0, pickPending: false, dirty: true, room: null, zone: null,
+  lastRoom: null, lastDev: null, locked: false, noLock: false, lockReleasedAt: 0, touch: false,
+  col: {}, stairs: {}, targets: {}, mapB: {}, colors: null, entrance: null, hits: [],
+  tgt: { kind: '', key: '', text: '', dev: null, cid: null, h: 0 },
+  tap: { kind: '', key: '', text: '', dev: null, cid: null, h: 0 },
+};
+let WV = null;              // wiederverwendete three.js-Objekte (erst nach dem Laden von three.js)
+const WPOS = new Float64Array(2);
+
+/* ---------- 2D-Geometrie ---------- */
+function pointInPoly(poly, x, y) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+function segDist2(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy;
+  let t = l2 ? ((px - ax) * dx + (py - ay) * dy) / l2 : 0;
+  t = t < 0 ? 0 : t > 1 ? 1 : t;
+  const qx = ax + t * dx - px, qy = ay + t * dy - py;
+  return qx * qx + qy * qy;
+}
+function polyDist(poly, x, y) {
+  if (pointInPoly(poly, x, y)) return 0;
+  let m = Infinity;
+  for (let i = 0; i < poly.length; i++) {
+    const a = poly[i], b = poly[(i + 1) % poly.length];
+    m = Math.min(m, segDist2(x, y, a[0], a[1], b[0], b[1]));
+  }
+  return Math.sqrt(m);
+}
+const rectDist = (r, x, y) => Math.hypot(Math.max(r.x0 - x, 0, x - r.x1), Math.max(r.y0 - y, 0, y - r.y1));
+
+/* ---------- Kollisionsmodell je Geschoss ---------- */
+function buildWalkCollision(fid) {
+  const segs = [], circles = [], boxes = [];
+  const seg = (ax, ay, bx, by) => segs.push(ax, ay, bx, by);
+  const box = (x0, x1, y0, y1) => { boxes.push([x0, x1, y0, y1]); seg(x0, y0, x1, y0); seg(x1, y0, x1, y1); seg(x1, y1, x0, y1); seg(x0, y1, x0, y0); };
+  const rooms = Object.values(RI).filter(R => R.floor === fid);   // inkl. Außenbereiche: deren Rand hält im Haus
+  for (const R of rooms) {
+    const P = R.nominal;
+    P.forEach((a, i) => {
+      const b = P[(i + 1) % P.length], len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      const ux = (b[0] - a[0]) / len, uy = (b[1] - a[1]) / len;
+      const tOf = (x, y) => clamp((x - a[0]) * ux + (y - a[1]) * uy, 0, len);
+      const gaps = OPENINGS
+        .filter(op => op.floor === fid && op.kind !== 'win' && openingMatchesEdge(op, a, b))
+        .map(op => {
+          const t0 = op.axis === 'y' ? tOf(op.a, a[1]) : tOf(a[0], op.a), t1 = op.axis === 'y' ? tOf(op.b, a[1]) : tOf(a[0], op.b);
+          return [Math.min(t0, t1), Math.max(t0, t1)];
+        })
+        .sort((p, q) => p[0] - q[0]);
+      let t = 0;
+      for (const [g0, g1] of gaps) {
+        if (g0 > t + 1e-3) seg(a[0] + ux * t, a[1] + uy * t, a[0] + ux * g0, a[1] + uy * g0);
+        t = Math.max(t, g1);
+      }
+      if (len > t + 1e-3) seg(a[0] + ux * t, a[1] + uy * t, b[0], b[1]);
+    });
+  }
+  const wallSegs = segs.length / 4;               // nur echte Wände (für die Sichtlinie zur Treppe)
+  box(CHIMNEY.x0, CHIMNEY.x1, CHIMNEY.y0, CHIMNEY.y1);
+  SHAFTS.filter(q => q.floor === fid).forEach(q => box(q.x0, q.x1, q.y0, q.y1));
+  for (const fx of FIXTURES.filter(q => q.floor === fid)) {
+    if (fx.type === 'box') box(fx.x0, fx.x1, fx.y0, fx.y1);
+    // gerade Treppe: Antritt (unterste ~0,6 m) bleibt begehbar, sonst wäre z. B. die WC-Tür im EG versperrt
+    if (fx.type === 'straight') {
+      if (fx.dir < 0) box(fx.x0, fx.x1, fx.y0, fx.y1 - WALK.stairFoot); else box(fx.x0, fx.x1, fx.y0 + WALK.stairFoot, fx.y1);
+    }
+    if (fx.type === 'spiral') circles.push([fx.cx, fx.cy, fx.r]);
+  }
+  return { fid, segs: Float64Array.from(segs), wallSegs, circles, boxes, rooms };
+}
+function walkClearance(C, x, y) {
+  const s = C.segs;
+  let m = Infinity;
+  for (let i = 0; i < s.length; i += 4) { const d = segDist2(x, y, s[i], s[i + 1], s[i + 2], s[i + 3]); if (d < m) m = d; }
+  m = Math.sqrt(m);
+  for (const c of C.circles) m = Math.min(m, Math.hypot(x - c[0], y - c[1]) - c[2]);
+  for (const b of C.boxes) if (x > b[0] && x < b[1] && y > b[2] && y < b[3]) return -1;   // innerhalb eines Hindernisses
+  return m;
+}
+function walkInside(C, x, y) {
+  for (const R of C.rooms) if (polyDist(R.nominal, x, y) <= WALK.inside) return true;
+  return false;
+}
+/* Kreis aus Wänden herausschieben (mehrere Durchläufe für Ecken) → Gleiten an der Wand */
+function walkResolve(C, p) {
+  const r = WALK.radius, r2 = r * r, s = C.segs;
+  for (let it = 0; it < 4; it++) {
+    let moved = false;
+    for (let i = 0; i < s.length; i += 4) {
+      const ax = s[i], ay = s[i + 1], dx = s[i + 2] - ax, dy = s[i + 3] - ay, l2 = dx * dx + dy * dy;
+      let t = l2 ? ((p[0] - ax) * dx + (p[1] - ay) * dy) / l2 : 0;
+      t = t < 0 ? 0 : t > 1 ? 1 : t;
+      const qx = p[0] - ax - t * dx, qy = p[1] - ay - t * dy, d2 = qx * qx + qy * qy;
+      if (d2 >= r2) continue;
+      if (d2 > 1e-12) { const d = Math.sqrt(d2), k = (r - d) / d; p[0] += qx * k; p[1] += qy * k; }
+      else { const l = Math.sqrt(l2) || 1; p[0] -= dy / l * r; p[1] += dx / l * r; }
+      moved = true;
+    }
+    for (const c of C.circles) {
+      const qx = p[0] - c[0], qy = p[1] - c[1], d = Math.hypot(qx, qy), R = c[2] + r;
+      if (d >= R || d < 1e-9) continue;
+      p[0] = c[0] + qx / d * R; p[1] = c[1] + qy / d * R; moved = true;
+    }
+    if (!moved) break;
+  }
+}
+function walkTry(C, x, y) {
+  WPOS[0] = x; WPOS[1] = y;
+  walkResolve(C, WPOS);
+  const mx = WPOS[0] - W.x, my = WPOS[1] - W.y;
+  if (mx * mx + my * my < 1e-10 || mx * mx + my * my > 0.04) return false;   // kein Fortschritt bzw. kein Durchtunneln
+  if (walkClearance(C, WPOS[0], WPOS[1]) < WALK.radius - 0.01 || !walkInside(C, WPOS[0], WPOS[1])) return false;
+  W.x = WPOS[0]; W.y = WPOS[1];
+  return true;
+}
+function walkMove(dx, dy) {
+  const C = W.col[W.floor], n = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 0.08));
+  dx /= n; dy /= n;
+  for (let k = 0; k < n; k++) {
+    if (!walkTry(C, W.x + dx, W.y + dy) && !walkTry(C, W.x + dx, W.y) && !walkTry(C, W.x, W.y + dy)) break;
+  }
+}
+/* freie Stelle im Raum: nächste zu (tx,ty) oder – ohne Ziel – möglichst offen und mittig */
+function walkRoomSpot(rid, tx, ty) {
+  const R = RI[rid], C = W.col[R.floor], P = R.nominal;
+  const xs = P.map(p => p[0]), ys = P.map(p => p[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  let best = null, bs = -Infinity;
+  for (let x = x0 + 0.025; x < x1; x += 0.05) for (let y = y0 + 0.025; y < y1; y += 0.05) {
+    if (!pointInPoly(P, x, y)) continue;
+    const c = walkClearance(C, x, y);
+    if (c < WALK.radius + 0.03) continue;
+    const sc = tx == null ? Math.min(c, 0.9) - 0.12 * Math.hypot(x - cx, y - cy) : -Math.hypot(x - tx, y - ty);
+    if (sc > bs) { bs = sc; best = { x, y }; }
+  }
+  return best;
+}
+/* Blickrichtung mit der längsten freien Sicht */
+function walkOpenYaw(fid, x, y) {
+  const C = W.col[fid];
+  let best = 0, bl = -1;
+  for (let k = 0; k < 16; k++) {
+    const a = k / 16 * Math.PI * 2, c = Math.cos(a), s = Math.sin(a);
+    let l = 0;
+    while (l < 6 && walkClearance(C, x + c * (l + 0.1), y + s * (l + 0.1)) >= WALK.radius) l += 0.1;
+    if (l > bl) { bl = l; best = a; }
+  }
+  return best;
+}
+const walkEyeAt = (fid, x, y) => clamp(ceilAt({ floor: fid }, x, y) - 0.12, 0.7, WALK.eye);
+
+/* Hauseingang aus den Daten: Tür im EG, die nur zu einem Innenraum gehört */
+function walkEntrance() {
+  for (const op of OPENINGS.filter(o => o.floor === 'EG' && o.kind === 'door')) {
+    const owners = Object.values(RI).filter(R => R.openings.some(o => o.op === op));
+    if (owners.length !== 1 || owners[0].room.kind === 'out') continue;
+    const R = owners[0], o = R.openings.find(q => q.op === op), e = R.loop.edges[o.edge];
+    const mx = op.axis === 'y' ? (op.a + op.b) / 2 : e.a[0], my = op.axis === 'y' ? e.a[1] : (op.a + op.b) / 2;
+    const p = walkRoomSpot(R.id, mx + e.nx * 0.7, my + e.ny * 0.7);
+    if (p) return { fid: 'EG', x: p.x, y: p.y, yaw: Math.atan2(e.ny, e.nx), pitch: 0 };
+  }
+  return null;
+}
+
+/* Treppen: Bereich je Geschoss + Ankunftspunkte am oberen bzw. unteren Treppenende */
+function buildWalkStairs() {
+  const fixOf = fid => FIXTURES.find(f => f.floor === fid && (f.type === 'straight' || f.type === 'spiral'));
+  const center = fx => (fx.type === 'spiral' ? [fx.cx, fx.cy] : [(fx.x0 + fx.x1) / 2, (fx.y0 + fx.y1) / 2]);
+  const end = (fx, top) => {
+    if (fx.type === 'spiral') {
+      const a = (fx.from + (top ? fx.turn : 0)) * Math.PI * 2;
+      return [fx.cx + Math.cos(a) * (fx.r + 0.35), fx.cy + Math.sin(a) * (fx.r + 0.35)];
+    }
+    const highAtLowY = fx.dir < 0;          // Laufrichtung: dir < 0 steigt zu kleinem y
+    return [(fx.x0 + fx.x1) / 2, top === highAtLowY ? fx.y0 - 0.35 : fx.y1 + 0.35];
+  };
+  const arrive = (to, fx, top) => {
+    const [cx, cy] = center(fx), [tx, ty] = end(fx, top);
+    const R = Object.values(RI).find(r => r.floor === to && r.room.kind !== 'out' && pointInPoly(r.nominal, cx, cy));
+    const p = R && walkRoomSpot(R.id, tx, ty);
+    return p ? { fid: to, x: p.x, y: p.y, yaw: Math.atan2(p.y - cy, p.x - cx), pitch: 0 } : null;
+  };
+  FLOORS.forEach((f, i) => {
+    const own = fixOf(f.id), below = i > 0 ? fixOf(FLOORS[i - 1].id) : null;
+    const st = { shapes: [], up: null, down: null };
+    if (own) st.shapes.push(own);
+    if (own && own.steps && i < FLOORS.length - 1) st.up = arrive(FLOORS[i + 1].id, own, true);
+    if (below && below.steps) { st.down = arrive(FLOORS[i - 1].id, below, false); st.shapes.push(below); }
+    // Räume, in denen der Treppenknopf erscheinen darf: Raum der Treppe + über wandlose Öffnungen verbundene Räume
+    st.rooms = new Set();
+    for (const fx of st.shapes) {
+      const [cx, cy] = center(fx), R = Object.values(RI).find(r => r.floor === f.id && pointInPoly(r.nominal, cx, cy));
+      if (!R) continue;
+      st.rooms.add(R.id);
+      for (const o of R.openings.filter(q => q.op.kind === 'open')) {
+        Object.values(RI).filter(r => r.floor === f.id && r.openings.some(q => q.op === o.op)).forEach(r => st.rooms.add(r.id));
+      }
+    }
+    W.stairs[f.id] = st.up || st.down ? st : null;
+  });
+}
+function segsCross(ax, ay, bx, by, cx, cy, dx, dy) {
+  const o = (px, py, qx, qy, rx, ry) => (qx - px) * (ry - py) - (qy - py) * (rx - px);
+  const d1 = o(ax, ay, bx, by, cx, cy), d2 = o(ax, ay, bx, by, dx, dy), d3 = o(cx, cy, dx, dy, ax, ay), d4 = o(cx, cy, dx, dy, bx, by);
+  return d1 * d2 < 0 && d3 * d4 < 0;
+}
+function walkSightFree(C, ax, ay, bx, by) {
+  const s = C.segs;
+  for (let i = 0, n = 0; n < C.wallSegs; i += 4, n++) if (segsCross(ax, ay, bx, by, s[i], s[i + 1], s[i + 2], s[i + 3])) return false;
+  return true;
+}
+function walkStairZone(fid, x, y) {
+  const st = W.stairs[fid];
+  if (!st) return null;
+  const C = W.col[fid];
+  let inRoom = false;
+  for (const R of C.rooms) if (st.rooms.has(R.id) && pointInPoly(R.nominal, x, y)) { inRoom = true; break; }
+  if (!inRoom) return null;
+  for (const fx of st.shapes) {
+    let px, py;                                    // nächster Punkt der Treppe
+    if (fx.type === 'spiral') { const l = Math.hypot(x - fx.cx, y - fx.cy) || 1; px = fx.cx + (x - fx.cx) / l * fx.r; py = fx.cy + (y - fx.cy) / l * fx.r; }
+    else { px = clamp(x, fx.x0, fx.x1); py = clamp(y, fx.y0, fx.y1); }
+    if (Math.hypot(x - px, y - py) <= WALK.stairMargin && walkSightFree(C, x, y, px, py)) return st;
+  }
+  return null;
+}
+
+/* Ziele fürs Fadenkreuz: Geräte, Abzweigdosen, Leitungssegmente (Weltkoordinaten) */
+function buildWalkTargets(fid) {
+  const z = FLOOR[fid].z, devs = [], ads = [], segs = [], segCid = [];
+  for (const d of DEVICES) {
+    if (d.floor !== fid) continue;
+    const wall = d.mount !== 'ceil', off = 0.03 - (d.t === 'uv' ? 0.08 : 0.015);
+    const r = d.t === 'uv' ? Math.max(d.w, d.hh) / 2 : d.t === 'sd' ? Math.max(0.07, (0.04 + 0.075 * d.n) * DS / 2) : d.t === 'li' && !wall ? 0.15 : 0.08;
+    devs.push({ d, r, p: new THREE.Vector3(wall ? d.x - d.nx * off : d.x, z + (wall ? d.h : d.h - 0.025), wall ? d.y - d.ny * off : d.y) });
+  }
+  for (const [cid, r] of Object.entries(ROUTES)) {
+    r.ads.forEach((p, i) => { if (p.f === fid) ads.push({ cid, i, h: p.z, p: new THREE.Vector3(p.x, z + p.z, p.y) }); });
+    for (const poly of r.polys) for (let i = 1; i < poly.length; i++) {
+      const a = poly[i - 1], b = poly[i];
+      if (a.f !== fid || b.f !== fid) continue;
+      segs.push(a.x, z + a.z, a.y, b.x, z + b.z, b.y); segCid.push(cid);
+    }
+  }
+  return { devs, ads, segs: Float32Array.from(segs), segCid };
+}
+
+/* Decken für die Begehung (KG–OG flach je Raum, DG unter der Dachschräge) */
+function buildWalkCeiling(fid) {
+  const grp = new THREE.Group(), f = FLOOR[fid];
+  if (f.roof) {
+    const ya = ROOF.yA + (f.h - ROOF.knee) / ROOF.slope, yb = ROOF.yB - (f.h - ROOF.knee) / ROOF.slope, pos = [];
+    const Z = y => Math.min(f.h, roofH(y));
+    for (const [p, q] of [[ROOF.yA, ya], [ya, yb], [yb, ROOF.yB]]) quad(pos, V(0, p, Z(p)), V(7.01, p, Z(p)), V(7.01, q, Z(q)), V(0, q, Z(q)));
+    grp.add(triMesh(pos, G.mats.walkCeil));
+  } else {
+    for (const R of Object.values(RI).filter(r => r.floor === fid && r.room.kind !== 'out')) {
+      const g = new THREE.ShapeGeometry(new THREE.Shape(R.nominal.map(([x, y]) => new THREE.Vector2(x, y))));
+      g.rotateX(Math.PI / 2); g.translate(0, f.h, 0);
+      grp.add(new THREE.Mesh(g, G.mats.walkCeil));
+    }
+  }
+  grp.visible = false;
+  return grp;
+}
+
+function walkPrepare() {
+  if (W.ready) return;
+  for (const f of FLOORS) {
+    W.col[f.id] = buildWalkCollision(f.id);
+    W.targets[f.id] = buildWalkTargets(f.id);
+    const ceil = buildWalkCeiling(f.id);
+    G.walkCeil[f.id] = ceil; G.floors[f.id].add(ceil);
+    const xs = [], ys = [];
+    for (const R of W.col[f.id].rooms) R.nominal.forEach(([x, y]) => { xs.push(x); ys.push(y); });
+    W.mapB[f.id] = { x0: Math.min(...xs) - 0.2, x1: Math.max(...xs) + 0.2, y0: Math.min(...ys) - 0.2, y1: Math.max(...ys) + 0.2 };
+  }
+  buildWalkStairs();
+  W.entrance = walkEntrance();
+  W.ready = true;
+}
+
+/* ---------- Kamera ---------- */
+function walkFov() {
+  const a = G.camera.aspect || 1.5;
+  const hf = 2 * Math.atan(Math.tan(37.5 * Math.PI / 180) / a) * 180 / Math.PI;   // mind. 75° horizontal
+  G.camera.fov = clamp(hf, 62, 88);
+  G.camera.updateProjectionMatrix();
+}
+function walkCamera(x, z, y) {
+  const cp = Math.cos(W.pitch);
+  G.camera.position.set(x, z, y);
+  WV.look.set(x + cp * Math.cos(W.yaw), z + Math.sin(W.pitch), y + cp * Math.sin(W.yaw));
+  G.camera.lookAt(WV.look);
+  G.camera.updateMatrixWorld();
+}
+function walkSetFloor(fid) {
+  W.floor = fid; S.floor = fid; W.room = null; W.zone = undefined;
+  const inp = document.querySelector(`input[name="floor"][value="${fid}"]`); if (inp) inp.checked = true;
+  applyVisibility();
+  W.dirty = true;
+}
+function walkPlace(p) {
+  W.x = p.x; W.y = p.y; W.yaw = p.yaw; W.pitch = p.pitch || 0; W.eye = walkEyeAt(p.fid, p.x, p.y); W.tween = null;
+  if (p.fid !== W.floor || S.floor !== p.fid) walkSetFloor(p.fid);
+  W.dirty = true; requestRender();
+}
+function walkTeleport(p) {
+  if (W.tween) return;
+  if (reduceMotion) { walkPlace(p); return; }
+  const x0 = W.x, y0 = W.y, z0 = FLOOR[W.floor].z + W.eye, yaw0 = W.yaw;
+  W.x = p.x; W.y = p.y; W.pitch = p.pitch || 0; W.eye = walkEyeAt(p.fid, p.x, p.y);
+  const change = p.fid !== W.floor;
+  W.tween = {
+    t: 0, dur: change ? 0.7 : 0.4, x0, y0, z0, x1: p.x, y1: p.y, z1: FLOOR[p.fid].z + W.eye,
+    yaw0, dyaw: Math.atan2(Math.sin(p.yaw - yaw0), Math.cos(p.yaw - yaw0)), yaw1: p.yaw, floor: change ? p.fid : null,
+  };
+  requestRender();
+}
+/* Raum anspringen; optional mit Blick auf ein Gerät */
+function walkRoomPose(rid, dev) {
+  const R = RI[rid], p = walkRoomSpot(rid);
+  if (!p) return null;
+  const eye = walkEyeAt(R.floor, p.x, p.y);
+  if (dev) {
+    const dist = Math.max(0.3, Math.hypot(dev.x - p.x, dev.y - p.y));
+    return { fid: R.floor, x: p.x, y: p.y, yaw: Math.atan2(dev.y - p.y, dev.x - p.x), pitch: clamp(Math.atan2(dev.h - eye, dist), -1, 1) };
+  }
+  return { fid: R.floor, x: p.x, y: p.y, yaw: walkOpenYaw(R.floor, p.x, p.y), pitch: 0 };
+}
+function walkGotoRoom(rid) { const p = walkRoomPose(rid); if (p) walkTeleport(p); }
+function walkGotoFloor(fid) {
+  const st = W.stairs, cand = FLOORS.map(f => st[f.id]).flatMap(s => (s ? [s.up, s.down] : [])).find(a => a && a.fid === fid);
+  const p = (fid === 'EG' && W.entrance) || cand || walkRoomPose(Object.values(RI).find(R => R.floor === fid && R.room.kind !== 'out').id);
+  if (p) walkTeleport(p);
+}
+function walkStair(dir) {
+  const st = W.zone;
+  if (!st || W.tween) return;
+  const a = dir > 0 ? st.up : st.down;
+  if (a) walkTeleport(a);
+}
+
+/* ---------- Bildschleife ---------- */
+function walkFrame(now) {
+  const dt = W.lastT && now - W.lastT < 250 ? Math.min(0.1, (now - W.lastT) / 1000) : 1 / 60;
+  W.lastT = now;
+  const tw = W.tween;
+  if (tw) {
+    if (tw.start == null) tw.start = now;
+    tw.t = Math.min(1, (now - tw.start) / 1000 / tw.dur);    // echte Zeit, auch bei langsamen Bildern
+    const t = tw.t, e = t < 0.5 ? 2 * t * t : 1 - 2 * (1 - t) * (1 - t);
+    if (tw.floor && t >= 0.5) { walkSetFloor(tw.floor); tw.floor = null; }
+    W.yaw = tw.yaw0 + tw.dyaw * e;
+    walkCamera(tw.x0 + (tw.x1 - tw.x0) * e, tw.z0 + (tw.z1 - tw.z0) * e, tw.y0 + (tw.y1 - tw.y0) * e);
+    if (t < 1) return true;
+    W.tween = null; W.yaw = tw.yaw1; W.dirty = true;
+  }
+  let busy = W.joy.id !== null;
+  const k = W.keys;
+  const turn = (k.has('ArrowRight') ? 1 : 0) - (k.has('ArrowLeft') ? 1 : 0);
+  if (turn) { W.yaw += turn * WALK.turn * dt; busy = true; }
+  let f = (k.has('KeyW') || k.has('ArrowUp') ? 1 : 0) - (k.has('KeyS') || k.has('ArrowDown') ? 1 : 0) + W.joy.y;
+  let s = (k.has('KeyD') ? 1 : 0) - (k.has('KeyA') ? 1 : 0) + W.joy.x;
+  const m = Math.hypot(f, s);
+  if (m > 0.08) {
+    if (m > 1) { f /= m; s /= m; }
+    const v = (k.has('ShiftLeft') || k.has('ShiftRight') ? WALK.run : WALK.speed) * dt, c = Math.cos(W.yaw), sn = Math.sin(W.yaw);
+    walkMove((c * f - sn * s) * v, (sn * f + c * s) * v);
+    busy = true;
+  }
+  const eyeT = walkEyeAt(W.floor, W.x, W.y);
+  if (Math.abs(eyeT - W.eye) > 0.002) { W.eye += (eyeT - W.eye) * Math.min(1, dt * 8); busy = true; }
+  walkCamera(W.x, FLOOR[W.floor].z + W.eye, W.y);
+  if (busy || W.dirty || W.pickPending) walkHud(now);
+  W.dirty = false;
+  return busy || W.pickPending;
+}
+
+/* ---------- HUD: Raum, Treppe, Minikarte, Fadenkreuz-Ziel ---------- */
+function walkHud(now) {
+  const C = W.col[W.floor];
+  let room = null;
+  for (const R of C.rooms) if (pointInPoly(R.nominal, W.x, W.y)) { room = R; break; }
+  if (room) W.room = room;                       // im Türdurchgang den letzten Raum behalten
+  const where = `${W.floor} · ${W.room ? W.room.room.name : FLOOR[W.floor].name}`;
+  if (W.where !== where) { W.where = where; $('walkWhere').textContent = where; }
+  const z = walkStairZone(W.floor, W.x, W.y);
+  if (z !== W.zone) {
+    W.zone = z;
+    if (!z) walkKeepFocus($('walkStairs'));
+    $('walkStairs').hidden = !z;
+    if (z) { $('walkUp').hidden = !z.up; $('walkDown').hidden = !z.down; }
+  }
+  drawWalkMap();
+  if (now - W.lastPick >= WALK.pickEvery) {
+    W.lastPick = now; W.pickPending = false;
+    walkPick(0, 0, W.tgt);
+    walkShowTarget();
+  } else W.pickPending = true;
+}
+function walkShowTarget() {
+  const t = W.tgt, b = $('walkTarget');
+  $('walkCross').classList.toggle('on', !!t.kind);
+  if (!t.kind) { if (!b.hidden) { walkKeepFocus(b); b.hidden = true; } return; }
+  const text = t.text + ' · Details';
+  if (b.textContent !== text) b.textContent = text;
+  b.setAttribute('aria-label', `${t.text}. Details öffnen`);
+  const cc = t.cid ? circuitCss(t.cid) : 'var(--ink)';
+  if (b.style.getPropertyValue('--cc') !== cc) b.style.setProperty('--cc', cc);
+  b.hidden = false;
+}
+/* liegt der Fokus in einem Element, das gleich verschwindet, geht er zurück auf die 3D-Ansicht */
+function walkKeepFocus(box) {
+  if (W.active && box.contains(document.activeElement)) G.renderer.domElement.focus({ preventScroll: true });
+}
+function walkTip() {
+  const el = $('walkTip');
+  el.textContent = !W.active || W.touch ? '' : W.locked ? 'Esc: Maus freigeben' : W.noLock
+    ? 'Ziehen: umschauen · Klick auf Gerät: Details' : 'Ins Bild klicken: Maus steuert den Blick';
+}
+function walkThemeChanged() {
+  if (!W.active) return;
+  W.colors = { bg: css('--paper-2'), room: css('--paper'), cur: css('--scene-floor'), line: css('--ink'), soft: css('--ink-soft'), acc: css('--accent') };
+  W.dirty = true;
+}
+function drawWalkMap() {
+  const cv = $('walkMap'), w = cv.clientWidth, h = cv.clientHeight;
+  if (!w || !h || !W.colors) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+  const ctx = cv.getContext('2d'), B = W.mapB[W.floor], C = W.col[W.floor], col = W.colors;
+  const sc = Math.min((w - 10) / (B.x1 - B.x0), (h - 10) / (B.y1 - B.y0));
+  const ox = (w - sc * (B.x1 - B.x0)) / 2 - sc * B.x0, oy = (h - sc * (B.y1 - B.y0)) / 2 - sc * B.y0;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = col.bg; ctx.fillRect(0, 0, w, h);
+  for (const R of C.rooms) {
+    ctx.beginPath();
+    R.nominal.forEach(([x, y], i) => (i ? ctx.lineTo(ox + x * sc, oy + y * sc) : ctx.moveTo(ox + x * sc, oy + y * sc)));
+    ctx.closePath();
+    ctx.globalAlpha = R.room.kind === 'out' ? 0.45 : 1;
+    ctx.fillStyle = R === W.room ? col.cur : col.room; ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = col.line; ctx.lineWidth = 1; ctx.beginPath();
+  const s = C.segs;
+  for (let i = 0; i < s.length; i += 4) { ctx.moveTo(ox + s[i] * sc, oy + s[i + 1] * sc); ctx.lineTo(ox + s[i + 2] * sc, oy + s[i + 3] * sc); }
+  for (const c of C.circles) { ctx.moveTo(ox + (c[0] + c[2]) * sc, oy + c[1] * sc); ctx.arc(ox + c[0] * sc, oy + c[1] * sc, c[2] * sc, 0, Math.PI * 2); }
+  ctx.stroke();
+  const px = ox + W.x * sc, py = oy + W.y * sc, R = Math.max(16, sc * 1.6);
+  ctx.fillStyle = col.acc; ctx.globalAlpha = 0.3; ctx.beginPath(); ctx.moveTo(px, py);
+  ctx.arc(px, py, R, W.yaw - 0.55, W.yaw + 0.55); ctx.closePath(); ctx.fill();
+  ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(px, py, 3.5, 0, Math.PI * 2); ctx.fill();
+}
+
+/* Ziel unter dem Fadenkreuz (nx/ny = Bildschirmkoordinaten −1…1); Wände verdecken */
+function walkPick(nx, ny, out) {
+  const rc = WV.rc, T = W.targets[W.floor], fz = FLOOR[W.floor].z;
+  WV.ndc.set(nx, ny); rc.setFromCamera(WV.ndc, G.camera);
+  const ray = rc.ray;
+  let wall = WALK.reach;
+  if (S.layers.walls) {
+    W.hits.length = 0; rc.far = WALK.reach;
+    rc.intersectObject(G.wallFill[W.floor], false, W.hits);
+    if (W.hits.length) wall = W.hits[0].distance;
+  }
+  const lim = wall + 0.012;
+  let bestT = Infinity, kind = '', dev = null, cid = null, h = 0, key = '';
+  for (const it of T.devs) {
+    if (it.d.t === 'net' ? !S.layers.net : !S.layers.devices) continue;
+    const t = WV.tmp.subVectors(it.p, ray.origin).dot(ray.direction);
+    if (t <= 0.05 || t > lim || t >= bestT || ray.distanceSqToPoint(it.p) > it.r * it.r) continue;
+    bestT = t; kind = 'dev'; dev = it.d; cid = it.d.c; h = it.d.h; key = it.d.id;
+  }
+  for (const it of T.ads) {
+    if (!cableLayerOn(it.cid)) continue;
+    const t = WV.tmp.subVectors(it.p, ray.origin).dot(ray.direction);
+    if (t <= 0.05 || t > lim || t >= bestT || ray.distanceSqToPoint(it.p) > 0.0036) continue;
+    bestT = t; kind = 'ad'; dev = null; cid = it.cid; h = it.h; key = 'a' + it.cid + it.i;
+  }
+  const sg = T.segs;
+  for (let i = 0, n = 0; i < sg.length; i += 6, n++) {
+    const c = T.segCid[n];
+    if (!cableLayerOn(c)) continue;
+    WV.v0.set(sg[i], sg[i + 1], sg[i + 2]); WV.v1.set(sg[i + 3], sg[i + 4], sg[i + 5]);
+    const d2 = ray.distanceSqToSegment(WV.v0, WV.v1, WV.pr, WV.ps);
+    const t = WV.pr.distanceTo(ray.origin), tol = 0.025 + 0.008 * t;
+    if (d2 > tol * tol || t <= 0.05 || t > lim || t >= bestT - (kind === 'dev' ? 0.25 : 0)) continue;
+    bestT = t; kind = 'cable'; dev = null; cid = c; h = WV.ps.y - fz; key = 'c' + c;
+  }
+  out.kind = kind; out.dev = dev; out.cid = cid; out.h = h; out.key = key;
+  if (kind === 'dev') out.text = `${dev.label}${dev.c ? ' · ' + dev.c : ''} · ${dev.mount === 'ceil' ? 'Decke, ' : ''}${fmt(dev.h, 2)} m über FFB`;
+  else if (kind) {
+    const meta = circuitMeta(cid);
+    out.text = `${kind === 'ad' ? 'Abzweigdose' : 'Leitung'} ${cid}${meta ? ' · ' + meta.name : ''} · ${fmt(h, 2)} m über FFB`;
+  } else out.text = '';
+  return out;
+}
+function walkActivate(t) {
+  if (!t || !t.kind) return;
+  if (document.pointerLockElement) document.exitPointerLock();
+  if (t.kind === 'dev') showDeviceCard(t.dev);
+  else { if (S.pinned !== t.cid) pinCircuit(t.cid); openCard(circuitCardHtml(t.cid)); }
+}
+
+/* ---------- Ein- und Austritt ---------- */
+function toggleWalk() { if (W.active) exitWalk(); else enterWalk(); }
+function enterWalk() {
+  if (!G.ok || W.active) return;
+  walkPrepare();
+  const el = G.renderer.domElement, v = $('viewer');
+  W.saved = { pos: G.camera.position.clone(), target: G.controls.target.clone(), fov: G.camera.fov, floor: S.floor, explode: S.explode, pinned: S.pinned, explodeText: $('explodeOut').textContent };
+  W.active = true; W.keys.clear(); W.lastT = 0; W.zone = undefined; W.room = null;
+  W.touch = W.touch || window.matchMedia('(pointer: coarse)').matches;
+  v.classList.add('walking'); v.classList.toggle('touch', W.touch);
+  $('btnWalk').setAttribute('aria-pressed', 'true');
+  G.controls.enabled = false;
+  S.explode = 0;                                   // echte Stapelung
+  $('explode').disabled = true; $('explodeWrap').setAttribute('aria-disabled', 'true');
+  $('explodeOut').textContent = '0 m (Begehung)';
+  hideCard();
+  for (const f of FLOORS) G.wallFill[f.id].material = G.mats.walkWall;
+  W.floorOpacity = G.mats.floor.opacity; G.mats.floor.opacity = 1; G.mats.floor.depthWrite = true;
+  G.walkLight.intensity = 0.32;
+  walkFov(); walkThemeChanged();
+  let start = null;
+  if (W.lastRoom && RI[W.lastRoom]) start = walkRoomPose(W.lastRoom, W.lastDev && W.lastDev.room === W.lastRoom ? W.lastDev : null);
+  start = start || W.entrance || walkRoomPose(Object.values(RI).find(R => R.floor === 'EG' && R.room.source).id);
+  W.floor = null;
+  walkPlace(start);
+  el.setAttribute('role', 'application');
+  el.setAttribute('aria-label', 'Begehungsmodus: W A S D oder Pfeiltasten laufen, Pfeil links/rechts drehen, E/Q Treppe, Leertaste Details, Esc beenden');
+  el.focus({ preventScroll: true });
+  walkTip();
+  let seen = false;
+  try { seen = localStorage.getItem('ep4.walkHelp') === '1'; } catch (e) { /* Komfortfunktion */ }
+  if (!seen) openWalkHelp();
+}
+function exitWalk() {
+  if (!W.active) return;
+  if (document.pointerLockElement) document.exitPointerLock();
+  const el = G.renderer.domElement, v = $('viewer'), sv = W.saved;
+  W.active = false; W.keys.clear(); W.tween = null; W.drag = null; walkJoyReset();
+  v.classList.remove('walking');
+  $('btnWalk').setAttribute('aria-pressed', 'false');
+  $('walkHelp').hidden = true; $('walkStairs').hidden = true; $('walkTarget').hidden = true;
+  for (const f of FLOORS) G.wallFill[f.id].material = G.mats.wall;
+  G.mats.floor.opacity = W.floorOpacity; G.mats.floor.depthWrite = false;
+  G.walkLight.intensity = 0;
+  hideCard();
+  if (S.pinned !== sv.pinned) {                   // Pinnung von vor der Begehung, ohne Geschosswechsel
+    S.pinned = sv.pinned;
+    document.querySelectorAll('[data-chip]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.chip === sv.pinned)));
+    showCircuitDetail(sv.pinned);
+  }
+  $('explodeOut').textContent = sv.explodeText;
+  S.floor = sv.floor; S.explode = sv.explode;
+  const inp = document.querySelector(`input[name="floor"][value="${sv.floor}"]`); if (inp) inp.checked = true;
+  $('explode').disabled = sv.floor !== 'ALL'; $('explodeWrap').setAttribute('aria-disabled', String(sv.floor !== 'ALL'));
+  applyVisibility();
+  G.camera.fov = sv.fov; G.camera.updateProjectionMatrix();
+  G.camera.position.copy(sv.pos); G.controls.target.copy(sv.target);
+  G.controls.enabled = true; G.controls.update();
+  el.setAttribute('role', 'img'); el.setAttribute('aria-label', '3D-Modell Haus 4 mit Elektroplanung');
+  requestRender();
+}
+function walkEscape() {
+  if (!$('walkHelp').hidden) { closeWalkHelp(); return; }
+  if (!$('infocard').hidden) { hideCard(); if (S.pinned && S.pinned !== W.saved.pinned) pinCircuit(W.saved.pinned); return; }
+  if (document.pointerLockElement || performance.now() - W.lockReleasedAt < 400) return;   // erstes Esc gibt nur die Maus frei
+  exitWalk();
+}
+function openWalkHelp() { $('walkHelp').hidden = false; $('walkHelpOk').focus({ preventScroll: true }); }
+function closeWalkHelp() {
+  $('walkHelp').hidden = true;
+  try { localStorage.setItem('ep4.walkHelp', '1'); } catch (e) { /* Komfortfunktion */ }
+  if (W.active) G.renderer.domElement.focus({ preventScroll: true });
+}
+
+/* ---------- Vollbild (Fullscreen API, sonst Fenster füllen) ---------- */
+function setFallbackFs(on) {
+  $('viewer').classList.toggle('fs-fallback', on);
+  document.documentElement.classList.toggle('fs-lock', on);
+  syncFsBtn();
+}
+function syncFsBtn() {
+  const on = !!(document.fullscreenElement || document.webkitFullscreenElement) || $('viewer').classList.contains('fs-fallback');
+  $('btnFull').setAttribute('aria-pressed', String(on));
+}
+function toggleFullscreen() {
+  const v = $('viewer'), d = document;
+  if (d.fullscreenElement || d.webkitFullscreenElement) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
+  if (v.classList.contains('fs-fallback')) { setFallbackFs(false); return; }
+  const req = v.requestFullscreen || v.webkitRequestFullscreen;
+  if (!req || !(d.fullscreenEnabled || d.webkitFullscreenEnabled)) { setFallbackFs(true); return; }
+  try { const p = req.call(v); if (p && p.catch) p.catch(() => setFallbackFs(true)); } catch (e) { setFallbackFs(true); }
+}
+
+/* ---------- Eingaben ---------- */
+const WALK_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight']);
+function walkJoyReset() { W.joy.id = null; W.joy.x = 0; W.joy.y = 0; const k = $('walkKnob'); if (k) k.style.transform = ''; }
+function setupWalk(el) {
+  WV = { rc: new THREE.Raycaster(), ndc: new THREE.Vector2(), look: new THREE.Vector3(), tmp: new THREE.Vector3(), v0: new THREE.Vector3(), v1: new THREE.Vector3(), pr: new THREE.Vector3(), ps: new THREE.Vector3() };
+  $('walkJump').insertAdjacentHTML('beforeend', FLOORS.map(f => `<optgroup label="${f.id} · ${esc(f.name)}">${Object.values(RI).filter(R => R.floor === f.id)
+    .map(R => `<option value="${R.id}">${esc(R.room.name)}</option>`).join('')}</optgroup>`).join(''));
+  const jump = $('walkJump');
+  let jumpByKey = false;
+  const doJump = () => {
+    const rid = jump.value;
+    jumpByKey = false;
+    if (!rid || !W.active) return;
+    walkGotoRoom(rid);
+    jump.value = '';                               // erst nach dem Sprung zurücksetzen
+    el.focus({ preventScroll: true });
+  };
+  jump.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); doJump(); }
+    else if (e.key === 'Escape') { e.stopPropagation(); jump.value = ''; jumpByKey = false; }
+    else if (e.key !== 'Tab') jumpByKey = true;    // Pfeiltasten usw. blättern nur
+  });
+  jump.addEventListener('pointerdown', () => { jumpByKey = false; });
+  jump.addEventListener('change', () => { if (!jumpByKey) doJump(); });
+  jump.addEventListener('blur', () => { if (jumpByKey && jump.value) doJump(); });
+  $('btnWalkHelp').addEventListener('click', openWalkHelp);
+  $('walkHelpOk').addEventListener('click', closeWalkHelp);
+  $('walkHelp').addEventListener('keydown', e => {      // Fokusfalle: Tab bleibt im Dialog
+    if (e.key !== 'Tab') return;
+    const f = [$('walkHelpClose'), $('walkHelpOk')], i = f.indexOf(document.activeElement);
+    e.preventDefault();
+    f[(i + (e.shiftKey ? f.length - 1 : 1) + f.length) % f.length].focus();
+  });
+  $('walkHelpClose').addEventListener('click', closeWalkHelp);
+  const refocus = () => el.focus({ preventScroll: true });
+  $('walkUp').addEventListener('click', () => { walkStair(1); refocus(); });
+  $('walkDown').addEventListener('click', () => { walkStair(-1); refocus(); });
+  $('walkTarget').addEventListener('click', () => { walkActivate(W.tgt); if ($('infocard').hidden) refocus(); });
+
+  el.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.code === 'KeyB') { e.preventDefault(); toggleWalk(); return; }
+    if (!W.active) return;
+    if (WALK_KEYS.has(e.code)) { e.preventDefault(); W.keys.add(e.code); requestRender(); }
+    else if (e.code === 'KeyE' || e.code === 'PageUp') { e.preventDefault(); walkStair(1); }
+    else if (e.code === 'KeyQ' || e.code === 'PageDown') { e.preventDefault(); walkStair(-1); }
+    else if (e.code === 'Space' || e.key === 'Enter') { e.preventDefault(); walkActivate(W.tgt); }
+  });
+  el.addEventListener('keyup', e => { W.keys.delete(e.code); });
+  el.addEventListener('blur', () => W.keys.clear());
+  window.addEventListener('blur', () => { W.keys.clear(); walkJoyReset(); });
+
+  const look = (dx, dy, k) => {
+    W.yaw += dx * k; W.pitch = clamp(W.pitch - dy * k, -WALK.pitchMax, WALK.pitchMax);
+    W.dirty = true; requestRender();
+  };
+  el.addEventListener('pointerdown', e => {
+    if (!W.active) return;
+    if (e.pointerType === 'touch' && !W.touch) { W.touch = true; $('viewer').classList.add('touch'); walkTip(); }
+    if (W.locked) return;
+    W.drag = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: 0, type: e.pointerType };
+    try { el.setPointerCapture(e.pointerId); } catch (err) { /* ältere Browser */ }
+  });
+  el.addEventListener('pointermove', e => {
+    if (!W.active) return;
+    if (W.locked) { look(e.movementX || 0, e.movementY || 0, WALK.mouse); return; }
+    const d = W.drag;
+    if (!d || d.id !== e.pointerId) return;
+    const dx = e.clientX - d.x, dy = e.clientY - d.y;
+    d.x = e.clientX; d.y = e.clientY; d.moved += Math.abs(dx) + Math.abs(dy);
+    look(-dx, -dy, WALK.drag);                       // Bild „anfassen“ und ziehen
+  });
+  el.addEventListener('pointerup', e => {
+    if (!W.active) return;
+    if (W.locked) { if (e.button === 0) walkActivate(W.tgt); return; }
+    const d = W.drag;
+    if (!d || d.id !== e.pointerId) return;
+    W.drag = null;
+    if (d.moved > 8) return;
+    if (d.type === 'mouse' && !W.noLock && el.requestPointerLock) {
+      el.focus({ preventScroll: true });
+      try { const p = el.requestPointerLock(); if (p && p.catch) p.catch(() => { W.noLock = true; walkTip(); }); } catch (err) { W.noLock = true; walkTip(); }
+      if (!$('walkHelp').hidden) closeWalkHelp();
+      return;
+    }
+    const r = el.getBoundingClientRect();
+    walkPick((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1, W.tap);
+    if (W.tap.kind) walkActivate(W.tap); else hideCard();
+  });
+  el.addEventListener('pointercancel', () => { W.drag = null; });
+  document.addEventListener('pointerlockchange', () => {
+    const locked = document.pointerLockElement === el;
+    if (W.locked && !locked) W.lockReleasedAt = performance.now();
+    W.locked = locked; walkTip();
+  });
+  document.addEventListener('pointerlockerror', () => { W.noLock = true; walkTip(); });
+
+  const joy = $('walkJoy'), knob = $('walkKnob');
+  const joyMove = e => {
+    const r = joy.getBoundingClientRect(), R = r.width / 2 - 14;
+    let dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+    const l = Math.hypot(dx, dy);
+    if (l > R) { dx *= R / l; dy *= R / l; }
+    knob.style.transform = `translate(${dx}px, ${dy}px)`;
+    W.joy.x = dx / R; W.joy.y = -dy / R;
+    requestRender();
+  };
+  joy.addEventListener('pointerdown', e => {
+    if (!W.active) return;
+    e.preventDefault(); W.joy.id = e.pointerId;
+    try { joy.setPointerCapture(e.pointerId); } catch (err) { /* ältere Browser */ }
+    joyMove(e);
+  });
+  joy.addEventListener('pointermove', e => { if (e.pointerId === W.joy.id) joyMove(e); });
+  const joyEnd = e => { if (e.pointerId === W.joy.id) walkJoyReset(); };
+  joy.addEventListener('pointerup', joyEnd);
+  joy.addEventListener('pointercancel', joyEnd);
+}
+
 /* ---------- Bedienung ---------- */
 function setFloor(fid) {
   S.floor = fid;
@@ -2067,7 +2900,10 @@ function refreshColors() {
   applyThemeColors();
 }
 function bindControls() {
-  document.querySelectorAll('input[name="floor"]').forEach(r => r.addEventListener('change', () => setFloor(r.value)));
+  document.querySelectorAll('input[name="floor"]').forEach(r => r.addEventListener('change', () => {
+    if (!W.active) { setFloor(r.value); return; }
+    if (r.value === 'ALL') { exitWalk(); setFloor('ALL'); } else walkGotoFloor(r.value);
+  }));
   $('explode').addEventListener('input', e => {
     S.explode = parseFloat(e.target.value); $('explodeOut').textContent = fmt(S.explode) + ' m';
     applyExplode();
@@ -2078,9 +2914,18 @@ function bindControls() {
   for (const [id, v] of Object.entries(viewBtns)) $(id).addEventListener('click', () => {
     S.view = v; Object.keys(viewBtns).forEach(b => $(b).setAttribute('aria-pressed', String(b === id))); setView(v);
   });
-  $('btnReset').addEventListener('click', () => { pinCircuit(null); hideCard(); S.view = 'iso'; $('btnIso').setAttribute('aria-pressed', 'true'); $('btnTop').setAttribute('aria-pressed', 'false'); setView('iso'); });
+  $('btnReset').addEventListener('click', () => { pinCircuit(null); hideCard(); W.lastRoom = null; W.lastDev = null; S.view = 'iso'; $('btnIso').setAttribute('aria-pressed', 'true'); $('btnTop').setAttribute('aria-pressed', 'false'); setView('iso'); });
   $('infoClose').addEventListener('click', hideCard);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') { hideCard(); if (S.pinned) pinCircuit(null); } });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (W.active) { walkEscape(); return; }
+    if ($('viewer').classList.contains('fs-fallback') && $('infocard').hidden) { setFallbackFs(false); return; }
+    hideCard(); if (S.pinned) pinCircuit(null);
+  });
+  $('btnWalk').addEventListener('click', toggleWalk);
+  $('btnFull').addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', syncFsBtn);
+  document.addEventListener('webkitfullscreenchange', syncFsBtn);
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', refreshColors);
   new MutationObserver(refreshColors).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 }
@@ -2107,8 +2952,10 @@ async function init() {
       new Promise(r => setTimeout(r, 1500)),
     ]);
   } catch (e) { /* Fallback-Schrift */ }
-  if (initScene()) setFloor(start);
-  else { const inp = document.querySelector(`input[name="floor"][value="${start}"]`); if (inp) inp.checked = true; }
+  if (initScene()) { setFloor(start); setupWalk(G.renderer.domElement); }
+  else {
+    $('btnWalk').disabled = true; $('btnWalk').title = 'Begehung braucht WebGL';
+    $('btnFull').disabled = true; $('btnFull').title = 'Vollbild braucht WebGL'; const inp = document.querySelector(`input[name="floor"][value="${start}"]`); if (inp) inp.checked = true; }
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
