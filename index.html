@@ -3,14 +3,15 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
 <style>
 :root{
-  --bg:#D9DED2; --paper:#E5E9DF; --paper-2:#EEF1E8; --ink:#1E3D77; --ink-soft:#46608F; --ink-faint:#7F8FAE;
+  --bg:#D9DED2; --paper:#E5E9DF; --paper-2:#EEF1E8; --ink:#1E3D77; --ink-soft:#46608F; --ink-faint:#4E5D7E;
   --rule:rgba(30,61,119,.20); --grid:rgba(30,61,119,.07); --rule-strong:rgba(30,61,119,.48); --text:#18212F; --muted:#4C586A;
   --accent:#A8401B; --focus:#A8401B; --ok:#2E6B3A;
   --scene-bg:#E2E6DA; --scene-floor:#CDD4C3; --scene-wall:#1E3D77; --scene-line:#1E3D77; --scene-label:#1E3D77;
   --scene-zone:#2D63C4; --scene-sketch:#1F4FD1; --scene-roof:#7B8CAB; --scene-device:#18212F; --scene-ad:#56606E; --scene-bath:#C2452A;
+  --scene-light-sky:#FFFFFF; --scene-light-ground:#8A92A2; --circ-s:78; --circ-l1:46; --circ-l2:36;
   --font-head:"Barlow Condensed","Arial Narrow","Roboto Condensed",sans-serif;
   --font-text:"Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;
   --font-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
@@ -18,20 +19,22 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0A192E; --paper:#0E223F; --paper-2:#12294B; --ink:#CBDDFF; --ink-soft:#93ACD8; --ink-faint:#5D76A3;
+    --bg:#0A192E; --paper:#0E223F; --paper-2:#12294B; --ink:#CBDDFF; --ink-soft:#93ACD8; --ink-faint:#8FA6CF;
     --rule:rgba(203,221,255,.15); --grid:rgba(203,221,255,.05); --rule-strong:rgba(203,221,255,.40); --text:#E3EBF9; --muted:#9DAECB;
     --accent:#FF9F6E; --focus:#FFB58C; --ok:#7FD39A;
     --scene-bg:#0B1D36; --scene-floor:#163156; --scene-wall:#BCD3FF; --scene-line:#BCD3FF; --scene-label:#CBDDFF;
     --scene-zone:#6FA2FF; --scene-sketch:#8DB6FF; --scene-roof:#6F8CC0; --scene-device:#E3EBF9; --scene-ad:#9DAECB; --scene-bath:#FF8F6B;
+    --scene-light-sky:#E8EEFF; --scene-light-ground:#3A4A6A; --circ-s:78; --circ-l1:72; --circ-l2:62;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0A192E; --paper:#0E223F; --paper-2:#12294B; --ink:#CBDDFF; --ink-soft:#93ACD8; --ink-faint:#5D76A3;
+  --bg:#0A192E; --paper:#0E223F; --paper-2:#12294B; --ink:#CBDDFF; --ink-soft:#93ACD8; --ink-faint:#8FA6CF;
   --rule:rgba(203,221,255,.15); --grid:rgba(203,221,255,.05); --rule-strong:rgba(203,221,255,.40); --text:#E3EBF9; --muted:#9DAECB;
   --accent:#FF9F6E; --focus:#FFB58C; --ok:#7FD39A;
   --scene-bg:#0B1D36; --scene-floor:#163156; --scene-wall:#BCD3FF; --scene-line:#BCD3FF; --scene-label:#CBDDFF;
   --scene-zone:#6FA2FF; --scene-sketch:#8DB6FF; --scene-roof:#6F8CC0; --scene-device:#E3EBF9; --scene-ad:#9DAECB; --scene-bath:#FF8F6B;
+  --scene-light-sky:#E8EEFF; --scene-light-ground:#3A4A6A; --circ-s:78; --circ-l1:72; --circ-l2:62;
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -43,7 +46,6 @@ body{
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size:100% 40px, 40px 100%;
   background-attachment:local;
-  overflow-x:hidden;
 }
 .page{
   max-width:1440px; margin:0 auto;
@@ -104,6 +106,7 @@ a{color:var(--ink)}
 .card ul{margin:6px 0 0; padding-left:18px; font-size:.84rem}
 .infocard{position:absolute; left:10px; bottom:10px; max-width:min(340px, calc(100% - 20px)); max-height:calc(100% - 64px); overflow:auto; z-index:3}
 .infocard[hidden]{display:none}
+.linkbtn{background:none; border:0; padding:2px 0; font:inherit; color:var(--ink); text-decoration:underline; text-underline-offset:2px; cursor:pointer; text-align:left}
 .close{position:absolute; top:6px; right:6px; width:28px; height:28px; border:0; background:transparent; color:var(--ink); font-size:20px; line-height:1; cursor:pointer}
 
 /* Panel */
@@ -221,12 +224,12 @@ tfoot td{font-weight:600; border-top:1px solid var(--rule-strong)}
   <div class="stage">
     <div class="viewer" id="viewer">
       <div class="toolbar" role="toolbar" aria-label="Ansicht">
-        <button class="btn" id="btnIso" type="button">Isometrie</button>
-        <button class="btn" id="btnTop" type="button">Draufsicht</button>
+        <button class="btn" id="btnIso" type="button" aria-pressed="true">Isometrie</button>
+        <button class="btn" id="btnTop" type="button" aria-pressed="false">Draufsicht</button>
         <button class="btn" id="btnReset" type="button">Reset</button>
       </div>
       <div class="hint" id="viewHint">Ziehen: drehen · Rad/Pinch: Zoom · Rechts/2 Finger: verschieben<br>Klick auf Gerät oder Boden: Details</div>
-      <div class="infocard card" id="infocard" hidden role="dialog" aria-live="polite" aria-label="Details">
+      <div class="infocard card" id="infocard" hidden role="region" aria-live="polite" aria-label="Details">
         <button class="close" type="button" id="infoClose" aria-label="Details schließen">&times;</button>
         <div id="infobody"></div>
       </div>
@@ -283,7 +286,7 @@ tfoot td{font-weight:600; border-top:1px solid var(--rule-strong)}
     <section class="sec" id="secCircuits" aria-labelledby="h-circ">
       <header><h2 id="h-circ">Stromkreise</h2><span class="num">01 · Längen aus der Leitungsführung berechnet</span></header>
       <div class="tablewrap"><table id="tblCircuits"></table></div>
-      <p class="small">Länge = Summe der Leitungswege in den Installationszonen + 0,30 m Anschlussreserve je Dose (Gerätedosen und Abzweigdosen) + Steigleitung. In der Materialliste kommen 15 % Verschnitt dazu.</p>
+      <p class="small">Länge = Summe der einzelnen Kabel: jeder Auslass hat ein eigenes Kabel zur Abzweigdose, jede Abzweigdose eine eigene Zuleitung zum Verteiler bzw. Steigpunkt (gemeinsame Wege werden nur im Modell zusammengefasst). Dazu 0,30 m Anschlussreserve je Dose und 0,80 m je Kabel im Verteiler. Schalterleitungen sind getrennt nach Aderzahl ausgewiesen. In der Materialliste kommen 15 % Verschnitt dazu.</p>
     </section>
 
     <section class="sec" id="secMaterial" aria-labelledby="h-mat">
@@ -301,10 +304,15 @@ tfoot td{font-weight:600; border-top:1px solid var(--rule-strong)}
       <ol>
         <li><strong>Fachbetrieb.</strong> Arbeiten am Netz, am Zählerschrank und die Inbetriebnahme nur durch einen im Netzbetreiber-Installateurverzeichnis eingetragenen Elektro-Fachbetrieb (NAV § 13). Eigenleistung (Schlitze, Dosen, Leerrohre, Kabel ziehen) vorher mit dem Betrieb absprechen, der abnimmt und misst (Prüfprotokoll nach VDE 0100-600).</li>
         <li><strong>Vor dem Schlitzen.</strong> Statik klären: tragende Wände 24 cm nicht ohne Freigabe schwächen. Keine waagerechten Schlitze außerhalb der Installationszonen, Schlitztiefen nach DIN 1053 / Eurocode 6 (DIN EN 1996-1-1/NA) einhalten. Leitungen nur senkrecht oder waagerecht, nie diagonal.</li>
-        <li><strong>Bad.</strong> Schutzbereiche nach VDE 0100-701 beachten: keine Steckdose in Bereich 0, 1 und 2. Die Waschtisch-Steckdosen sitzen außerhalb des 0,60 m breiten Bereichs 2 neben der Wanne; Abstand wird in der Geräte-Infokarte angezeigt. Zusätzlicher Schutzpotentialausgleich nur, wenn fremde leitfähige Teile vorhanden sind.</li>
+        <li><strong>Bad.</strong> Schutzbereiche nach VDE 0100-701 beachten: keine Steckdose in Bereich 0, 1 und 2. Die Waschtisch-Steckdosen sitzen außerhalb des 0,60 m breiten Bereichs 2 neben der Wanne; Abstand wird in der Geräte-Infokarte angezeigt. Zusätzlicher Schutzpotentialausgleich nur, wenn fremde leitfähige Teile vorhanden sind. Der Schalter sitzt deshalb an der Wand x = 2,20 neben der Tür.<br><span id="bathCheck" class="small"></span></li>
+        <li><strong>Häufung (VDE 0298-4).</strong> Im Steigschacht neben der Treppe laufen 11–14 Stromkreise gemeinsam (EG nach unten zum ZS, OG/DG zur UV-OG). Gebündelt verlegt sinkt die Strombelastbarkeit auf etwa das 0,5-Fache. Darum ist der Schacht als Vorwand mit mehreren Leerrohren M25 (je höchstens 3 Kabel) geplant, mit Abstand zwischen den Rohren; die Spuren in ZW-o liegen 2 cm auseinander. Der Steigpunkt im EG (x 3,95 / y 7,62–8,02) liegt bewusst außerhalb einer Eckzone und ist im Modell als Steigschacht beschriftet.</li>
+        <li><strong>Daten getrennt von Energie.</strong> Die beiden Cat-7-Uplinks ZS → UV-OG liegen in einem eigenen Leerrohr M25, nicht im M32 der 5×10-Hauptleitung. Netzwerkdosen je eigenes M25.</li>
+        <li><strong>Überspannungsschutz und Selektivität.</strong> ZS: Typ 1+2. Weil die Hauptleitung zur UV-OG länger als 10 m ist, zusätzlich Typ 2 in der UV-OG. Die Hauptleitung wird im ZS über einen selektiven Hauptleitungsschutzschalter (z. B. E35) geschützt; die Selektivität zu den RCBOs und zur Vorsicherung legt der Fachbetrieb fest.</li>
+        <li><strong>Schalterleitungen.</strong> Von der Abzweigdose sternförmig zu jeder Schaltstelle. Adern: L + je Schaltstelle (Aus +1, Wechsel +2, Kreuz +4, Serie +2, Serien-Wechsel +4, Kontroll +1 und N) + PE → NYM-J 3×, 4×, 5× oder 7×1,5; in der Materialliste getrennt aufgeführt.</li>
         <li class="open"><strong>Offene Punkte.</strong>
           <ul>
             <li>Lage des Hausanschlusses/Zählers unbekannt; angenommen im KG-Flur an der Wand zum Heizraum.</li>
+            <li>Kellertür: angenommen von Keller (Vorrat) über einen schmalen Vorbereich des Flurs (y 5,84–6,30) an der Wand y = 5,60; Heizraum dafür als L-Form. Lage vor Ort prüfen.</li>
             <li>Tiefe KG laut Foto 10,0 m, Hub-Schätzung für EG 10,6 m; Abweichung vor Ort nachmessen.</li>
             <li>Treppengeometrie in EG, KG und DG vereinfacht dargestellt (Wendeltreppen als Spiralen).</li>
             <li>Küchenmöblierung geschätzt; Lage von Herd, Spüle, Kühlschrank mit Küchenplanung abgleichen.</li>
@@ -343,8 +351,10 @@ const ROOMS = [
   // KG
   { id: 'kg_hobby',  floor: 'KG', name: 'Hobbyraum',        poly: rect(0.24, 3.875, 0.24, 5.6), exit: 'kgd_hobby' },
   { id: 'kg_keller', floor: 'KG', name: 'Keller (Vorrat)',  poly: rect(3.99, 6.77, 0.24, 5.6),  exit: 'kgd_keller' },
-  { id: 'kg_flur',   floor: 'KG', name: 'Flur',             poly: rect(0.24, 3.87, 5.84, 8.5),  source: true },
-  { id: 'kg_heiz',   floor: 'KG', name: 'Heizung',          poly: rect(3.99, 6.77, 5.84, 7.7),  exit: 'kgd_heiz' },
+  { id: 'kg_flur',   floor: 'KG', name: 'Flur', source: true,
+    poly: [[0.24, 5.84], [4.6, 5.84], [4.6, 6.3], [3.87, 6.3], [3.87, 8.5], [0.24, 8.5]] },
+  { id: 'kg_heiz',   floor: 'KG', name: 'Heizung', exit: 'kgd_heiz',
+    poly: [[4.715, 5.84], [6.77, 5.84], [6.77, 7.7], [3.99, 7.7], [3.99, 6.415], [4.715, 6.415]] },
   { id: 'kg_oel',    floor: 'KG', name: 'Öllager',          poly: rect(3.99, 6.77, 7.85, 10.0), exit: 'kgd_oel' },
   { id: 'kg_wasch',  floor: 'KG', name: 'Waschküche',       poly: rect(0.24, 3.87, 8.6, 9.95),  exit: 'kgd_wasch', worktop: true },
   { id: 'kg_aussen', floor: 'KG', name: 'Kelleraußentreppe', poly: rect(0.24, 1.6, -3.8, 0),    exit: 'kgd_aussen', kind: 'out' },
@@ -380,8 +390,8 @@ const ROOMS = [
 const OPENINGS = [
   // KG Türen
   { id: 'kgd_hobby',  floor: 'KG', axis: 'y', at: 5.6,  a: 2.2,  b: 2.75, kind: 'door' },
-  { id: 'kgd_keller', floor: 'KG', axis: 'x', at: 3.93, a: 5.0,  b: 5.55, kind: 'door' },
-  { id: 'kgd_heiz',   floor: 'KG', axis: 'x', at: 3.93, a: 6.0,  b: 6.8,  kind: 'door' },
+  { id: 'kgd_keller', floor: 'KG', axis: 'y', at: 5.72, a: 4.0,  b: 4.6,  kind: 'door' },
+  { id: 'kgd_heiz',   floor: 'KG', axis: 'x', at: 3.93, a: 6.6,  b: 7.3,  kind: 'door' },
   { id: 'kgd_oel',    floor: 'KG', axis: 'y', at: 7.75, a: 4.6,  b: 5.4,  kind: 'door' },
   { id: 'kgd_wasch',  floor: 'KG', axis: 'y', at: 8.55, a: 2.2,  b: 2.8,  kind: 'door' },
   { id: 'kgd_aussen', floor: 'KG', axis: 'y', at: 0.12, a: 0.35, b: 1.25, kind: 'door' },
@@ -424,7 +434,7 @@ const OPENINGS = [
 const OPENING = Object.fromEntries(OPENINGS.map(o => [o.id, o]));
 
 const CABLES = {
-  '3x15': 'NYM-J 3×1,5', '3x25': 'NYM-J 3×2,5', '5x25': 'NYM-J 5×2,5', '5x10': 'NYM-J 5×10', cat7: 'Cat 7 S/FTP',
+  '3x15': 'NYM-J 3×1,5', '4x15': 'NYM-J 4×1,5', '5x15': 'NYM-J 5×1,5', '7x15': 'NYM-J 7×1,5', '3x25': 'NYM-J 3×2,5', '5x25': 'NYM-J 5×2,5', '5x10': 'NYM-J 5×10', cat7: 'Cat 7 S/FTP',
 };
 
 /* Stromkreise. te = Teilungseinheiten des RCBO. */
@@ -444,7 +454,7 @@ const CIRCUITS = [
   { id: 'E7', floor: 'EG', name: 'Arbeitsplatte 1', prot: 'B16', cable: '3x25' },
   { id: 'E8', floor: 'EG', name: 'Arbeitsplatte 2, Dunstabzug, Mikrowelle', prot: 'B16', cable: '3x25' },
   { id: 'E9', floor: 'EG', name: 'Steckdosen Diele/WC/Windfang + Klingel', prot: 'B16', cable: '3x25' },
-  { id: 'E10', floor: 'EG', name: 'Außen Terrasse', prot: 'B16', cable: '3x25' },
+  { id: 'E10', floor: 'EG', name: 'Außensteckdose Terrasse', prot: 'B16', cable: '3x25' },
   { id: 'O1', floor: 'OG', name: 'Licht OG + Loggia', prot: 'B10', cable: '3x15' },
   { id: 'O2', floor: 'OG', name: 'Steckdosen Eltern', prot: 'B16', cable: '3x25' },
   { id: 'O3', floor: 'OG', name: 'Steckdosen Kind Gartenseite', prot: 'B16', cable: '3x25' },
@@ -483,18 +493,18 @@ const DEVICE_SPECS = [
   { room: 'kg_flur', t: 'li', c: 'K1', ceil: [2.9, 6.4], label: 'Deckenleuchte Treppe' },
   { room: 'kg_flur', t: 'li', c: 'K1', ceil: [2.9, 7.95], label: 'Deckenleuchte Flur' },
   { room: 'kg_flur', t: 'sw', c: 'K1', side: 'N', at: 2.95, kinds: { Wechsel: 1 }, label: 'Wechselschalter Treppe unten' },
-  { room: 'kg_flur', t: 'sw', c: 'K1', side: 'S', at: 2.98, kinds: { Wechsel: 1 }, label: 'Wechselschalter Waschküchentür' },
-  { room: 'kg_flur', t: 'sw', c: 'K6', side: 'E', at: 6.98, kinds: { Notschalter: 1 }, label: 'Heizungsnotschalter',
+  { room: 'kg_flur', t: 'sw', c: 'K1', side: 'S', at: 3.0, kinds: { Kreuz: 1 }, label: 'Kreuzschalter Waschküchentür' },
+  { room: 'kg_flur', t: 'sw', c: 'K6', side: 'E', at: 6.42, kinds: { Notschalter: 1 }, label: 'Heizungsnotschalter',
     note: 'Außerhalb des Heizraums neben der Tür, gekennzeichnet „Heizungsnotschalter“ (Feuerungsverordnung).' },
   { room: 'kg_flur', t: 'uv', id: 'ZS', side: 'E', at: 7.9, h: 1.1, w: 0.8, hh: 1.6, label: 'Zählerschrank ZS',
     note: 'Annahme: Hausanschluss im KG. 4-reihig, Zählerfeld + 2 Verteilerfelder + Medienfeld (APZ/Netzwerk). SPD Typ 1+2, RCBOs 30 mA Typ A.' },
-  { room: 'kg_heiz', t: 'sd', c: 'K3', side: 'N', at: 4.6, n: 1 },
+  { room: 'kg_heiz', t: 'sd', c: 'K3', side: 'N', at: 5.25, n: 1 },
   { room: 'kg_heiz', t: 'li', c: 'K1', ceil: [5.0, 6.85], label: 'Deckenleuchte' },
   { room: 'kg_heiz', t: 'sw', c: 'K1', door: true, kinds: { Aus: 1 } },
   { room: 'kg_heiz', t: 'sw', c: 'K1', side: 'S', at: 5.6, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Öllager-Leuchte' },
   { room: 'kg_heiz', t: 'fa', c: 'K6', side: 'E', at: 7.15, h: 1.3, label: 'Brenner-Festanschluss',
     note: 'Geräteanschlussdose; Brenner wird über den Heizungsnotschalter im Flur abgeschaltet.' },
-  { room: 'kg_heiz', t: 'pas', side: 'W', at: 7.4, h: 0.3, label: 'Potentialausgleichsschiene',
+  { room: 'kg_heiz', t: 'pas', side: 'W', at: 7.5, h: 0.3, label: 'Potentialausgleichsschiene',
     note: 'Anschluss Wasser, Heizung, Öltank, Fundamenterder, Haupterdungsleitung.' },
   { room: 'kg_oel', t: 'li', c: 'K1', ceil: [5.38, 8.05], label: 'Deckenleuchte (mind. IP54)',
     note: 'Schalter außen im Heizraum (Kontrollschalter).' },
@@ -512,13 +522,13 @@ const DEVICE_SPECS = [
   { room: 'eg_wohnen', t: 'li', c: 'E1', ceil: [1.9, 2.6], label: 'Deckenleuchte Wohnen' },
   { room: 'eg_wohnen', t: 'li', c: 'E1', ceil: [5.5, 3.6], label: 'Deckenleuchte Essen' },
   { room: 'eg_wohnen', t: 'li', c: 'E1', side: 'W', at: 4.4, h: 2.05, wall: true, label: 'Wandauslass Leseecke' },
-  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: true, kinds: { Wechsel: 2, Aus: 1 }, label: 'Schalterkombination 3-fach (Diele)' },
-  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: 'egd_wk', kinds: { Wechsel: 2 }, label: 'Serien-Wechselschalter (Küchentür)' },
-  { room: 'eg_wohnen', t: 'sw', c: 'E10', side: 'N', at: 4.35, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Terrassenleuchte' },
+  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: true, kinds: { SerieWechsel: 1, Aus: 1 }, label: 'Kombination Serien-Wechsel + Aus (Dielentür)' },
+  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: 'egd_wk', kinds: { SerieWechsel: 1 }, label: 'Serien-Wechselschalter (Küchentür)' },
+  { room: 'eg_wohnen', t: 'sw', c: 'E1', side: 'N', at: 4.35, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Terrassenleuchte' },
   { room: 'eg_wohnen', t: 'net', c: 'NE', side: 'E', at: 3.6 },
   { room: 'eg_wohnen', t: 'net', c: 'NE', side: 'W', at: 2.6 },
   { room: 'eg_terr', t: 'sd', c: 'E10', side: 'S', at: 6.2, h: 0.5, n: 1, label: 'Außensteckdose IP44 (Klappdeckel)' },
-  { room: 'eg_terr', t: 'li', c: 'E10', side: 'S', at: 5.65, h: 2.1, wall: true, label: 'Außenleuchte Terrasse IP44' },
+  { room: 'eg_terr', t: 'li', c: 'E1', side: 'S', at: 5.65, h: 2.1, wall: true, label: 'Außenleuchte Terrasse IP44' },
   { room: 'eg_kueche', t: 'sd', c: 'E7', side: 'E', at: 6.75, h: 1.15, n: 2, label: 'Arbeitsplatte 2-fach' },
   { room: 'eg_kueche', t: 'sd', c: 'E7', side: 'E', at: 7.75, h: 1.15, n: 2, label: 'Arbeitsplatte 2-fach' },
   { room: 'eg_kueche', t: 'fa', c: 'E4', side: 'E', at: 8.65, h: 0.6, label: 'Herd-Anschlussdose 400 V' },
@@ -530,19 +540,20 @@ const DEVICE_SPECS = [
   { room: 'eg_kueche', t: 'sd', c: 'E8', side: 'W', at: 9.3, n: 1, label: 'Steckdose Esstisch-Seite' },
   { room: 'eg_kueche', t: 'li', c: 'E1', ceil: [5.4, 8.1], label: 'Deckenleuchte' },
   { room: 'eg_kueche', t: 'li', c: 'E1', side: 'E', at: 7.25, h: 1.45, wall: true, label: 'Unterbauleuchte (Auslass)' },
-  { room: 'eg_kueche', t: 'sw', c: 'E1', door: true, kinds: { Aus: 2 } },
+  { room: 'eg_kueche', t: 'sw', c: 'E1', door: true, kinds: { Serie: 1 }, label: 'Serienschalter' },
   { room: 'eg_diele', t: 'sd', c: 'E9', side: 'E', at: 7.1, n: 1 },
   { room: 'eg_diele', t: 'sd', c: 'E9', side: 'S', at: 1.8, n: 1, label: 'Steckdose Garderobe' },
   { room: 'eg_diele', t: 'li', c: 'E1', ceil: [2.9, 6.6], label: 'Deckenleuchte Treppe' },
   { room: 'eg_diele', t: 'li', c: 'E1', ceil: [1.8, 9.0], label: 'Deckenleuchte Garderobe' },
   { room: 'eg_diele', t: 'sw', c: 'E1', side: 'S', at: 2.65, kinds: { Wechsel: 1 }, label: 'Wechselschalter Haustürseite' },
   { room: 'eg_diele', t: 'sw', c: 'E1', side: 'N', at: 2.45, kinds: { Wechsel: 1 }, label: 'Wechselschalter Treppe' },
+  { room: 'eg_diele', t: 'sw', c: 'K1', side: 'S', at: 3.8, kinds: { Wechsel: 1 }, label: 'Wechselschalter Kellertreppe oben' },
   { room: 'eg_diele', t: 'rm', ceil: [2.6, 7.3], label: 'Rauchwarnmelder' },
   { room: 'eg_diele', t: 'kl', side: 'E', at: 7.45, h: 1.5, label: 'Sprechstelle innen',
     note: 'Fernmeldeleitung J-Y(St)Y 2×2×0,8 zum Klingeltrafo im ZS, nicht in der Kabelbilanz.' },
   { room: 'eg_wind', t: 'li', c: 'E1', ceil: [3.2, 9.5], label: 'Deckenleuchte' },
   { room: 'eg_wind', t: 'li', c: 'E1', side: 'S', at: 3.78, h: 2.1, wall: true, label: 'Außenleuchte Eingang' },
-  { room: 'eg_wind', t: 'sw', c: 'E1', door: true, kinds: { Aus: 2 } },
+  { room: 'eg_wind', t: 'sw', c: 'E1', door: true, kinds: { Serie: 1 }, label: 'Serienschalter' },
   { room: 'eg_wind', t: 'kl', side: 'S', at: 2.55, h: 1.2, label: 'Klingeltaster außen',
     note: 'Klingel/Sprechanlage über Trafo im ZS (E9), Fernmeldeleitung.' },
   { room: 'eg_wc', t: 'sd', c: 'E9', side: 'E', at: 9.7, h: 1.2, n: 1, label: 'Steckdose Waschbecken' },
@@ -574,6 +585,7 @@ const DEVICE_SPECS = [
   { room: 'og_flur', t: 'li', c: 'O1', ceil: [2.9, 7.6], label: 'Deckenleuchte Treppe' },
   { room: 'og_flur', t: 'sw', c: 'O1', side: 'N', at: 3.1, kinds: { Wechsel: 1 }, label: 'Wechselschalter Elterntür' },
   { room: 'og_flur', t: 'sw', c: 'O1', side: 'S', at: 1.35, kinds: { Wechsel: 1 }, label: 'Wechselschalter Treppe oben' },
+  { room: 'og_flur', t: 'sw', c: 'D1', side: 'W', at: 5.72, kinds: { Wechsel: 1 }, label: 'Wechselschalter Dachtreppe unten' },
   { room: 'og_flur', t: 'rm', ceil: [3.0, 6.4], label: 'Rauchwarnmelder' },
   { room: 'og_abst', t: 'uv', id: 'UV', side: 'S', at: 1.0, h: 1.4, w: 0.6, hh: 1.0, label: 'Unterverteilung UV-OG',
     note: 'Versorgt OG und DG. Zuleitung NYM-J 5×10 im Leerrohr M32 vom ZS. Medienreihe mit Switch.' },
@@ -584,7 +596,8 @@ const DEVICE_SPECS = [
   { room: 'og_bad', t: 'fa', c: 'O6', side: 'S', at: 1.88, h: 1.95, label: 'Anschluss Spiegelschrank mit Leuchte' },
   { room: 'og_bad', t: 'fa', c: 'O1', side: 'E', at: 10.25, h: 2.25, label: 'Lüfter mit Nachlauf' },
   { room: 'og_bad', t: 'fa', c: 'O6', side: 'E', at: 9.2, h: 0.9, label: 'Handtuchheizkörper elektrisch', note: 'Geräteanschlussdose, außerhalb Bereich 1/2.' },
-  { room: 'og_bad', t: 'sw', c: 'O1', door: true, kinds: { Aus: 2 } },
+  { room: 'og_bad', t: 'sw', c: 'O1', side: 'E', at: 8.6, kinds: { Serie: 1 }, label: 'Serienschalter Decke/Lüfter',
+    note: 'Bewusst an der Wand x = 2,20 neben der Tür, nicht auf der Wannenseite der Tür.' },
   { room: 'og_wasch', t: 'sd', c: 'O5', side: 'E', at: 9.6, h: 1.2, n: 2 },
   { room: 'og_wasch', t: 'li', c: 'O1', ceil: [3.07, 9.4], label: 'Deckenleuchte' },
   { room: 'og_wasch', t: 'sw', c: 'O1', door: true, kinds: { Aus: 1 } },
@@ -605,7 +618,7 @@ const DEVICE_SPECS = [
   { room: 'dg_kr', t: 'rm', ceil: [5.6, 4.7], label: 'Rauchwarnmelder' },
   { room: 'dg_flur', t: 'sd', c: 'D4', side: 'S', at: 4.3, n: 1 },
   { room: 'dg_flur', t: 'li', c: 'D1', ceil: [3.4, 6.4], label: 'Deckenleuchte' },
-  { room: 'dg_flur', t: 'sw', c: 'D1', side: 'N', at: 2.35, kinds: { Aus: 1 }, label: 'Schalter Treppe oben' },
+  { room: 'dg_flur', t: 'sw', c: 'D1', side: 'N', at: 2.3, kinds: { Wechsel: 1 }, label: 'Wechselschalter Dachtreppe oben' },
   { room: 'dg_flur', t: 'rm', ceil: [2.9, 6.6], label: 'Rauchwarnmelder' },
   { room: 'dg_wc', t: 'sd', c: 'D4', side: 'E', at: 6.75, h: 1.2, n: 1, label: 'Steckdose Waschbecken' },
   { room: 'dg_wc', t: 'li', c: 'D1', ceil: [5.45, 6.8], label: 'Deckenleuchte' },
@@ -667,7 +680,18 @@ const SKETCH = {
 };
 
 /* Routing-Konstanten (DIN 18015-3) */
-const ZONE = { topBase: 0.17, laneStep: 0.02, bottom: 0.3, mid: 1.05, side: 0.15, reserve: 0.3, waste: 0.15 };
+const ZONE = {
+  topBase: 0.17, laneStep: 0.02,                   // Lage der Spuren in ZW-o (17…43 cm unter Decke)
+  wo: [0.15, 0.45], wu: [0.15, 0.45], wm: [1.0, 1.3], // waagerechte Zonen (ZW-o unter Decke, ZW-u über FFB, ZW-m)
+  wuRun: 0.30, wmRun: 1.15,                        // Vorzugsmaße für Leitungen in ZW-u / ZW-m
+  side: 0.20, sideHalf: 0.10,                      // senkrechte Zonen ZS-t / ZS-e: 10–30 cm, Mitte 20 cm
+  reserve: 0.3, reserveDist: 0.8, waste: 0.15,     // Anschlussreserve je Dose / je Kabel im Verteiler, Verschnitt
+};
+/* Steigschacht neben der Treppe (Vorwand mit Leerrohren) */
+const SHAFTS = [
+  { floor: 'EG', x0: 3.76, x1: 3.95, y0: 7.55, y1: 8.12, label: 'Steigschacht · 5× M25 + 2× M32' },
+  { floor: 'OG', x0: 3.82, x1: 3.95, y0: 7.80, y1: 8.05, label: 'Steigschacht · M32' },
+];
 
 /* =====================================================================
    GEOMETRIE  (reine Funktionen, ohne three.js)
@@ -823,7 +847,7 @@ function buildRooms() {
     if (!o) throw new Error('Ausgangstür fehlt: ' + R.id);
     const e = R.loop.edges[o.edge];
     const before = o.lo - e.s0, after = e.s0 + e.len - o.hi;
-    R.ad = after >= before ? Math.min(o.hi + 0.2, e.s0 + e.len - 0.05) : Math.max(o.lo - 0.2, e.s0 + 0.05);
+    R.ad = after >= before ? Math.min(o.hi + ZONE.side, e.s0 + e.len - 0.05) : Math.max(o.lo - ZONE.side, e.s0 + 0.05);
     R.parent = Object.values(RI).find(P => P !== R && P.floor === R.floor && P.openings.some(x => x.op.id === R.room.exit));
     if (!R.parent) throw new Error('Nachbarraum fehlt: ' + R.id);
   }
@@ -833,13 +857,14 @@ function doorSideS(R, opId) {
   const o = R.openings.find(x => x.op.id === opId);
   const e = R.loop.edges[o.edge];
   const before = o.lo - e.s0, after = e.s0 + e.len - o.hi;
-  return after >= before ? Math.min(o.hi + 0.2, e.s0 + e.len - 0.05) : Math.max(o.lo - 0.2, e.s0 + 0.05);
+  return after >= before ? Math.min(o.hi + ZONE.side, e.s0 + e.len - 0.05) : Math.max(o.lo - ZONE.side, e.s0 + 0.05);
 }
 
 /* =====================================================================
    GERÄTE PLATZIEREN
    ===================================================================== */
 const DEVICES = [];
+const SWITCH_NAME = { Aus: 'Ausschalter', Wechsel: 'Wechselschalter', Kreuz: 'Kreuzschalter', Taster: 'Taster', Kontroll: 'Kontrollschalter', Notschalter: 'Notschalter', Serie: 'Serienschalter', SerieWechsel: 'Serien-Wechselschalter' };
 const DEFAULT_H = { sd: 0.3, sw: 1.05, net: 0.3, fa: 1.2, li: 2.0, kl: 1.2, pas: 0.3, uv: 1.1 };
 function wallPoint(R, side, at) {
   const cands = R.loop.edges.filter(e => e.side === side);
@@ -882,8 +907,8 @@ function defaultLabel(spec) {
   switch (spec.t) {
     case 'sd': return n === 1 ? 'Steckdose' : `Steckdose ${n}-fach`;
     case 'sw': {
-      const k = spec.kinds || { Aus: 1 }, parts = Object.entries(k).map(([a, m]) => (m > 1 ? `${m}× ` : '') + a);
-      return 'Schalter: ' + parts.join(' + ');
+      const k = spec.kinds || { Aus: 1 }, parts = Object.entries(k).map(([a, m]) => (m > 1 ? `${m}× ` : '') + (SWITCH_NAME[a] || a));
+      return parts.join(' + ');
     }
     case 'net': return 'Netzwerkdose Cat 7 (2× RJ45)';
     case 'li': return spec.ceil ? 'Deckenleuchte' : 'Wandleuchte';
@@ -920,28 +945,47 @@ function placeDevices() {
       push(spec, R, wallPoint(R, spec.side, spec.at));
     }
   }
-  // Badhinweis: Abstand zu Schutzbereich 2
-  for (const d of DEVICES.filter(x => x.bath)) {
-    const half = 0.04 + d.n * 0.075, edgeX = d.x - half, z2 = TUB.x1 + TUB.zone2;
-    d.note = `Waschtisch-Kombination, linke Kante x = ${fmt(edgeX, 2)} m. Bereich 2 endet bei x = ${fmt(z2, 2)} m → Abstand ${fmt(edgeX - z2, 2)} m, außerhalb der Schutzbereiche (VDE 0100-701).`;
+  // Bad: euklidischer Abstand jedes Geräts zum Wannenrechteck (Bereich 1), Bereich 2 = +0,60 m bis 2,25 m Höhe
+  for (const d of DEVICES.filter(x => x.room === 'og_bad')) {
+    const half = d.t === 'sd' ? 0.04 + d.n * 0.075 : 0.06;
+    const dx = Math.max(TUB.x0 - (d.x + half), 0, (d.x - half) - TUB.x1), dy = Math.max(TUB.y0 - d.y, 0, d.y - TUB.y1);
+    d.tubDist = Math.hypot(dx, dy);
+    d.bathViolation = d.tubDist < TUB.zone2 && d.h < 2.25 && d.t !== 'rm';
+    const txt = `Abstand zur Wanne ${fmt(d.tubDist, 2)} m (Bereich 2 reicht ${fmt(TUB.zone2, 2)} m weit, bis 2,25 m Höhe)`;
+    d.note = (d.bathViolation ? `WARNUNG: liegt in Schutzbereich 2 – ${txt}. Gerät versetzen!` : `${txt} → außerhalb der Schutzbereiche (VDE 0100-701).`) + (d.note ? ' ' + d.note : '');
   }
 }
 
 /* =====================================================================
    LEITUNGSFÜHRUNG  (DIN 18015-3)
+   Länge = Summe je Kabel: jeder Auslass hat sein eigenes Kabel zur Abzweigdose,
+   jede Abzweigdose ihre eigene Zuleitung zum Verteiler. Vereinigt wird nur für die Darstellung.
    ===================================================================== */
 const LANES = {
   KG: ['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'NK', 'F'],
-  EG: ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'E10', 'NE'],
+  EG: ['E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'E10', 'NE', 'K1'],
   OG: ['O1', 'O2', 'O3', 'O4', 'O5', 'O6', 'O7', 'NO', 'F', 'D1', 'D2', 'D3', 'D4', 'ND'],
   DG: ['D1', 'D2', 'D3', 'D4', 'ND'],
 };
-const laneOf = (cid, fid) => Math.max(0, LANES[fid].indexOf(cid));
+const laneOf = (cid, fid) => {
+  const i = LANES[fid].indexOf(cid);
+  if (i < 0) throw new Error(`Keine Spur für ${cid} im ${fid}`);
+  return i;
+};
 const laneDrop = lane => ZONE.topBase + lane * ZONE.laneStep;
 const hzAt = (R, x, y, lane) => ceilAt(R.room, x, y) - laneDrop(lane);
 const P3 = (x, y, z, f) => ({ x, y, z, f });
+const isDistributor = fid => fid === 'KG' || fid === 'OG'; // ZS bzw. UV-OG liegt im Einspeiseraum
 
-/* Einspeisepunkt je Geschoss (ZS, Steigpunkt EG, UV-OG, Steigpunkt DG) */
+/* Adern einer Schalterleitung: L + je Schaltstelle (Aus/Not +1, Wechsel +2, Kreuz +4, Kontroll +1 und N, Serie +2, Serien-Wechsel +4) + PE */
+const CORES = { Aus: 1, Notschalter: 1, Taster: 1, Wechsel: 2, Kreuz: 4, Kontroll: 2, Serie: 2, SerieWechsel: 4 };
+const switchCores = kinds => 1 + Object.entries(kinds || { Aus: 1 }).reduce((t, [k, n]) => t + (CORES[k] || 1) * n, 0) + 1;
+function switchCable(kinds) {
+  const n = switchCores(kinds);
+  return n <= 3 ? '3x15' : n <= 4 ? '4x15' : n <= 5 ? '5x15' : '7x15';
+}
+const cableOfDevice = d => (d.t === 'sw' ? switchCable(d.kinds) : CIRC[d.c].cable);
+
 function sourcePoint(fid, lane) {
   switch (fid) {
     case 'KG': return { room: 'kg_flur', x: 3.87, y: 7.62 + 0.04 * lane };
@@ -954,40 +998,47 @@ function sourceS(fid, lane) {
   const sp = sourcePoint(fid, lane);
   return project(RI[sp.room].loop, sp.x, sp.y).s;
 }
-/* Stück vom Einspeisepunkt bis in den Verteiler */
+/* vom Einspeisepunkt eines Geschosses bis in den Verteiler (ZS bzw. UV-OG) */
 function tail(fid, cid) {
   const lane = laneOf(cid, fid), sp = sourcePoint(fid, lane), R = RI[sp.room];
   const p = pointAt(R.loop, sourceS(fid, lane)), hz = hzAt(R, p.x, p.y, lane);
-  if (fid === 'KG') return [P3(p.x, p.y, hz, 'KG'), P3(p.x, p.y, 1.9, 'KG')];
-  if (fid === 'OG') return [P3(p.x, p.y, hz, 'OG'), P3(p.x, p.y, 1.9, 'OG')];
+  if (fid === 'KG' || fid === 'OG') return [P3(p.x, p.y, hz, fid), P3(p.x, p.y, 1.9, fid)];
   if (fid === 'EG') {
-    const zs = pointAt(RI.kg_flur.loop, sourceS('KG', laneOf('F', 'KG')));
-    return [P3(p.x, p.y, hz, 'EG'), P3(p.x, p.y, 0, 'EG'), P3(p.x, p.y, FLOOR.KG.h, 'KG'),
-      P3(zs.x, p.y, FLOOR.KG.h, 'KG'), P3(zs.x, p.y, 1.9, 'KG')].filter((q, i, a) => i === 0 || q.x !== a[i - 1].x || q.y !== a[i - 1].y || q.z !== a[i - 1].z || q.f !== a[i - 1].f);
+    const zx = pointAt(RI.kg_flur.loop, sourceS('KG', laneOf('F', 'KG'))).x;
+    return [P3(p.x, p.y, hz, 'EG'), P3(p.x, p.y, 0, 'EG'), P3(p.x, p.y, FLOOR.KG.h, 'KG'), P3(zx, p.y, FLOOR.KG.h, 'KG'), P3(zx, p.y, 1.9, 'KG')];
   }
-  // DG → UV-OG: senkrecht durch die Decke, in der OG-Decke zum UV, dann hinunter
   const ogLane = laneOf(cid, 'OG'), uvx = 0.75 + 0.03 * ogLane, uvy = 5.47;
   return [P3(p.x, p.y, hz, 'DG'), P3(p.x, p.y, 0, 'DG'), P3(p.x, p.y, FLOOR.OG.h, 'OG'),
     P3(uvx, uvy, FLOOR.OG.h - 0.02, 'OG'), P3(uvx, uvy, 1.9, 'OG')];
 }
 
-function newAcc() { return { arcs: new Map(), polys: [], visited: new Set(), ads: [], boxes: 0 }; }
-function addArc(acc, rid, lane, s1, s2) {
-  const R = RI[rid];
+/* ---------- Sammelobjekt: Geometrie (zum Zeichnen) + Längen je Kabeltyp ---------- */
+function newAcc() { return { arcs: new Map(), polys: [], byCable: {}, ads: [], boxes: 0, tails: new Set() }; }
+function addLen(acc, cable, m) { acc.byCable[cable] = (acc.byCable[cable] || 0) + m; }
+function addPoly(acc, poly, cable) { acc.polys.push(poly); addLen(acc, cable, polyLen(poly)); }
+/* Bogen in ZW-o als 3D-Punkte; unter der Dachschräge fein unterteilt, damit er der Zone folgt */
+function arcGeom(R, lane, from, len) {
+  let pts = arcPts(R.loop, from, len);
+  if (FLOOR[R.floor].roof) {
+    const fine = [pts[0]];
+    for (let i = 1; i < pts.length; i++) {
+      const p0 = pts[i - 1], p1 = pts[i], n = Math.max(1, Math.ceil(Math.hypot(p1.x - p0.x, p1.y - p0.y) / 0.2));
+      for (let k = 1; k <= n; k++) fine.push({ x: p0.x + (p1.x - p0.x) * k / n, y: p0.y + (p1.y - p0.y) * k / n });
+    }
+    pts = fine;
+  }
+  return pts.map(p => P3(p.x, p.y, hzAt(R, p.x, p.y, lane), R.floor));
+}
+function addArcPath(acc, rid, lane, s1, s2, cable) {
+  const R = RI[rid], a = shortArc(R.loop, s1, s2);
   if (!acc.arcs.has(rid)) acc.arcs.set(rid, { lane, list: [] });
-  acc.arcs.get(rid).list.push(shortArc(R.loop, s1, s2));
+  acc.arcs.get(rid).list.push(a);
+  addLen(acc, cable, polyLen(arcGeom(R, lane, a.from, a.len)));
 }
-/* vom Abzweig eines Raums bis zum Einspeiseraum hochklettern */
-function climb(R, cid, acc) {
-  if (R.room.source || acc.visited.has(R.id)) return;
-  acc.visited.add(R.id);
-  const lane = laneOf(cid, R.floor), P = R.parent;
-  const p = pointAt(R.loop, R.ad), cr = project(P.loop, p.x, p.y);
-  acc.polys.push([P3(p.x, p.y, hzAt(R, p.x, p.y, lane), R.floor), P3(cr.x, cr.y, hzAt(P, cr.x, cr.y, lane), R.floor)]);
-  addArc(acc, P.id, lane, cr.s, P.room.source ? sourceS(R.floor, lane) : P.ad);
-  climb(P, cid, acc);
-}
-const inBand = (R, h) => h <= 0.45 || (R.room.worktop && h >= 0.9 && h <= 1.25);
+const absZ = p => FLOOR[p.f].z + p.z;
+const polyLen = poly => poly.reduce((t, p, i) => (i ? t + Math.hypot(p.x - poly[i - 1].x, p.y - poly[i - 1].y, absZ(p) - absZ(poly[i - 1])) : 0), 0);
+
+/* ---------- Zonenwahl ---------- */
 function runBlocked(R, s1, s2, h) {
   const arc = shortArc(R.loop, s1, s2);
   return R.openings.some(o => {
@@ -1001,114 +1052,135 @@ function bandRun(R, s1, s2, h, f) {
   const a = shortArc(R.loop, s1, s2);
   return arcPts(R.loop, a.from, a.len).map(p => P3(p.x, p.y, h, f));
 }
-/* ein Gerät an den Raum-Zielpunkt s0 (Abzweigdose bzw. Einspeisung) anschließen */
-function routeDevice(d, R, s0, cid, acc, nodes, chainBand) {
+/* nächstgelegene waagerechte Zone (kleinstes |Δh|): 'o' oben, 'u' unten, 'm' Mitte (nur Räume mit Arbeitsflächen) */
+function pickBand(R, d) {
+  const c = ceilAt(R.room, d.x, d.y);
+  const bands = [{ k: 'o', lo: c - ZONE.wo[1], hi: c - ZONE.wo[0] }, { k: 'u', lo: ZONE.wu[0], hi: ZONE.wu[1], run: ZONE.wuRun }];
+  if (R.room.worktop) bands.push({ k: 'm', lo: ZONE.wm[0], hi: ZONE.wm[1], run: ZONE.wmRun });
+  const dist = b => (d.h < b.lo ? b.lo - d.h : d.h > b.hi ? d.h - b.hi : 0);
+  return bands.reduce((best, b) => (dist(b) < dist(best) - 1e-9 ? b : best));
+}
+
+/* ein Gerät mit eigenem Kabel an den Raum-Zielpunkt s0 (Abzweigdose bzw. Einspeisung) anschließen */
+function routeDevice(d, R, s0, cid, acc, nodes, chainBand, cable) {
   const lane = laneOf(cid, R.floor), f = R.floor;
   acc.boxes++;
-  if (d.mount === 'ceil') {
+  if (d.mount === 'ceil') {               // Deckenauslass: gerade in der Decke zur nächsten Wand, dann in ZW-o
     const c = ceilAt(R.room, d.x, d.y) - 0.03, w = project(R.loop, d.x, d.y);
-    acc.polys.push([P3(d.x, d.y, c, f), P3(w.x, w.y, ceilAt(R.room, w.x, w.y) - 0.03, f), P3(w.x, w.y, hzAt(R, w.x, w.y, lane), f)]);
-    addArc(acc, R.id, lane, w.s, s0);
+    addPoly(acc, [P3(d.x, d.y, c, f), P3(w.x, w.y, ceilAt(R.room, w.x, w.y) - 0.03, f), P3(w.x, w.y, hzAt(R, w.x, w.y, lane), f)], cable);
+    addArcPath(acc, R.id, lane, w.s, s0, cable);
     return;
   }
   const hz = hzAt(R, d.x, d.y, lane);
   const zonesSorted = R.zones.slice().sort((a, b) => circDist(R.loop, a, d.s) - circDist(R.loop, b, d.s));
-  const inZone = circDist(R.loop, zonesSorted[0], d.s) <= 0.12 || d.t === 'sw';
-  if (inZone || !inBand(R, d.h)) {               // senkrechter Stich aus ZW-o
-    acc.polys.push([P3(d.x, d.y, hz, f), P3(d.x, d.y, d.h, f)]);
-    addArc(acc, R.id, lane, d.s, s0);
-    if (inBand(R, d.h)) nodes.push(d);
+  const inZone = circDist(R.loop, zonesSorted[0], d.s) <= ZONE.sideHalf + 0.02;
+  const band = pickBand(R, d);
+  if (d.t === 'sw' || band.k === 'o' || inZone) {   // senkrecht von ZW-o (Schalter, Geräte in ZS oder nahe ZW-o)
+    addPoly(acc, [P3(d.x, d.y, hz, f), P3(d.x, d.y, d.h, f)], cable);
+    addArcPath(acc, R.id, lane, d.s, s0, cable);
+    if (band.k !== 'o') nodes.push({ s: d.s, run: band.run });
     return;
   }
-  if (chainBand) {                               // in ZW-u / ZW-m an Nachbardose anschließen
-    const prev = nodes.find(q => Math.abs(q.h - d.h) < 0.06 && circDist(R.loop, q.s, d.s) < 2.0 && !runBlocked(R, q.s, d.s, d.h));
-    if (prev) { acc.polys.push(bandRun(R, prev.s, d.s, d.h, f)); nodes.push(d); return; }
+  const stub = Math.abs(d.h - band.run) > 0.02 ? [P3(d.x, d.y, d.h, f)] : [];
+  if (chainBand) {                       // in ZW-u / ZW-m an die Nachbardose anschließen (Kette)
+    const prev = nodes.find(q => Math.abs(q.run - band.run) < 0.06 && circDist(R.loop, q.s, d.s) < 2.0 && !runBlocked(R, q.s, d.s, band.run));
+    if (prev) { addPoly(acc, [...bandRun(R, prev.s, d.s, band.run, f), ...stub], cable); nodes.push({ s: d.s, run: band.run }); return; }
   }
-  const z = zonesSorted.find(zs => !runBlocked(R, zs, d.s, d.h)) ?? zonesSorted[0];
+  const z = zonesSorted.find(zs => !runBlocked(R, zs, d.s, band.run)) ?? zonesSorted[0];
   const zp = pointAt(R.loop, z);
-  acc.polys.push([P3(zp.x, zp.y, hzAt(R, zp.x, zp.y, lane), f), P3(zp.x, zp.y, d.h, f), ...bandRun(R, z, d.s, d.h, f).slice(1)]);
-  addArc(acc, R.id, lane, z, s0);
-  nodes.push(d);
+  addPoly(acc, [P3(zp.x, zp.y, hzAt(R, zp.x, zp.y, lane), f), P3(zp.x, zp.y, band.run, f), ...bandRun(R, z, d.s, band.run, f).slice(1), ...stub], cable);
+  addArcPath(acc, R.id, lane, z, s0, cable);
+  nodes.push({ s: d.s, run: band.run });
 }
-/* Bögen vereinigen und als 3D-Polylinien ausgeben */
-function finishAcc(acc) {
+/* Zuleitung einer Abzweigdose bis zum Einspeisepunkt (volle Länge, keine Abkürzung über Nachbarräume) */
+function feeder(R, cid, acc, cable, star) {
+  let cur = R;
+  for (;;) {
+    const lane = laneOf(cid, cur.floor), P = cur.parent;
+    const p = pointAt(cur.loop, cur.ad), cr = project(P.loop, p.x, p.y);
+    addPoly(acc, [P3(p.x, p.y, hzAt(cur, p.x, p.y, lane), cur.floor), P3(cr.x, cr.y, hzAt(P, cr.x, cr.y, lane), cur.floor)], cable);
+    addArcPath(acc, P.id, lane, cr.s, P.room.source ? sourceS(P.floor, lane) : P.ad, cable);
+    if (P.room.source) break;
+    cur = P;
+  }
+  toSource(R.floor, cid, acc, cable, star);
+}
+/* Ende eines Kabels am Einspeisepunkt: im ZS/UV direkt einführen, im EG/DG an der Steig-Abzweigdose enden */
+function toSource(fid, cid, acc, cable, star) {
+  if (star || isDistributor(fid)) { addPoly(acc, tail(fid, cid), cable); addLen(acc, cable, ZONE.reserveDist); }
+  else { acc.tails.add(fid); addLen(acc, cable, ZONE.reserve); }
+}
+function closeTails(acc, cid, cable) {
+  for (const fid of acc.tails) {
+    addPoly(acc, tail(fid, cid), cable);
+    addLen(acc, cable, ZONE.reserve + ZONE.reserveDist);
+    const p = tail(fid, cid)[0];
+    acc.ads.push(p);
+  }
+}
+/* Bögen je Raum vereinigen – nur für die Darstellung */
+function drawPolys(acc) {
   const polys = acc.polys.slice();
   for (const [rid, { lane, list }] of acc.arcs) {
     const R = RI[rid];
-    for (const a of unionArcs(R.loop, list)) {
-      let pts = arcPts(R.loop, a.from, a.len);
-      if (FLOOR[R.floor].roof) {             // Dachschräge: fein unterteilen, damit die Zone der Schräge folgt
-        const fine = [pts[0]];
-        for (let i = 1; i < pts.length; i++) {
-          const p0 = pts[i - 1], p1 = pts[i], n = Math.max(1, Math.ceil(Math.hypot(p1.x - p0.x, p1.y - p0.y) / 0.2));
-          for (let k = 1; k <= n; k++) fine.push({ x: p0.x + (p1.x - p0.x) * k / n, y: p0.y + (p1.y - p0.y) * k / n });
-        }
-        pts = fine;
-      }
-      polys.push(pts.map(p => P3(p.x, p.y, hzAt(R, p.x, p.y, lane), R.floor)));
-    }
+    for (const a of unionArcs(R.loop, list)) polys.push(arcGeom(R, lane, a.from, a.len));
   }
   return polys;
 }
-const absZ = p => FLOOR[p.f].z + p.z;
-const polyLen = poly => poly.reduce((t, p, i) => (i ? t + Math.hypot(p.x - poly[i - 1].x, p.y - poly[i - 1].y, absZ(p) - absZ(poly[i - 1])) : 0), 0);
+const sumCables = bc => Object.values(bc).reduce((a, b) => a + b, 0);
 
 const ROUTES = {};
 function routePower(c) {
-  const acc = newAcc(), devs = DEVICES.filter(d => d.c === c.id);
+  const acc = newAcc(), devs = DEVICES.filter(d => d.c === c.id), main = c.cable;
   const byRoom = new Map();
   devs.forEach(d => { if (!byRoom.has(d.room)) byRoom.set(d.room, []); byRoom.get(d.room).push(d); });
   for (const [rid, list] of byRoom) {
-    const R = RI[rid], lane = laneOf(c.id, R.floor);
-    const s0 = R.room.source ? sourceS(R.floor, lane) : R.ad;
-    if (!R.room.source || R.floor === 'EG' || R.floor === 'DG') {
-      const p = pointAt(R.loop, s0);
-      acc.ads.push(P3(p.x, p.y, hzAt(R, p.x, p.y, lane), R.floor));
-    }
+    const R = RI[rid], lane = laneOf(c.id, R.floor), src = !!R.room.source;
+    const s0 = src ? sourceS(R.floor, lane) : R.ad;
+    if (!src) { const p = pointAt(R.loop, s0); acc.ads.push(P3(p.x, p.y, hzAt(R, p.x, p.y, lane), R.floor)); }
     const nodes = [];
     list.slice().sort((a, b) => (a.s == null ? 1e3 : circDist(R.loop, a.s, s0)) - (b.s == null ? 1e3 : circDist(R.loop, b.s, s0)))
-      .forEach(d => routeDevice(d, R, s0, c.id, acc, nodes, true));
-    climb(R, c.id, acc);
+      .forEach(d => {
+        const cable = cableOfDevice(d);
+        routeDevice(d, R, s0, c.id, acc, nodes, d.t !== 'sw', cable);
+        addLen(acc, cable, ZONE.reserve);              // Gerätedose
+        if (src) toSource(R.floor, c.id, acc, cable, false); else addLen(acc, cable, ZONE.reserve); // Abzweigdose
+      });
+    if (!src) { addLen(acc, main, ZONE.reserve); feeder(R, c.id, acc, main, false); }
   }
-  const polys = finishAcc(acc);
-  polys.push(tail(c.floor, c.id));
-  const raw = polys.reduce((t, p) => t + polyLen(p), 0);
-  const length = raw + ZONE.reserve * (acc.boxes + acc.ads.length);
-  ROUTES[c.id] = { polys, ads: acc.ads, length, devs, boxes: acc.boxes };
+  closeTails(acc, c.id, main);
+  ROUTES[c.id] = { polys: drawPolys(acc), ads: acc.ads, byCable: acc.byCable, length: sumCables(acc.byCable), devs, boxes: acc.boxes };
 }
-/* Netzwerk sternförmig: jede Doppeldose eigene Leitung (2 Kabel) */
+/* Netzwerk sternförmig: je Doppeldose zwei Kabel bis ins Patchfeld */
 function routeNet(c) {
   const geo = newAcc(), devs = DEVICES.filter(d => d.c === c.id);
-  let length = 0;
+  let path = 0;
   for (const d of devs) {
     const R = RI[d.room], lane = laneOf(c.id, R.floor), acc = newAcc();
     const s0 = R.room.source ? sourceS(R.floor, lane) : R.ad;
-    routeDevice(d, R, s0, c.id, acc, [], false);
-    climb(R, c.id, acc);
-    const polys = finishAcc(acc);
-    polys.push(tail(c.floor, c.id));
-    length += 2 * (polys.reduce((t, p) => t + polyLen(p), 0) + ZONE.reserve);
+    routeDevice(d, R, s0, c.id, acc, [], false, 'cat7');
+    if (R.room.source) toSource(R.floor, c.id, acc, 'cat7', true); else feeder(R, c.id, acc, 'cat7', true);
+    addLen(acc, 'cat7', ZONE.reserve);
+    path += acc.byCable.cat7 - ZONE.reserve - ZONE.reserveDist;
+    addLen(geo, 'cat7', 2 * acc.byCable.cat7);
     geo.polys.push(...acc.polys);
     for (const [rid, v] of acc.arcs) { if (!geo.arcs.has(rid)) geo.arcs.set(rid, { lane: v.lane, list: [] }); geo.arcs.get(rid).list.push(...v.list); }
   }
-  const polys = finishAcc(geo);
-  if (devs.length) polys.push(tail(c.floor, c.id));
-  ROUTES[c.id] = { polys, ads: [], length, devs, boxes: devs.length };
+  ROUTES[c.id] = { polys: drawPolys(geo), ads: [], byCable: geo.byCable, length: sumCables(geo.byCable), devs, boxes: devs.length, path };
 }
 /* Hauptleitung ZS → UV-OG (5×10 im Leerrohr M32) */
 function routeFeed() {
-  const acc = newAcc(), lane = laneOf('F', 'OG'), zsLane = laneOf('F', 'KG');
-  const zs = pointAt(RI.kg_flur.loop, sourceS('KG', zsLane));
+  const acc = newAcc(), lane = laneOf('F', 'OG');
+  const zs = pointAt(RI.kg_flur.loop, sourceS('KG', laneOf('F', 'KG')));
   const fl = RI.og_flur, entry = project(fl.loop, 3.95, zs.y);
   const rise = [P3(zs.x, zs.y, 1.9, 'KG'), P3(zs.x, zs.y, FLOOR.KG.h, 'KG'), P3(entry.x, zs.y, 0, 'EG'),
     P3(entry.x, zs.y, FLOOR.EG.h, 'EG'), P3(entry.x, entry.y, 0, 'OG'), P3(entry.x, entry.y, hzAt(fl, entry.x, entry.y, lane), 'OG')];
-  acc.polys.push(rise);
-  addArc(acc, fl.id, lane, entry.s, fl.ad);
-  climb(fl, 'F', acc);
-  const polys = finishAcc(acc);
-  polys.push(tail('OG', 'F'));
-  const raw = polys.reduce((t, p) => t + polyLen(p), 0);
-  ROUTES.F = { polys, ads: [], length: raw + 2 * ZONE.reserve + 1.0, devs: [], boxes: 0, rise: polyLen(rise) };
+  addPoly(acc, rise, '5x10');
+  addArcPath(acc, fl.id, lane, entry.s, fl.ad, '5x10');
+  feeder(fl, 'F', acc, '5x10', true);
+  addLen(acc, '5x10', ZONE.reserveDist);
+  const path = acc.byCable['5x10'] - 2 * ZONE.reserveDist;
+  ROUTES.F = { polys: drawPolys(acc), ads: [], byCable: acc.byCable, length: sumCables(acc.byCable), devs: [], boxes: 0, path, rise: polyLen(rise) };
 }
 function routeAll() {
   CIRCUITS.forEach(routePower);
@@ -1129,20 +1201,35 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#888';
 const DS = 1.45; // Gerätesymbole leicht überhöht darstellen
 
+/* Farben ohne three.js berechnen, damit Tabellen/Chips auch ohne WebGL funktionieren */
+function parseHex(h) {
+  h = h.replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  const n = parseInt(h.slice(0, 6), 16) || 0;
+  return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255];
+}
 function themeIsDark() {
-  const c = new THREE.Color(css('--scene-bg'));
-  return (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) < 0.4;
+  const [r, g, b] = parseHex(css('--scene-bg'));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.4;
 }
-function circuitColor(id) {
-  const c = CIRC[id], dark = themeIsDark();
-  if (id === 'F') return new THREE.Color(css('--accent'));
-  if (c && c.net) return new THREE.Color().setHSL(0.47, 0.75, dark ? 0.62 : 0.32);
+function hslHex(h, s, l) {
+  const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+  return '#' + [f(0), f(8), f(4)].map(v => Math.round(v * 255).toString(16).padStart(2, '0')).join('');
+}
+const cssNum = (n, d) => { const v = parseFloat(css(n)); return Number.isFinite(v) ? v : d; };
+
+function circuitHex(id) {
+  if (id === 'F') return css('--accent');
+  const sat = cssNum('--circ-s', 78) / 100, l1 = cssNum('--circ-l1', 46) / 100, l2 = cssNum('--circ-l2', 36) / 100;
+  const c = CIRC[id];
+  if (c && c.net) return hslHex(169, sat, (l1 + l2) / 2);
   const i = CIRCUITS.findIndex(x => x.id === id);
-  const hue = mod(i * 7 * 360 / CIRCUITS.length + 8, 360) / 360;
-  const l = dark ? (i % 2 ? 0.70 : 0.60) : (i % 2 ? 0.46 : 0.36);
-  return new THREE.Color().setHSL(hue, 0.78, l);
+  return hslHex(mod(i * 7 * 360 / CIRCUITS.length + 8, 360), sat, i % 2 ? l1 : l2);
 }
-const circuitCss = id => '#' + circuitColor(id).getHexString();
+const circuitColor = id => new THREE.Color(circuitHex(id));
+
+const circuitCss = circuitHex;
 
 /* ---------- Text als flach liegende Fläche (Raumnamen, Skizzenbeschriftung) ---------- */
 function drawText(canvas, lines, color, sizes) {
@@ -1157,6 +1244,10 @@ function drawText(canvas, lines, color, sizes) {
   let y = pad;
   lines.forEach((t, i) => { ctx.font = fonts[i]; ctx.fillText(t, canvas.width / 2, y); y += (sizes[i] || sizes[0]) * 1.15; });
 }
+function fitText(t) {
+  const k = t.worldH / t.canvas.height;
+  t.mesh.scale.set(t.canvas.width * k, 1, t.canvas.height * k);
+}
 function textPlane(lines, colorVar, worldH, sizes = [44, 30]) {
   const canvas = document.createElement('canvas');
   drawText(canvas, lines, css(colorVar), sizes);
@@ -1166,12 +1257,23 @@ function textPlane(lines, colorVar, worldH, sizes = [44, 30]) {
   const geo = new THREE.PlaneGeometry(1, 1);
   geo.rotateX(-Math.PI / 2);
   const mesh = new THREE.Mesh(geo, mat);
-  const k = worldH / canvas.height;
-  mesh.scale.set(canvas.width * k, 1, canvas.height * k);
   mesh.renderOrder = 3;
-  G.texts.push({ mesh, canvas, tex, lines, colorVar, sizes, worldH });
+  const t = { mesh, canvas, tex, lines, colorVar, sizes, worldH };
+  fitText(t);
+  G.texts.push(t);
   return mesh;
 }
+/* nach Theme- oder Schriftwechsel: Canvas neu zeichnen, Textur neu erzeugen, Größe neu setzen */
+function redrawText(t) {
+  drawText(t.canvas, t.lines, css(t.colorVar), t.sizes);
+  t.tex.dispose();
+  t.tex = new THREE.CanvasTexture(t.canvas);
+  t.tex.anisotropy = 4;
+  t.mesh.material.map = t.tex;
+  t.mesh.material.needsUpdate = true;
+  fitText(t);
+}
+
 function symbolTexture(kind, color) {
   const c = document.createElement('canvas'); c.width = c.height = 64;
   const x = c.getContext('2d'); x.strokeStyle = color; x.lineWidth = 5; x.lineCap = 'round';
@@ -1220,7 +1322,8 @@ function applyThemeColors() {
   M.cabinet.color.set(css('--paper-2'));
   M.sketch.color.set(css('--scene-sketch'));
   for (const [id, m] of Object.entries(G.circMats)) m.color.copy(circuitColor(id));
-  for (const t of G.texts) { drawText(t.canvas, t.lines, css(t.colorVar), t.sizes); t.tex.needsUpdate = true; }
+  for (const t of G.texts) redrawText(t);
+  G.hemi.color.set(css('--scene-light-sky')); G.hemi.groundColor.set(css('--scene-light-ground'));
   for (const [k, m] of Object.entries(M.sym)) { m.map.dispose(); m.map = symbolTexture(k, css('--scene-sketch')); m.needsUpdate = true; }
   requestRender();
 }
@@ -1325,6 +1428,11 @@ function buildFixtures(fid, grp) {
     return m;
   };
   box(CHIMNEY.x0, CHIMNEY.x1, CHIMNEY.y0, CHIMNEY.y1, 0, fid === 'DG' ? FLOOR.DG.h : f.h);
+  for (const sh of SHAFTS.filter(q => q.floor === fid)) {
+    box(sh.x0, sh.x1, sh.y0, sh.y1, 0, f.h);
+    const l = textPlane([sh.label], '--scene-label', 0.16, [36]);
+    l.position.set(sh.x0 - 0.7, 0.014, (sh.y0 + sh.y1) / 2); parts.push(l);
+  }
   for (const fx of FIXTURES.filter(q => q.floor === fid)) {
     if (fx.type === 'box') box(fx.x0, fx.x1, fx.y0, fx.y1, 0, fx.h);
     if (fx.type === 'straight') {
@@ -1354,7 +1462,7 @@ function buildFixtures(fid, grp) {
 function buildZones(fid) {
   const pos = [], grp = new THREE.Group();
   for (const R of Object.values(RI).filter(r => r.floor === fid && r.room.kind === undefined)) {
-    const loop = makeLoop(insetPoly(R.nominal, 0.012));
+    const loop = R.loop; // dieselbe Umlauflinie wie die Leitungsführung
     const strip = (from, len, zb, ztFn) => {
       const pts = arcPts(loop, from, len);
       for (let i = 1; i < pts.length; i++) {
@@ -1363,10 +1471,10 @@ function buildZones(fid) {
       }
     };
     const C = p => ceilAt(R.room, p.x, p.y);
-    strip(0, loop.P, p => C(p) - 0.45, p => C(p) - 0.15);                            // ZW-o
-    strip(0, loop.P, () => 0.15, () => 0.45);                                       // ZW-u
-    if (R.room.worktop) strip(0, loop.P, () => 0.9, () => 1.2);                    // ZW-m
-    for (const z of R.zones) strip(mod(z - 0.1, loop.P), 0.2, () => 0, p => C(p)); // ZS-t / ZS-e
+    strip(0, loop.P, p => C(p) - ZONE.wo[1], p => C(p) - ZONE.wo[0]);                         // ZW-o
+    strip(0, loop.P, () => ZONE.wu[0], () => ZONE.wu[1]);                                      // ZW-u
+    if (R.room.worktop) strip(0, loop.P, () => ZONE.wm[0], () => ZONE.wm[1]);                 // ZW-m
+    for (const z of R.zones) strip(mod(z - ZONE.sideHalf, loop.P), 2 * ZONE.sideHalf, () => 0, p => C(p)); // ZS-t / ZS-e
   }
   grp.add(triMesh(pos, G.mats.zone));
   if (fid === 'OG') {
@@ -1383,6 +1491,7 @@ function buildZones(fid) {
   }
   return grp;
 }
+
 function buildDevices(fid, grp) {
   for (const d of DEVICES.filter(x => x.floor === fid)) {
     const mat = d.c ? G.circMats[d.c] : d.t === 'uv' ? G.mats.cabinet : G.mats.device;
@@ -1470,29 +1579,50 @@ function prismGeometry(segs, r) {
 function floorBase(fid) {
   return S.floor === 'ALL' ? FLOOR[fid].z + FLOORS.findIndex(f => f.id === fid) * S.explode : FLOOR[fid].z;
 }
+function disposeChildren(grp) {
+  grp.children.slice().forEach(c => { grp.remove(c); if (c.geometry && c.geometry !== G.adGeo) c.geometry.dispose(); });
+}
+const cableLayerOn = cid => ((CIRC[cid] && CIRC[cid].net) ? S.layers.net : S.layers.cables);
+/* Leitungen innerhalb eines Geschosses hängen in der Geschossgruppe (lokale Höhe), damit die Explosion sie nur verschiebt */
 function rebuildCables() {
-  const root = G.cableRoot;
-  root.children.slice().forEach(c => { root.remove(c); if (c.geometry) c.geometry.dispose(); });
-  const vis = f => S.floor === 'ALL' || f === S.floor;
-  const W = p => new THREE.Vector3(p.x, floorBase(p.f) + p.z, p.y);
+  for (const f of FLOORS) disposeChildren(G.floors[f.id].userData.L.cables);
   for (const [cid, r] of Object.entries(ROUTES)) {
-    const isNet = !!(CIRC[cid] && CIRC[cid].net);
-    if (isNet ? !S.layers.net : !S.layers.cables) continue;
-    const segs = [];
+    if (!cableLayerOn(cid)) continue;
+    const byFloor = {};
     for (const poly of r.polys) for (let i = 1; i < poly.length; i++) {
       const a = poly[i - 1], b = poly[i];
-      if (vis(a.f) && vis(b.f)) segs.push([W(a), W(b)]);
+      if (a.f !== b.f) continue;
+      (byFloor[a.f] = byFloor[a.f] || []).push([V(a.x, a.y, a.z), V(b.x, b.y, b.z)]);
     }
-    if (!segs.length) continue;
-    const m = new THREE.Mesh(prismGeometry(segs, cid === 'F' ? 0.02 : 0.011), G.circMats[cid]);
-    m.userData.circuit = cid;
-    root.add(m);
-    if (!isNet && r.ads.length) {
-      for (const p of r.ads.filter(q => vis(q.f))) {
-        const b = new THREE.Mesh(G.adGeo, G.mats.ad); b.position.copy(W(p)); b.userData.ad = cid; root.add(b);
-      }
+    for (const [fid, segs] of Object.entries(byFloor)) {
+      const m = new THREE.Mesh(prismGeometry(segs, cid === 'F' ? 0.02 : 0.011), G.circMats[cid]);
+      m.userData.circuit = cid;
+      G.floors[fid].userData.L.cables.add(m);
+    }
+    for (const p of r.ads) {
+      const b = new THREE.Mesh(G.adGeo, G.mats.ad); b.position.copy(V(p.x, p.y, p.z)); b.userData.ad = cid;
+      G.floors[p.f].userData.L.cables.add(b);
     }
   }
+  rebuildRisers();
+}
+/* nur die geschossübergreifenden Stücke (Steigleitungen) hängen von der Explosion ab */
+function rebuildRisers() {
+  disposeChildren(G.cableRoot);
+  if (S.floor !== 'ALL') return;
+  const W = p => new THREE.Vector3(p.x, floorBase(p.f) + p.z, p.y);
+  for (const [cid, r] of Object.entries(ROUTES)) {
+    if (!cableLayerOn(cid)) continue;
+    const segs = [];
+    for (const poly of r.polys) for (let i = 1; i < poly.length; i++) if (poly[i - 1].f !== poly[i].f) segs.push([W(poly[i - 1]), W(poly[i])]);
+    if (segs.length) G.cableRoot.add(new THREE.Mesh(prismGeometry(segs, cid === 'F' ? 0.02 : 0.011), G.circMats[cid]));
+  }
+}
+function applyExplode() {
+  if (!G.ok) return;
+  for (const f of FLOORS) G.floors[f.id].position.y = floorBase(f.id);
+  rebuildRisers();
+  requestRender();
 }
 
 /* ---------- Szene aufbauen ---------- */
@@ -1517,13 +1647,15 @@ function initScene() {
   G.controls.dampingFactor = 0.12;
   G.controls.maxDistance = 70; G.controls.minDistance = 1.5;
   G.controls.addEventListener('change', requestRender);
-  G.scene.add(new THREE.HemisphereLight(0xffffff, 0x8890a0, 0.95));
+  R.domElement.tabIndex = 0;
+  G.controls.listenToKeyEvents(R.domElement); // Pfeiltasten verschieben, wenn die 3D-Ansicht den Fokus hat
+  G.hemi = new THREE.HemisphereLight(0xffffff, 0x8890a0, 0.95); G.scene.add(G.hemi);
   const dl = new THREE.DirectionalLight(0xffffff, 0.35); dl.position.set(4, 10, 6); G.scene.add(dl);
   G.adGeo = new THREE.BoxGeometry(0.075, 0.075, 0.075);
   makeMaterials();
   for (const f of FLOORS) {
     const grp = new THREE.Group(), L = {};
-    for (const k of ['walls', 'plates', 'fixtures', 'zones', 'devices', 'net', 'sketch', 'roof']) { L[k] = new THREE.Group(); grp.add(L[k]); }
+    for (const k of ['walls', 'plates', 'fixtures', 'zones', 'cables', 'devices', 'net', 'sketch', 'roof']) { L[k] = new THREE.Group(); grp.add(L[k]); }
     grp.userData.L = L;
     G.floors[f.id] = grp;
     G.scene.add(grp);
@@ -1597,6 +1729,7 @@ function applyVisibility() {
   applyHighlight();
 }
 function applyHighlight() {
+  if (!G.ok) return;
   const hl = S.pinned || S.hl;
   for (const [id, m] of Object.entries(G.circMats)) {
     const on = !hl || id === hl;
@@ -1661,6 +1794,9 @@ function summarize(devs) {
   if (c.net) out.push(`${c.net} Doppeldose${c.net > 1 ? 'n' : ''}`);
   return out.join(', ') || '–';
 }
+const CABLE_ORDER = ['3x15', '4x15', '5x15', '7x15', '3x25', '5x25', '5x10', 'cat7'];
+const byCableList = bc => CABLE_ORDER.filter(k => bc[k]).map(k => [k, bc[k]]);
+
 const lenOf = id => ROUTES[id].length;
 const ceil5 = m => Math.ceil(m / 5) * 5;
 
@@ -1679,8 +1815,8 @@ function renderChips() {
   $('chipList').innerHTML = html;
   $('chipList').querySelectorAll('[data-chip]').forEach(b => {
     const id = b.dataset.chip;
-    b.addEventListener('mouseenter', () => { S.hl = id; applyHighlight(); showCircuitDetail(id); });
-    b.addEventListener('mouseleave', () => { S.hl = null; applyHighlight(); showCircuitDetail(S.pinned); });
+    b.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse') return; S.hl = id; applyHighlight(); showCircuitDetail(id); });
+    b.addEventListener('pointerleave', e => { if (e.pointerType !== 'mouse') return; S.hl = null; applyHighlight(); showCircuitDetail(S.pinned); });
     b.addEventListener('focus', () => { S.hl = id; applyHighlight(); showCircuitDetail(id); });
     b.addEventListener('blur', () => { S.hl = null; applyHighlight(); showCircuitDetail(S.pinned); });
     b.addEventListener('click', () => pinCircuit(S.pinned === id ? null : id));
@@ -1694,7 +1830,7 @@ function pinCircuit(id) {
   showCircuitDetail(id);
 }
 function circuitMeta(id) {
-  if (id === 'F') return { name: 'Hauptleitung ZS → UV-OG', prot: 'LS B32 3-pol. im ZS', cable: '5x10', floor: 'KG→OG' };
+  if (id === 'F') return { name: 'Hauptleitung ZS → UV-OG', prot: 'sel. HLS E35 3-pol. im ZS', cable: '5x10', floor: 'KG→OG' };
   return CIRC[id];
 }
 function showCircuitDetail(id) {
@@ -1705,7 +1841,7 @@ function showCircuitDetail(id) {
   box.className = 'card';
   box.innerHTML = `<h3><i class="cdot" data-cid="${id}" style="background:${circuitCss(id)}"></i>${esc(id)} · ${esc(c.name)}</h3>
     <dl><dt>Absicherung</dt><dd>${esc(c.prot || (c.net ? 'Patchfeld' : '–'))}${c.prot && !c.net && id !== 'F' ? ' · RCBO 30 mA Typ A' : ''}</dd>
-    <dt>Kabel</dt><dd class="mono">${esc(CABLES[c.cable])}${c.net ? ' (2 je Dose)' : ''}</dd>
+    <dt>Kabel</dt><dd class="mono">${byCableList(r.byCable).map(([k, v]) => `${esc(CABLES[k])}: ${fmt(v)} m`).join('<br>')}${c.net ? '<br>(2 Kabel je Dose)' : ''}</dd>
     <dt>Länge</dt><dd class="mono">${fmt(r.length)} m berechnet · ${fmt(r.length * (1 + ZONE.waste))} m inkl. 15 %</dd>
     <dt>Geräte</dt><dd>${esc(summarize(r.devs))}</dd></dl>
     ${items ? `<ul>${items}</ul>` : ''}`;
@@ -1716,28 +1852,37 @@ function openCard(html) { $('infobody').innerHTML = html; $('infocard').hidden =
 function hideCard() { $('infocard').hidden = true; }
 function showDeviceCard(d) {
   const c = d.c ? circuitMeta(d.c) : null, R = RI[d.room];
-  const typ = d.t === 'sw' ? Object.entries(d.kinds || {}).map(([k, n]) => `${n}× ${k}`).join(', ') : TYPE_NAME[d.t];
-  let rows = `<dt>Typ</dt><dd>${esc(typ)}${d.t === 'sd' ? ` · ${d.n} ${d.n > 1 ? "Einsätze" : "Einsatz"}` : ''}</dd>
+  const typ = d.t === 'sw' ? Object.entries(d.kinds || {}).map(([k, n]) => `${n}× ${SWITCH_NAME[k] || k}`).join(', ') : TYPE_NAME[d.t];
+  let rows = `<dt>Typ</dt><dd>${esc(typ)}${d.t === 'sd' ? ` · ${d.n} ${d.n > 1 ? 'Einsätze' : 'Einsatz'}` : ''}</dd>
     <dt>Raum</dt><dd>${esc(R.room.name)} (${d.floor})</dd>
     <dt>Höhe</dt><dd class="mono">${d.mount === 'ceil' ? 'Decke' : fmt(d.h, 2) + ' m über FFB'}</dd>
     <dt>Lage</dt><dd class="mono">x ${fmt(d.x, 2)} · y ${fmt(d.y, 2)}</dd>`;
-  if (c) rows += `<dt>Stromkreis</dt><dd><i class="cdot" data-cid="${d.c}" style="background:${circuitCss(d.c)}"></i>${esc(d.c)} · ${esc(c.name)}</dd>
-    <dt>Schutz/Kabel</dt><dd class="mono">${esc(c.prot || 'Patchfeld')} · ${esc(CABLES[c.cable])}</dd>`;
+  if (c) {
+    const cab = d.t === 'sw' ? `${CABLES[switchCable(d.kinds)]} (${switchCores(d.kinds)} Adern)` : CABLES[c.cable];
+    rows += `<dt>Stromkreis</dt><dd><i class="cdot" data-cid="${d.c}" style="background:${circuitCss(d.c)}"></i>${esc(d.c)} · ${esc(c.name)}</dd>
+    <dt>Schutz/Kabel</dt><dd class="mono">${esc(c.prot || 'Patchfeld')} · ${esc(cab)}</dd>`;
+  }
   let note = d.note;
-  if (!note && d.t === 'sd' && d.h >= 1.1) note = 'Über Arbeitsfläche bzw. Waschtisch, Zuführung als senkrechter Stich oder in ZW-m.';
+  if (d.t === 'sw') note = (note ? note + ' ' : '') + 'Schalterleitung sternförmig von der Abzweigdose des Raums zu jeder Schaltstelle; bei Wechsel-/Kreuzschaltungen werden die Korrespondierenden in der Abzweigdose verbunden. Adern: L + je Schaltstelle + PE.';
+  if (!note && d.t === 'sd' && d.h >= 1.0) note = 'Über Arbeitsfläche bzw. Waschtisch, Zuführung in ZW-m bzw. als senkrechter Stich.';
   if (!note && d.t === 'rm') note = 'Batteriegerät (10-Jahres-Batterie), keine Leitung. Pflicht in Schlaf-, Kinderzimmern und Fluren als Rettungsweg.';
-  if (!note && d.t === 'net') note = 'Sternförmig zum Medienfeld, Leerrohr M25 empfohlen.';
-  openCard(`<h3>${SYM[d.t] ? `<span style="width:22px;display:inline-flex;color:var(--ink)">${SYM[d.t]}</span>` : ''}${esc(d.label)}</h3><dl>${rows}</dl>${note ? `<p class="note">${esc(note)}</p>` : ''}`);
+  if (!note && d.t === 'net') note = 'Sternförmig zum Medienfeld, je Dose ein Leerrohr M25 mit 2× Cat 7.';
+  const warn = d.bathViolation ? ' style="border-left-color:var(--accent);color:var(--accent);font-weight:600"' : '';
+  openCard(`<h3>${SYM[d.t] ? `<span style="width:22px;display:inline-flex;color:var(--ink)">${SYM[d.t]}</span>` : ''}${esc(d.label)}</h3><dl>${rows}</dl>${note ? `<p class="note"${warn}>${esc(note)}</p>` : ''}`);
 }
+
 function showRoomCard(rid) {
   const R = RI[rid], devs = DEVICES.filter(d => d.room === rid);
   const cids = [...new Set(devs.map(d => d.c).filter(Boolean))];
   const chips = cids.map(id => `<span class="chip" style="cursor:default"><i data-cid="${id}" style="background:${circuitCss(id)}"></i>${id}</span>`).join(' ');
-  const list = devs.map(d => `<li>${esc(d.label)}${d.c ? ` <span class="small">· ${d.c}</span>` : ''}</li>`).join('');
+  const list = devs.map(d => `<li><button type="button" class="linkbtn" data-dev="${d.id}">${esc(d.label)}</button>${d.c ? ` <span class="small">· ${d.c}</span>` : ''}</li>`).join('');
   openCard(`<h3>${esc(R.room.name)}</h3><dl><dt>Geschoss</dt><dd>${FLOOR[R.floor].name}</dd>
     <dt>Fläche</dt><dd class="mono">${fmt(R.area, 2)} m²${R.room.kind === 'out' ? ' (außen)' : ''}</dd>
     <dt>Geräte</dt><dd>${esc(summarize(devs))}</dd></dl>
     ${chips ? `<div class="chips" style="margin-top:8px">${chips}</div>` : ''}${list ? `<ul>${list}</ul>` : '<p class="small">Keine Geräte geplant.</p>'}`);
+  $('infobody').querySelectorAll('[data-dev]').forEach(b => b.addEventListener('click', () => {
+    showDeviceCard(DEVICES.find(x => x.id === b.dataset.dev)); $('infoClose').focus();
+  }));
 }
 
 /* ---------- Legende ---------- */
@@ -1753,7 +1898,8 @@ function renderCircuitTable() {
   const row = (id, c, floor, prot) => {
     const r = ROUTES[id]; total += r.length;
     return `<tr><td class="k"><button type="button" class="chip" data-pin="${id}"><i data-cid="${id}" style="background:${circuitCss(id)}"></i>${id}</button></td>
-      <td>${esc(c.name)}</td><td class="k">${floor}</td><td class="k">${esc(prot)}</td><td class="k">${esc(CABLES[c.cable])}</td>
+      <td>${esc(c.name)}</td><td class="k">${floor}</td><td class="k">${esc(prot)}</td>
+      <td class="k">${byCableList(r.byCable).map(([k, v]) => `${esc(CABLES[k])} <span class="small">${fmt(v)} m</span>`).join('<br>')}</td>
       <td class="n">${fmt(r.length)}</td><td>${esc(summarize(r.devs))}</td></tr>`;
   };
   for (const f of FLOORS) {
@@ -1761,9 +1907,9 @@ function renderCircuitTable() {
     for (const c of CIRCUITS.filter(x => x.floor === f.id)) body += row(c.id, c, c.floor, c.prot);
   }
   body += '<tr class="floorrow"><td colspan="7">Hauptleitung und Netzwerk</td></tr>';
-  body += row('F', circuitMeta('F'), 'KG→OG', 'LS B32 3-pol.');
+  body += row('F', circuitMeta('F'), 'KG→OG', 'sel. HLS E35 3-pol.');
   for (const n of NETS) body += row(n.id, n, n.floor, 'Patchfeld');
-  $('tblCircuits').innerHTML = `<thead><tr><th>Nr</th><th>Bezeichnung</th><th>Geschoss</th><th>Absicherung</th><th>Kabel</th><th class="n">Länge (m)</th><th>Geräte</th></tr></thead>
+  $('tblCircuits').innerHTML = `<thead><tr><th>Nr</th><th>Bezeichnung</th><th>Geschoss</th><th>Absicherung</th><th>Kabel (davon)</th><th class="n">Länge (m)</th><th>Geräte</th></tr></thead>
     <tbody>${body}</tbody><tfoot><tr><td colspan="5">Summe aller Leitungen (ohne Verschnitt)</td><td class="n">${fmt(total)}</td><td></td></tr></tfoot>`;
   $('tblCircuits').querySelectorAll('[data-pin]').forEach(b => b.addEventListener('click', () => {
     pinCircuit(b.dataset.pin);
@@ -1773,16 +1919,14 @@ function renderCircuitTable() {
 
 /* ---------- Materialliste ---------- */
 function computeMaterial() {
-  const cable = { '3x15': 0, '3x25': 0, '5x25': 0, '5x10': 0, cat7: 0 };
-  for (const c of CIRCUITS) cable[c.cable] += lenOf(c.id);
-  cable['5x10'] += lenOf('F');
-  const uplink = 2 * (lenOf('F') - 2 * ZONE.reserve);
-  for (const n of NETS) cable.cat7 += lenOf(n.id);
+  const cable = Object.fromEntries(CABLE_ORDER.map(k => [k, 0]));
+  for (const r of Object.values(ROUTES)) for (const [k, v] of Object.entries(r.byCable)) cable[k] += v;
+  const uplink = 2 * (ROUTES.F.path + 2 * ZONE.reserveDist);   // 2× Cat 7 ZS → UV-OG, eigenes Leerrohr M25
   cable.cat7 += uplink;
   const withWaste = Object.fromEntries(Object.entries(cable).map(([k, v]) => [k, ceil5(v * (1 + ZONE.waste))]));
   const boxes = { mauer: 0, hohl: 0 }, ads = { mauer: 0, hohl: 0 };
   let sd = 0, sdOut = 0, liCeil = 0, liWall = 0, rm = 0, net = 0, fa = 0;
-  const sw = { Aus: 0, Wechsel: 0, Kreuz: 0, Taster: 0, Kontroll: 0, Notschalter: 0 };
+  const sw = Object.fromEntries(Object.keys(SWITCH_NAME).map(k => [k, 0]));
   for (const d of DEVICES) {
     const key = d.floor === 'DG' ? 'hohl' : 'mauer';
     if (d.t === 'sd') { sd += d.n; boxes[key] += d.n; if (/IP44/.test(d.label)) sdOut += d.n; }
@@ -1793,13 +1937,22 @@ function computeMaterial() {
     if (d.t === 'rm') rm++;
   }
   for (const c of CIRCUITS) for (const p of ROUTES[c.id].ads) ads[p.f === 'DG' ? 'hohl' : 'mauer']++;
-  const netPath = NETS.reduce((t, n) => t + lenOf(n.id) / 2 - ZONE.reserve * ROUTES[n.id].devs.length, 0);
-  const dgPower = ['D1', 'D2', 'D3', 'D4'].reduce((t, id) => t + lenOf(id), 0);
+  // Leerrohr aus Wegen: gezeichnete (vereinigte) Leitungswege bzw. ein Rohr je Netzwerkdose
+  const wayLen = ids => ids.reduce((t, id) => t + ROUTES[id].polys.reduce((u, p) => u + polyLen(p), 0), 0);
+  const netPath = NETS.reduce((t, n) => t + ROUTES[n.id].path, 0);
+  const egCables = CIRCUITS.filter(c => c.floor === 'EG').length + 1;   // + Leitung K1 zur Kellertreppe
+  const shaftH = FLOOR.EG.h + (FLOOR.EG.z - FLOOR.KG.z - 1.9) + 0.3;
+  const shaftTubes = Math.ceil(egCables / 3);
   const reserveTube = (FLOOR.DG.z - (FLOOR.KG.z + 1.9)) + 1.5;
-  const tubes = { M20: ceil5(dgPower * 1.1), M25: ceil5(netPath * 1.1), M32: ceil5((ROUTES.F.length + reserveTube) * 1.1) };
+  const tubes = {
+    M20: ceil5(wayLen(['D1', 'D2', 'D3', 'D4']) * 1.1),
+    M25: ceil5((netPath + shaftTubes * shaftH + ROUTES.F.path) * 1.1),
+    M32: ceil5((ROUTES.F.path + reserveTube) * 1.1),
+  };
   const rcbo1 = CIRCUITS.filter(c => !c.poles).length, rcbo3 = CIRCUITS.filter(c => c.poles).length;
-  return { cable, withWaste, uplink, boxes, ads, sd, sdOut, liCeil, liWall, rm, net, fa, sw, tubes, rcbo1, rcbo3, reserveTube };
+  return { cable, withWaste, uplink, boxes, ads, sd, sdOut, liCeil, liWall, rm, net, fa, sw, tubes, rcbo1, rcbo3, shaftTubes, egCables };
 }
+
 function ringHint(m, k) {
   if (k === 'cat7') return m <= 100 ? '1 Ring 100 m' : m <= 500 ? `Spule 500 m oder ${Math.ceil(m / 100)}× 100 m` : 'Trommel';
   if (k === '5x10') return 'nach Maß (Meterware)';
@@ -1812,25 +1965,30 @@ function renderMaterial() {
   const M = computeMaterial();
   const kv = (k, v) => `<span>${k}</span><span class="v">${v}</span>`;
   let a = '<div class="kv"><span class="h">Kabel (inkl. 15 % Verschnitt)</span>';
-  for (const k of ['3x15', '3x25', '5x25', '5x10', 'cat7']) {
-    a += kv(`<span class="mono">${CABLES[k]}</span><br><span class="small">${fmt(M.cable[k])} m berechnet · ${ringHint(M.withWaste[k], k)}</span>`, `${M.withWaste[k]} m`);
+  for (const k of CABLE_ORDER) {
+    if (!M.cable[k]) continue;
+    const what = { '4x15': ' · Schalterleitung', '5x15': ' · Schalterleitung', '7x15': ' · Schalterltg. Kreuz/Serien-Wechsel' }[k] || '';
+    a += kv(`<span class="mono">${CABLES[k]}</span><br><span class="small">${fmt(M.cable[k])} m berechnet${what} · ${ringHint(M.withWaste[k], k)}</span>`, `${M.withWaste[k]} m`);
   }
-  a += `<span class="small" style="grid-column:1/-1">Cat 7 enthält 2 Uplinks ZS → UV-OG (${fmt(M.uplink)} m, Leerrohr M32).</span></div>`;
+  a += `<span class="small" style="grid-column:1/-1">Cat 7 enthält 2 Uplinks ZS → UV-OG (${fmt(M.uplink)} m) im eigenen Leerrohr M25, getrennt von der 5×10-Hauptleitung.</span></div>`;
   let b = '<div class="kv"><span class="h">Dosen</span>';
   b += kv('UP-Gerätedosen Mauerwerk (KG–OG)', M.boxes.mauer) + kv('Hohlwanddosen (DG-Trockenbau)', M.boxes.hohl);
+  b += kv('Deckenauslassdosen', M.liCeil);
   b += kv('Abzweigdosen Mauerwerk', M.ads.mauer) + kv('Abzweigdosen Hohlwand', M.ads.hohl);
   b += '<span class="h">Geräte</span>';
   b += kv('Steckdosen-Einsätze', M.sd) + kv('davon Außen IP44', M.sdOut);
-  b += kv('Ausschalter', M.sw.Aus) + kv('Wechselschalter', M.sw.Wechsel) + kv('Kreuzschalter', M.sw.Kreuz) + kv('Taster', M.sw.Taster);
-  b += kv('Kontrollschalter (mit Lampe)', M.sw.Kontroll) + kv('Heizungsnotschalter', M.sw.Notschalter);
+  for (const k of ['Aus', 'Serie', 'Wechsel', 'SerieWechsel', 'Kreuz', 'Taster', 'Kontroll', 'Notschalter']) b += kv(SWITCH_NAME[k], M.sw[k] || 0);
   b += kv('Leuchtenauslässe Decke', M.liCeil) + kv('Leuchtenauslässe Wand/außen', M.liWall) + kv('Geräteanschlussdosen', M.fa);
   b += kv('Netzwerk-Doppeldosen Cat 7', M.net) + kv('Rauchwarnmelder', M.rm) + '</div>';
   let c = '<div class="kv"><span class="h">Verteilung</span>';
   c += kv('RCBO 1-pol.+N, 30 mA Typ A', M.rcbo1) + kv('RCBO 3-pol.+N, 30 mA Typ A', M.rcbo3);
-  c += kv('Überspannungsschutz Typ 1+2', 1) + kv('Hauptschalter 3-pol.', 1) + kv('LS B32 3-pol. (Zuleitung UV)', 1) + kv('Lasttrennschalter UV-OG', 1);
-  c += kv('Zählerschrank 4-reihig + Medienfeld', 1) + kv('Unterverteilung UV-OG (3-reihig + Medienreihe)', 1);
-  c += '<span class="h">Leerrohr (grob, +10 %)</span>';
-  c += kv('M20 – Leitungen in DG-Dämmebene', `${M.tubes.M20} m`) + kv('M25 – Netzwerk sternförmig', `${M.tubes.M25} m`) + kv('M32 – Steigleitung + Reserve KG→DG', `${M.tubes.M32} m`);
+  c += kv('Überspannungsschutz Typ 1+2 (ZS)', 1) + kv('Überspannungsschutz Typ 2 (UV-OG)', 1);
+  c += kv('Hauptschalter 3-pol. (ZS)', 1) + kv('sel. HLS E35 3-pol. (Zuleitung UV)', 1) + kv('Lasttrennschalter UV-OG', 1);
+  c += kv('Zählerschrank 4-reihig + Medienfeld', 1) + kv('Unterverteilung UV-OG 4-reihig + Medienreihe', 1);
+  c += '<span class="h">Leerrohr (grob, aus Leitungswegen, +10 %)</span>';
+  c += kv('M20 – DG-Leitungswege (Dämmebene)', `${M.tubes.M20} m`);
+  c += kv(`M25 – Netzwerk je Dose, Uplink, Steigschacht (${M.shaftTubes}× für ${M.egCables} EG-Kabel)`, `${M.tubes.M25} m`);
+  c += kv('M32 – Hauptleitung + Reserve KG→DG', `${M.tubes.M32} m`);
   c += '</div>';
   $('material').innerHTML = a + b + c;
   return M;
@@ -1841,23 +1999,24 @@ const DIST = {
   ZS: {
     title: 'Zählerschrank ZS · KG-Flur', fields: 2, rowTE: 12,
     rows: [
-      [[{ sys: 'HS', t: 'Hauptschalter 3-pol.', te: 3 }, { sys: 'SPD', t: 'ÜSS Typ 1+2', te: 4 }, { sys: 'B32', t: 'Zuleitung UV-OG', te: 3, cid: 'F' }, { sys: 'TR', t: 'Klingeltrafo', te: 2 }], []],
+      [[{ sys: 'HS', t: 'Hauptschalter 3-pol.', te: 3 }, { sys: 'SPD', t: 'ÜSS Typ 1+2', te: 4 }, { sys: 'E35', t: 'sel. HLS Zuleitung UV-OG', te: 5, cid: 'F' }], []],
       [['K1', 'K2', 'K3', 'K4', 'K5', 'K6'], []],
       [['E1', 'E2', 'E3', 'E4', 'E5'], []],
-      [['E6', 'E7', 'E8', 'E9', 'E10'], []],
+      [['E6', 'E7', 'E8', 'E9', 'E10', { sys: 'TR', t: 'Klingeltrafo', te: 2 }], []],
     ],
     media: 'Medienfeld: APZ (Hausübergabe), Router, Switch 16 Port, Patchpanel 12 Port, Steckdose für Netzteile',
-    note: 'Feld 2 bleibt Reserve für Wärmepumpe, PV, Wallbox und Speicher. Zählerfeld (eHZ, SLS) links daneben, hier nicht dargestellt.',
+    note: 'Feld 2 bleibt Reserve für Wärmepumpe, PV, Wallbox und Speicher. Zählerfeld (eHZ, SLS) links daneben, hier nicht dargestellt. Die Zuleitung zur UV-OG ist über einen selektiven Hauptleitungsschutzschalter (E35) abgesichert, damit ein Fehler im OG/DG nur den Schutz dort auslöst; Auslegung und Selektivitätsnachweis durch den Fachbetrieb.',
   },
   UV: {
     title: 'Unterverteilung UV-OG · Abstellraum OG', fields: 1, rowTE: 12,
     rows: [
-      [[{ sys: 'LTS', t: 'Lasttrennschalter 3-pol.', te: 3 }, 'O1', 'O2', 'O3', 'O4']],
-      [['O5', 'O6', 'O7', 'D1', 'D2', 'D3']],
-      [['D4']],
+      [[{ sys: 'LTS', t: 'Lasttrennschalter 3-pol.', te: 3 }, { sys: 'SPD2', t: 'ÜSS Typ 2', te: 4 }, 'O1', 'O2']],
+      [['O3', 'O4', 'O5', 'O6', 'O7', 'D1']],
+      [['D2', 'D3', 'D4']],
+      [[]],
     ],
     media: 'Medienreihe: Switch 8 Port, Patchpanel 8 Port (Uplink 2× Cat 7 vom ZS)',
-    note: 'Vorgabe war 2-reihig (24 TE). Belegt sind 25 TE, deshalb 3-reihig geplant; alternativ 1-TE-RCBOs, dann reicht 2-reihig mit Reserve.',
+    note: 'Vorgabe war 2-reihig (24 TE). Mit Überspannungsschutz Typ 2 (Hauptleitung länger als 10 m) sind 29 TE belegt; 3 Reihen ergäben nur 19 % Reserve, deshalb 4-reihig. Mit 1-TE-RCBOs reichen 3 Reihen.',
   },
 };
 function moduleOf(x) {
@@ -1911,7 +2070,7 @@ function bindControls() {
   document.querySelectorAll('input[name="floor"]').forEach(r => r.addEventListener('change', () => setFloor(r.value)));
   $('explode').addEventListener('input', e => {
     S.explode = parseFloat(e.target.value); $('explodeOut').textContent = fmt(S.explode) + ' m';
-    applyVisibility(); setView(S.view || 'iso');
+    applyExplode();
   });
   const map = { lyWalls: 'walls', lyZones: 'zones', lyCables: 'cables', lyDevices: 'devices', lyNet: 'net', lySketch: 'sketch', lyRoof: 'roof' };
   for (const [id, k] of Object.entries(map)) $(id).addEventListener('change', e => { S.layers[k] = e.target.checked; applyVisibility(); });
@@ -1926,18 +2085,31 @@ function bindControls() {
   new MutationObserver(refreshColors).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 }
 
-function init() {
+async function init() {
   buildRooms(); placeDevices(); routeAll();
   renderChips(); renderLegend(); renderCircuitTable(); renderDist();
   const M = renderMaterial();
+  const bad = DEVICES.filter(d => d.room === 'og_bad'), viol = bad.filter(d => d.bathViolation);
+  $('bathCheck').textContent = viol.length
+    ? `WARNUNG: ${viol.length} Gerät(e) im Bad liegen in Schutzbereich 2: ${viol.map(d => d.label).join(', ')}.`
+    : `Automatische Prüfung: alle ${bad.length} Bad-Geräte liegen mindestens 0,60 m von der Wanne entfernt (kleinster Abstand ${fmt(Math.min(...bad.map(d => d.tubDist)), 2)} m).`;
+  if (viol.length) $('bathCheck').style.color = 'var(--accent)';
   const kb = Math.round(document.documentElement.outerHTML.length / 1024);
   $('foot').textContent = `${CIRCUITS.length} Stromkreise · ${DEVICES.filter(d => !['uv', 'pas', 'kl'].includes(d.t)).length} Geräte-Positionen · ${M.sd} Steckdosen-Einsätze · Seite ca. ${kb} KB · Planungsvorschlag, keine Ausführungsplanung.`;
   bindControls();
   $('btnIso').setAttribute('aria-pressed', 'true');
   let start = 'ALL';
-  try { const v = localStorage.getItem('ep4.floor'); if (v && (v === 'ALL' || FLOOR[v])) start = v; } catch (e) { /* ignorieren */ }
+  try { const v = localStorage.getItem('ep4.floor'); if (v && (v === 'ALL' || FLOOR[v])) start = v; } catch (e) { /* Komfortfunktion */ }
+  // Raumbeschriftungen brauchen die Schrift, bevor die Canvas-Texturen gezeichnet werden
+  try {
+    await Promise.race([
+      Promise.all([document.fonts.load('600 44px "Barlow Condensed"'), document.fonts.load('400 30px "Barlow Condensed"')]),
+      new Promise(r => setTimeout(r, 1500)),
+    ]);
+  } catch (e) { /* Fallback-Schrift */ }
   if (initScene()) setFloor(start);
   else { const inp = document.querySelector(`input[name="floor"][value="${start}"]`); if (inp) inp.checked = true; }
 }
+
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 </script>
