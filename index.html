@@ -1,5 +1,6 @@
 <title>Elektroplan Haus 4</title>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,7 +90,7 @@ a{color:var(--ink)}
   padding:7px 10px; cursor:pointer; border-radius:2px; min-height:32px;
 }
 .btn:hover{background:var(--paper)}
-.btn[aria-pressed="true"]{background:var(--ink); color:var(--paper-2)}
+.btn[aria-pressed="true"], .btn[aria-checked="true"]{background:var(--ink); color:var(--paper-2)}
 .nogl{position:absolute; inset:0; display:none; place-items:center; padding:24px; text-align:center; color:var(--muted); background:var(--paper)}
 .nogl.on{display:grid}
 
@@ -217,6 +218,29 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
 .walk-help dl{grid-template-columns:5.5rem 1fr}
 .walk-help .btn{margin-top:10px}
 
+/* Modus „Echt“ */
+.modeseg{display:inline-flex}
+.modeseg .btn{border-radius:0}
+.modeseg .btn:first-child{border-radius:2px 0 0 2px}
+.modeseg .btn + .btn{margin-left:-1px; border-radius:0 2px 2px 0}
+.viewer:not(.echt) .echt-only, .panel:not(.echt) .echt-only{display:none !important}
+.viewer.echt .plan-only{display:none !important}
+.viewer.echt{background:#9fb8cf}
+.intro{position:absolute; left:50%; bottom:20px; transform:translateX(-50%); z-index:3; width:min(440px, calc(100% - 24px));
+  background:var(--paper-2); border:1px solid var(--rule-strong); box-shadow:4px 4px 0 var(--rule); padding:14px 16px 12px}
+.intro[hidden]{display:none}
+.intro .kicker{font:500 .72rem/1.2 var(--font-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); margin:0}
+.intro h2{font-size:clamp(1.6rem, 5vw, 2.2rem); margin:2px 0 4px}
+.intro p{margin:0 0 10px; font-size:.9rem; color:var(--muted)}
+.intro .acts{display:flex; gap:8px; flex-wrap:wrap}
+.intro .btn.primary{background:var(--ink); color:var(--paper-2)}
+.intro.intro-done p{display:none}
+.tb-more-btn{display:none}
+.loading3d{position:absolute; inset:0; z-index:5; display:grid; place-items:center; background:color-mix(in srgb, var(--paper) 78%, transparent); font:500 .9rem var(--font-mono); color:var(--ink)}
+.loading3d[hidden]{display:none}
+.walk-toast{font:500 .78rem/1.3 var(--font-mono); color:var(--paper-2); background:var(--ink); padding:3px 8px}
+.walk-toast:empty{display:none}
+.quality{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px}
 @media (max-width: 960px){
   .stage{grid-template-columns:minmax(0,1fr)}
   .viewer{height:60vh; min-height:280px}
@@ -231,6 +255,13 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
   .walk-map canvas{width:104px; height:118px}
   .viewer.walking .toolbar{max-width:calc(100% - 128px)}
   .viewer select.btn{max-width:9.5rem}
+  .viewer .toolbar .btn{padding:6px 8px; font-size:.74rem; min-height:30px}
+  .viewer:not(.more-open) .toolbar .tb-more{display:none}
+  .tb-more-btn{display:inline-block}
+  .intro{bottom:8px; padding:8px 10px; width:calc(100% - 16px)}
+  .intro p, .intro .kicker{display:none}
+  .intro h2{font-size:1.15rem; margin:0 0 6px}
+  .intro .btn{min-height:30px; padding:5px 9px}
 }
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important; animation:none !important; scroll-behavior:auto !important}
@@ -264,15 +295,32 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
   <div class="stage">
     <div class="viewer" id="viewer">
       <div class="toolbar" role="toolbar" aria-label="Ansicht">
-        <button class="btn orbit-only" id="btnIso" type="button" aria-pressed="true">Isometrie</button>
-        <button class="btn orbit-only" id="btnTop" type="button" aria-pressed="false">Draufsicht</button>
-        <button class="btn orbit-only" id="btnReset" type="button">Reset</button>
+        <span class="modeseg" id="modeSeg" role="radiogroup" aria-label="Darstellung">
+          <button class="btn" id="btnEcht" type="button" role="radio" aria-checked="false" tabindex="-1" title="Realistische Ansicht mit Licht, Materialien und Einrichtung">Echt</button>
+          <button class="btn" id="btnPlan" type="button" role="radio" aria-checked="true" title="Schematischer Elektroplan">Plan</button>
+        </span>
+        <button class="btn tb-more-btn" id="btnMore" type="button" aria-expanded="false" aria-controls="viewer" title="Weitere Ansichtsknöpfe">⋯<span class="sr-only"> weitere Knöpfe</span></button>
+        <button class="btn orbit-only tb-more" id="btnIso" type="button" aria-pressed="true">Isometrie</button>
+        <button class="btn orbit-only tb-more" id="btnTop" type="button" aria-pressed="false">Draufsicht</button>
+        <button class="btn orbit-only tb-more" id="btnReset" type="button">Reset</button>
         <button class="btn" id="btnWalk" type="button" aria-pressed="false" title="Begehungsmodus in Ego-Perspektive (Taste B)">Begehen</button>
-        <button class="btn" id="btnFull" type="button" aria-pressed="false" title="3D-Ansicht im Vollbild">Vollbild</button>
+        <button class="btn echt-only" id="btnXray" type="button" aria-pressed="false" title="Röntgenblick: geplante Leitungen in der Wand (Taste R)">Röntgen</button>
+        <button class="btn echt-only tb-more" id="btnNight" type="button" aria-pressed="false" title="Zwischen Tag und Nacht umschalten">Nacht</button>
+        <button class="btn tb-more" id="btnFull" type="button" aria-pressed="false" title="3D-Ansicht im Vollbild">Vollbild</button>
         <label class="walk-only"><span class="sr-only">Springen zu Raum</span><select class="btn" id="walkJump"><option value="">Springen zu …</option></select></label>
         <button class="btn walk-only" id="btnWalkHelp" type="button" aria-label="Bedienhilfe Begehung" title="Bedienhilfe">?</button>
       </div>
       <div class="hint" id="viewHint">Ziehen: drehen · Rad/Pinch: Zoom · Rechts/2 Finger: verschieben<br>Klick auf Gerät oder Boden: Details · B (3D-Ansicht fokussiert): Begehen</div>
+      <div class="intro echt-only" id="introCard" role="region" aria-label="Willkommen" hidden>
+        <p class="kicker">Reihenhaus · Haus 4</p>
+        <h2>Elektroplan zum Durchlaufen</h2>
+        <p>Alle Geschosse vom Keller bis unters Dach, mit jeder geplanten Dose, jedem Schalter und jeder Leitung.</p>
+        <div class="acts">
+          <button class="btn primary" id="btnInside" type="button">Hineingehen</button>
+          <button class="btn" id="btnSkip" type="button">Überspringen</button>
+        </div>
+      </div>
+      <div class="loading3d" id="loading3d" role="status" aria-live="polite" hidden>3D-Modell wird aufgebaut …</div>
       <div class="walk-hud walk-only" id="walkHud">
         <div class="walk-map"><canvas id="walkMap" aria-hidden="true"></canvas><div class="walk-where" id="walkWhere" aria-live="polite"></div></div>
         <div class="walk-cross" id="walkCross" aria-hidden="true"></div>
@@ -283,6 +331,7 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
             <button class="btn" id="walkDown" type="button">↓ Runter<span class="kbd"> (Q)</span></button>
           </div>
           <button class="walk-target" id="walkTarget" type="button" hidden></button>
+          <div class="walk-toast" id="walkToast" aria-live="polite"></div>
           <div class="walk-tip" id="walkTip"></div>
         </div>
         <div class="walk-joy" id="walkJoy" aria-hidden="true"><div class="walk-knob" id="walkKnob"></div></div>
@@ -294,8 +343,9 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
           <dt>Maus</dt><dd>Ins Bild klicken: Die Maus steuert den Blick. Esc gibt die Maus wieder frei.</dd>
           <dt>Tastatur</dt><dd>W A S D oder ↑ ↓ laufen, ← → drehen, Umschalt: schneller.</dd>
           <dt>Touch</dt><dd>Joystick links unten: laufen. Wischen: umschauen. Tippen auf ein Gerät: Details.</dd>
-          <dt>Treppe</dt><dd>Im Treppenbereich mit E bzw. „↑ Hoch“ ins nächste Geschoss, mit Q bzw. „↓ Runter“ zurück.</dd>
-          <dt>Details</dt><dd>Fadenkreuz auf Dose, Schalter, Leuchte oder Leitung richten. Klick, Leertaste oder Tippen auf das Label öffnet die Infokarte.</dd>
+          <dt>Treppe</dt><dd>Ansicht „Echt“: einfach die Treppe hinauf- oder hinunterlaufen. Abkürzung: E bzw. „↑ Hoch“, Q bzw. „↓ Runter“.</dd>
+          <dt>Details</dt><dd>Fadenkreuz auf Dose, Schalter, Leuchte oder Leitung richten. Klick, Leertaste oder Tippen auf das Label öffnet die Infokarte (in „Echt“ schaltet ein Klick auf Schalter und Leuchten stattdessen das Licht).</dd>
+          <dt>Licht</dt><dd>Ansicht „Echt“: Fadenkreuz auf einen Schalter, dann Klick oder E schaltet seine Leuchten. R: Röntgenblick auf die Leitungen.</dd>
           <dt>Räume</dt><dd>„Springen zu …“ versetzt Sie direkt in jeden Raum.</dd>
           <dt>Beenden</dt><dd>„Begehen“ erneut drücken, Taste B oder Esc (bei gefangener Maus zweimal).</dd>
         </dl>
@@ -310,7 +360,15 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
       </div>
     </div>
 
-    <aside class="panel" aria-label="Steuerung">
+    <aside class="panel" id="panel" aria-label="Steuerung">
+      <section class="echt-only">
+        <p class="plabel">Ansicht „Echt“</p>
+        <div class="quality">
+          <button class="btn" id="btnInside2" type="button">Hineingehen (Haustür)</button>
+          <button class="btn" id="btnQuality" type="button" title="Niedrig: Pixeldichte höchstens 1,5, kleinere Schattenkarte, 2 statt 6 echte Lichter. Die Texturauflösung legt der erste Aufbau fest (Handy kleiner).">Qualität: hoch</button>
+        </div>
+        <p class="small" id="echtNote" style="margin-top:8px">Klick auf einen Schalter schaltet seine Leuchten. Geschoss wählen = Schnitt auf 1,35 m, Dach und obere Geschosse ausgeblendet.</p>
+      </section>
       <section>
         <p class="plabel" id="lblFloor">Geschoss</p>
         <div class="seg" role="radiogroup" aria-labelledby="lblFloor" id="floorSeg">
@@ -391,14 +449,18 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
             <li>Fotos zeigen Haus 4; die Nachbarhäuser 3 und 5 sind gespiegelt und nicht betroffen.</li>
           </ul>
         </li>
+        <li><strong>Ansicht „Echt“: Annahmen.</strong> Fenster, Türen und Höhen stammen aus den Plandaten, Türen lichte Höhe 2,01 m (KG 1,85 m), die zwei Dachfenster aus dem Dachumriss. Wandstärken sind abgeleitet: Außen- und Trennwände 24 cm, Innenwände 12 cm mittig auf der Raumgrenze. Annahmen: Gelände 20 cm unter EG-Fußboden, Kellerfenster mit Lichtschacht, Garten als Südseite, Satteldach 35° mit rotbraunen Ziegeln, Schornstein an der Planlage, Nachbarhäuser 3 und 5 gespiegelt und vereinfacht. Die KG-Wendeltreppe ist dort mit 0,78 m Radius etwas versetzt, damit der Antritt der EG-Treppe begehbar bleibt. Die Möblierung ist frei angenommen und an den Dosen ausgerichtet. Dosen hinter Einbaugeräten (Kühlschrank, Mikrowelle, Geschirrspüler, Herd) bleiben verdeckt und sind im Röntgenblick sichtbar. Schalter schalten die Leuchten ihres Stromkreises im selben Raum; Sonderfälle (Treppe, Loggia, Terrasse, Öllager) folgen der Beschriftung.<br><span class="small" id="hiddenList"></span></li>
         <li><strong>Quelle der Geometrie.</strong> renovierungs-hub.vercel.app (EG/OG, Wände und Räume) und Planfotos (KG/DG, mit handgezeichneten Leitungen des Kollegen). Maße gerundet, Lage der Geräte als Planungsvorschlag.</li>
       </ol>
     </section>
   </div>
   <p class="foot" id="foot"></p>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js" integrity="sha384-vV17nr/rMaJqmeZkFUzXLpHdQ+ME5QHKdydaqqN+3Ga39RJlNrTatJxHwGV4ml2C" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js" integrity="sha384-I0DMsfimAPIqWT8lF+oA997gRgdUi3jhidoTq3fN0zmn35smXZukD01FLnsPRU9i" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/utils/BufferGeometryUtils.js" integrity="sha384-pbzJRmVHtSKsmXtn1S+SJW8hayfjfMEXhWq2f0To4wY9ZMxJUdax1AcGoD3gv3OV" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js" integrity="sha384-NG9Vjao8FDKsRPhzsQGvMRSCrkgzJlysZlYZ69P52mH1tEpkurCHq0M8jbSP7/gl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/objects/Sky.js" integrity="sha384-V0PmcnfAYgezed1BHEvIkjsLf8an+0FobGjaTxTJw4NcxrynbdBNrpw8h8uT2sTM" crossorigin="anonymous"></script>
 <script>
 "use strict";
 /* =====================================================================
@@ -594,8 +656,10 @@ const DEVICE_SPECS = [
   { room: 'eg_wohnen', t: 'li', c: 'E1', ceil: [1.9, 2.6], label: 'Deckenleuchte Wohnen' },
   { room: 'eg_wohnen', t: 'li', c: 'E1', ceil: [5.5, 3.6], label: 'Deckenleuchte Essen' },
   { room: 'eg_wohnen', t: 'li', c: 'E1', side: 'W', at: 4.4, h: 2.05, wall: true, label: 'Wandauslass Leseecke' },
-  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: true, kinds: { SerieWechsel: 1, Aus: 1 }, label: 'Kombination Serien-Wechsel + Aus (Dielentür)' },
-  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: 'egd_wk', kinds: { SerieWechsel: 1 }, label: 'Serien-Wechselschalter (Küchentür)' },
+  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: true, kinds: { SerieWechsel: 1, Aus: 1 }, label: 'Kombination Serien-Wechsel + Aus (Dielentür)',
+    lights: [['Deckenleuchte Wohnen'], ['Deckenleuchte Essen'], ['Wandauslass Leseecke']] },
+  { room: 'eg_wohnen', t: 'sw', c: 'E1', door: 'egd_wk', kinds: { SerieWechsel: 1 }, label: 'Serien-Wechselschalter (Küchentür)',
+    lights: [['Deckenleuchte Wohnen'], ['Deckenleuchte Essen']] },
   { room: 'eg_wohnen', t: 'sw', c: 'E1', side: 'N', at: 4.35, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Terrassenleuchte' },
   { room: 'eg_wohnen', t: 'net', c: 'NE', side: 'E', at: 3.6 },
   { room: 'eg_wohnen', t: 'net', c: 'NE', side: 'W', at: 2.6 },
@@ -612,7 +676,8 @@ const DEVICE_SPECS = [
   { room: 'eg_kueche', t: 'sd', c: 'E8', side: 'W', at: 9.3, n: 1, label: 'Steckdose Esstisch-Seite' },
   { room: 'eg_kueche', t: 'li', c: 'E1', ceil: [5.4, 8.1], label: 'Deckenleuchte' },
   { room: 'eg_kueche', t: 'li', c: 'E1', side: 'E', at: 7.25, h: 1.45, wall: true, label: 'Unterbauleuchte (Auslass)' },
-  { room: 'eg_kueche', t: 'sw', c: 'E1', door: true, kinds: { Serie: 1 }, label: 'Serienschalter' },
+  { room: 'eg_kueche', t: 'sw', c: 'E1', door: true, kinds: { Serie: 1 }, label: 'Serienschalter',
+    lights: [['Deckenleuchte'], ['Unterbauleuchte (Auslass)']] },
   { room: 'eg_diele', t: 'sd', c: 'E9', side: 'E', at: 7.1, n: 1 },
   { room: 'eg_diele', t: 'sd', c: 'E9', side: 'S', at: 1.8, n: 1, label: 'Steckdose Garderobe' },
   { room: 'eg_diele', t: 'li', c: 'E1', ceil: [2.9, 6.6], label: 'Deckenleuchte Treppe' },
@@ -625,7 +690,8 @@ const DEVICE_SPECS = [
     note: 'Fernmeldeleitung J-Y(St)Y 2×2×0,8 zum Klingeltrafo im ZS, nicht in der Kabelbilanz.' },
   { room: 'eg_wind', t: 'li', c: 'E1', ceil: [3.2, 9.5], label: 'Deckenleuchte' },
   { room: 'eg_wind', t: 'li', c: 'E1', side: 'S', at: 3.78, h: 2.1, wall: true, label: 'Außenleuchte Eingang' },
-  { room: 'eg_wind', t: 'sw', c: 'E1', door: true, kinds: { Serie: 1 }, label: 'Serienschalter' },
+  { room: 'eg_wind', t: 'sw', c: 'E1', door: true, kinds: { Serie: 1 }, label: 'Serienschalter',
+    lights: [['Deckenleuchte'], ['Außenleuchte Eingang']] },
   { room: 'eg_wind', t: 'kl', side: 'S', at: 2.55, h: 1.2, label: 'Klingeltaster außen',
     note: 'Klingel/Sprechanlage über Trafo im ZS (E9), Fernmeldeleitung.' },
   { room: 'eg_wc', t: 'sd', c: 'E9', side: 'E', at: 9.7, h: 1.2, n: 1, label: 'Steckdose Waschbecken' },
@@ -668,7 +734,7 @@ const DEVICE_SPECS = [
   { room: 'og_bad', t: 'fa', c: 'O6', side: 'S', at: 1.88, h: 1.95, label: 'Anschluss Spiegelschrank mit Leuchte' },
   { room: 'og_bad', t: 'fa', c: 'O1', side: 'E', at: 10.25, h: 2.25, label: 'Lüfter mit Nachlauf' },
   { room: 'og_bad', t: 'fa', c: 'O6', side: 'E', at: 9.2, h: 0.9, label: 'Handtuchheizkörper elektrisch', note: 'Geräteanschlussdose, außerhalb Bereich 1/2.' },
-  { room: 'og_bad', t: 'sw', c: 'O1', side: 'E', at: 8.6, kinds: { Serie: 1 }, label: 'Serienschalter Decke/Lüfter',
+  { room: 'og_bad', t: 'sw', c: 'O1', side: 'E', at: 8.6, kinds: { Serie: 1 }, label: 'Serienschalter Decke/Lüfter', lights: [['Deckenleuchte IP44'], []],
     note: 'Bewusst an der Wand x = 2,20 neben der Tür, nicht auf der Wannenseite der Tür.' },
   { room: 'og_wasch', t: 'sd', c: 'O5', side: 'E', at: 9.6, h: 1.2, n: 2 },
   { room: 'og_wasch', t: 'li', c: 'O1', ceil: [3.07, 9.4], label: 'Deckenleuchte' },
@@ -997,7 +1063,7 @@ function placeDevices() {
       id: spec.id || `d${++seq}`, t: spec.t, c: spec.c || null, room: R.id, floor: R.floor,
       x: p.x, y: p.y, s: p.s ?? null, nx: p.e ? p.e.nx : 0, ny: p.e ? p.e.ny : 0, h,
       mount: spec.ceil ? 'ceil' : 'wall', n: spec.n || 1, kinds: spec.kinds || null,
-      label: spec.label || defaultLabel(spec), note: spec.note || '', w: spec.w, hh: spec.hh, bath: !!spec.bath, ...extra,
+      label: spec.label || defaultLabel(spec), note: spec.note || '', w: spec.w, hh: spec.hh, bath: !!spec.bath, lights: spec.lights || null, ...extra,
     });
   };
   for (const spec of DEVICE_SPECS) {
@@ -1270,6 +1336,9 @@ const S = {
 };
 const G = { ok: false, floors: {}, circMats: {}, mats: {}, texts: [], pick: [], cableRoot: null, wallFill: {}, walkCeil: {} };
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Ansicht „Echt“ (haus3d.js): aktiv, wenn geladen und eingeschaltet */
+const echtAvailable = () => !!window.H3 && !window.H3.failed;
+const isEcht = () => echtAvailable() && H3.on;
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#888';
 const DS = 1.45; // Gerätesymbole leicht überhöht darstellen
 
@@ -1765,17 +1834,20 @@ function initScene() {
 }
 let renderQueued = false;
 function requestRender() { if (G.ok && !renderQueued) { renderQueued = true; requestAnimationFrame(renderFrame); } }
+function drawScene(now) {
+  if (isEcht()) return H3.render(now);
+  G.renderer.render(G.scene, G.camera);
+  return false;
+}
 function renderFrame(now) {
   renderQueued = false;
   if (W.active) {
     const busy = walkFrame(now);
-    G.renderer.render(G.scene, G.camera);
-    if (busy) requestRender();
+    if (drawScene(now) || busy) requestRender();
     return;
   }
-  const moving = G.controls.update();
-  G.renderer.render(G.scene, G.camera);
-  if (moving && G.controls.enableDamping) requestRender();
+  const moving = isEcht() && H3.state.intro ? false : G.controls.update();
+  if (drawScene(now) || (moving && G.controls.enableDamping)) requestRender();
 }
 
 /* ---------- Ansicht / Sichtbarkeit ---------- */
@@ -1785,6 +1857,7 @@ function sceneBounds() {
 }
 function setView(kind) {
   if (!G.ok) return;
+  if (isEcht()) { H3.setView(kind); return; }
   const b = sceneBounds(), cy = (b.y0 + b.y1) / 2, ext = b.y1 - b.y0;
   const aspect = Math.max(0.5, G.camera.aspect || 1.5), fit = Math.tan(G.camera.fov * Math.PI / 360);
   if (kind === 'top') {
@@ -1804,6 +1877,7 @@ function setView(kind) {
 }
 function applyVisibility() {
   if (!G.ok) return;
+  if (isEcht()) { H3.applyVisibility(); return; }
   for (const f of FLOORS) {
     const g = G.floors[f.id], on = S.floor === 'ALL' || S.floor === f.id;
     g.visible = on;
@@ -1821,6 +1895,7 @@ function applyVisibility() {
 }
 function applyHighlight() {
   if (!G.ok) return;
+  if (echtAvailable() && H3.built) H3.applyHighlight();
   const hl = S.pinned || S.hl;
   for (const [id, m] of Object.entries(G.circMats)) {
     const on = !hl || id === hl;
@@ -1842,6 +1917,12 @@ function setupPicking(el) {
     down = null;
     const r = el.getBoundingClientRect();
     ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    if (isEcht()) {
+      const hit = H3.pick(ptr);
+      if (hit && hit.dev) { if (hit.dev.t === 'sw') H3.toggleSwitch(hit.dev, ptr); else if (hit.dev.t === 'li') H3.toggleLamp(hit.dev); showDeviceCard(hit.dev); }
+      else if (hit && hit.room) showRoomCard(hit.room); else hideCard();
+      return;
+    }
     ray.setFromCamera(ptr, G.camera);
     const visibleChain = o => { for (let p = o; p; p = p.parent) if (!p.visible) return false; return true; };
     const hits = ray.intersectObjects(G.pick, false).filter(h => visibleChain(h.object));
@@ -1957,6 +2038,13 @@ function showDeviceCard(d) {
     const cab = d.t === 'sw' ? `${CABLES[switchCable(d.kinds)]} (${switchCores(d.kinds)} Adern)` : CABLES[c.cable];
     rows += `<dt>Stromkreis</dt><dd><i class="cdot" data-cid="${d.c}" style="background:${circuitCss(d.c)}"></i>${esc(d.c)} · ${esc(c.name)}</dd>
     <dt>Schutz/Kabel</dt><dd class="mono">${esc(c.prot || 'Patchfeld')} · ${esc(cab)}</dd>`;
+  }
+  if (d.t === 'sw' && echtAvailable() && H3.built) {
+    const live = isEcht(), ch = H3.switchChannels(d);
+    const part = c => (c.lamps.length ? c.lamps.map(l => esc(l.d.label) + (live && l.on ? ' (an)' : '')).join(', ') : 'Lüfter/Gerät');
+    const txt = !ch.length || !ch.some(c => c.lamps.length) ? 'keine Leuchte (Gerät/Notschalter)'
+      : ch.length > 1 && ch.some((c, i) => c.lamps !== ch[0].lamps) ? ch.map(c => `Wippe ${c.side}: ${part(c)}`).join('<br>') : part(ch[0]);
+    rows += `<dt>Schaltet</dt><dd>${txt}</dd>`;
   }
   let note = d.note;
   if (d.t === 'sw') note = (note ? note + ' ' : '') + 'Schalterleitung sternförmig von der Abzweigdose des Raums zu jeder Schaltstelle; bei Wechsel-/Kreuzschaltungen werden die Korrespondierenden in der Abzweigdose verbunden. Adern: L + je Schaltstelle + PE.';
@@ -2283,6 +2371,7 @@ function walkTry(C, x, y) {
   return true;
 }
 function walkMove(dx, dy) {
+  if (W.echt) { H3.walk.move(dx, dy); return; }
   const C = W.col[W.floor], n = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 0.08));
   dx /= n; dy /= n;
   for (let k = 0; k < n; k++) {
@@ -2300,6 +2389,7 @@ function walkRoomSpot(rid, tx, ty) {
     if (!pointInPoly(P, x, y)) continue;
     const c = walkClearance(C, x, y);
     if (c < WALK.radius + 0.03) continue;
+    if (W.echt && !H3.walk.floorAt(R.floor, x, y)) continue;      // „Echt“: nicht über Treppenaugen
     const sc = tx == null ? Math.min(c, 0.9) - 0.12 * Math.hypot(x - cx, y - cy) : -Math.hypot(x - tx, y - ty);
     if (sc > bs) { bs = sc; best = { x, y }; }
   }
@@ -2434,19 +2524,31 @@ function buildWalkCeiling(fid) {
   return grp;
 }
 
+/* Begehungsdaten je Ansicht: „plan“ (Treppen als Bereich, Wechsel per E/Q) bzw. „echt“ (Treppen begehbar) */
+W.sets = {};
 function walkPrepare() {
-  if (W.ready) return;
-  for (const f of FLOORS) {
-    W.col[f.id] = buildWalkCollision(f.id);
-    W.targets[f.id] = buildWalkTargets(f.id);
-    const ceil = buildWalkCeiling(f.id);
-    G.walkCeil[f.id] = ceil; G.floors[f.id].add(ceil);
-    const xs = [], ys = [];
-    for (const R of W.col[f.id].rooms) R.nominal.forEach(([x, y]) => { xs.push(x); ys.push(y); });
-    W.mapB[f.id] = { x0: Math.min(...xs) - 0.2, x1: Math.max(...xs) + 0.2, y0: Math.min(...ys) - 0.2, y1: Math.max(...ys) + 0.2 };
+  const mode = isEcht() ? 'echt' : 'plan';
+  if (!W.sets[mode]) {
+    const set = { col: {}, targets: {}, stairs: {}, mapB: {}, entrance: null };
+    W.echt = mode === 'echt';
+    if (W.echt) H3.walk.prepare();
+    for (const f of FLOORS) {
+      set.col[f.id] = W.echt ? H3.walk.col()[f.id] : buildWalkCollision(f.id);
+      set.targets[f.id] = W.echt ? H3.walk.targets(f.id) : buildWalkTargets(f.id);
+      if (!W.echt) { const ceil = buildWalkCeiling(f.id); G.walkCeil[f.id] = ceil; G.floors[f.id].add(ceil); }
+      const xs = [], ys = [];
+      for (const R of set.col[f.id].rooms) R.nominal.forEach(([x, y]) => { xs.push(x); ys.push(y); });
+      set.mapB[f.id] = { x0: Math.min(...xs) - 0.2, x1: Math.max(...xs) + 0.2, y0: Math.min(...ys) - 0.2, y1: Math.max(...ys) + 0.2 };
+    }
+    W.col = set.col; W.stairs = set.stairs;
+    buildWalkStairs();
+    set.entrance = walkEntrance();
+    if (W.echt) H3.walk.setEntrance(set.entrance);
+    W.sets[mode] = set;
   }
-  buildWalkStairs();
-  W.entrance = walkEntrance();
+  const set = W.sets[mode];
+  W.echt = mode === 'echt';
+  W.col = set.col; W.targets = set.targets; W.stairs = set.stairs; W.mapB = set.mapB; W.entrance = set.entrance;
   W.ready = true;
 }
 
@@ -2472,13 +2574,14 @@ function walkSetFloor(fid) {
 }
 function walkPlace(p) {
   W.x = p.x; W.y = p.y; W.yaw = p.yaw; W.pitch = p.pitch || 0; W.eye = walkEyeAt(p.fid, p.x, p.y); W.tween = null;
+  W.zf = FLOOR[p.fid].z; W.onStair = null;
   if (p.fid !== W.floor || S.floor !== p.fid) walkSetFloor(p.fid);
   W.dirty = true; requestRender();
 }
 function walkTeleport(p) {
   if (W.tween) return;
   if (reduceMotion) { walkPlace(p); return; }
-  const x0 = W.x, y0 = W.y, z0 = FLOOR[W.floor].z + W.eye, yaw0 = W.yaw;
+  const x0 = W.x, y0 = W.y, z0 = (W.echt && W.zf != null ? W.zf : FLOOR[W.floor].z) + W.eye, yaw0 = W.yaw;
   W.x = p.x; W.y = p.y; W.pitch = p.pitch || 0; W.eye = walkEyeAt(p.fid, p.x, p.y);
   const change = p.fid !== W.floor;
   W.tween = {
@@ -2524,7 +2627,7 @@ function walkFrame(now) {
     W.yaw = tw.yaw0 + tw.dyaw * e;
     walkCamera(tw.x0 + (tw.x1 - tw.x0) * e, tw.z0 + (tw.z1 - tw.z0) * e, tw.y0 + (tw.y1 - tw.y0) * e);
     if (t < 1) return true;
-    W.tween = null; W.yaw = tw.yaw1; W.dirty = true;
+    W.tween = null; W.yaw = tw.yaw1; W.dirty = true; W.zf = FLOOR[W.floor].z; W.onStair = null;
   }
   let busy = W.joy.id !== null;
   const k = W.keys;
@@ -2539,9 +2642,9 @@ function walkFrame(now) {
     walkMove((c * f - sn * s) * v, (sn * f + c * s) * v);
     busy = true;
   }
-  const eyeT = walkEyeAt(W.floor, W.x, W.y);
+  const eyeT = W.echt ? H3.walk.eye() : walkEyeAt(W.floor, W.x, W.y);
   if (Math.abs(eyeT - W.eye) > 0.002) { W.eye += (eyeT - W.eye) * Math.min(1, dt * 8); busy = true; }
-  walkCamera(W.x, FLOOR[W.floor].z + W.eye, W.y);
+  walkCamera(W.x, (W.echt ? W.zf : FLOOR[W.floor].z) + W.eye, W.y);
   if (busy || W.dirty || W.pickPending) walkHud(now);
   W.dirty = false;
   return busy || W.pickPending;
@@ -2629,43 +2732,62 @@ function walkPick(nx, ny, out) {
   WV.ndc.set(nx, ny); rc.setFromCamera(WV.ndc, G.camera);
   const ray = rc.ray;
   let wall = WALK.reach;
-  if (S.layers.walls) {
+  if (W.echt || S.layers.walls) {
     W.hits.length = 0; rc.far = WALK.reach;
-    rc.intersectObject(G.wallFill[W.floor], false, W.hits);
+    if (W.echt) rc.intersectObjects(H3.walk.occ(W.floor), false, W.hits); else rc.intersectObject(G.wallFill[W.floor], false, W.hits);
     if (W.hits.length) wall = W.hits[0].distance;
   }
-  const lim = wall + 0.012;
+  const lim = wall + 0.012, limCable = W.echt ? wall + 0.09 : lim;
   let bestT = Infinity, kind = '', dev = null, cid = null, h = 0, key = '';
   for (const it of T.devs) {
-    if (it.d.t === 'net' ? !S.layers.net : !S.layers.devices) continue;
+    if (!devOn(it.d)) continue;
     const t = WV.tmp.subVectors(it.p, ray.origin).dot(ray.direction);
     if (t <= 0.05 || t > lim || t >= bestT || ray.distanceSqToPoint(it.p) > it.r * it.r) continue;
     bestT = t; kind = 'dev'; dev = it.d; cid = it.d.c; h = it.d.h; key = it.d.id;
   }
   for (const it of T.ads) {
-    if (!cableLayerOn(it.cid)) continue;
+    if (!cabOn(it.cid)) continue;
     const t = WV.tmp.subVectors(it.p, ray.origin).dot(ray.direction);
-    if (t <= 0.05 || t > lim || t >= bestT || ray.distanceSqToPoint(it.p) > 0.0036) continue;
+    if (t <= 0.05 || t > limCable || t >= bestT || ray.distanceSqToPoint(it.p) > 0.0036) continue;
     bestT = t; kind = 'ad'; dev = null; cid = it.cid; h = it.h; key = 'a' + it.cid + it.i;
   }
   const sg = T.segs;
   for (let i = 0, n = 0; i < sg.length; i += 6, n++) {
     const c = T.segCid[n];
-    if (!cableLayerOn(c)) continue;
+    if (!cabOn(c)) continue;
     WV.v0.set(sg[i], sg[i + 1], sg[i + 2]); WV.v1.set(sg[i + 3], sg[i + 4], sg[i + 5]);
     const d2 = ray.distanceSqToSegment(WV.v0, WV.v1, WV.pr, WV.ps);
     const t = WV.pr.distanceTo(ray.origin), tol = 0.025 + 0.008 * t;
-    if (d2 > tol * tol || t <= 0.05 || t > lim || t >= bestT - (kind === 'dev' ? 0.25 : 0)) continue;
+    if (d2 > tol * tol || t <= 0.05 || t > limCable || t >= bestT - (kind === 'dev' ? 0.25 : 0)) continue;
     bestT = t; kind = 'cable'; dev = null; cid = c; h = WV.ps.y - fz; key = 'c' + c;
   }
-  out.kind = kind; out.dev = dev; out.cid = cid; out.h = h; out.key = key;
-  if (kind === 'dev') out.text = `${dev.label}${dev.c ? ' · ' + dev.c : ''} · ${dev.mount === 'ceil' ? 'Decke, ' : ''}${fmt(dev.h, 2)} m über FFB`;
+  out.kind = kind; out.dev = dev; out.cid = cid; out.h = h; out.key = key; out.nx = nx; out.ny = ny;
+  if (kind === 'dev') out.text = `${dev.label}${dev.c ? ' · ' + dev.c : ''} · ${dev.mount === 'ceil' ? 'Decke, ' : ''}${fmt(dev.h, 2)} m über FFB${W.echt && (dev.t === 'sw' || dev.t === 'li') ? (W.touch ? ' · Tippen: Licht' : ' · Klick/E: Licht') : ''}`;
   else if (kind) {
     const meta = circuitMeta(cid);
     out.text = `${kind === 'ad' ? 'Abzweigdose' : 'Leitung'} ${cid}${meta ? ' · ' + meta.name : ''} · ${fmt(h, 2)} m über FFB`;
   } else out.text = '';
   return out;
 }
+/* „Echt“: Schalter/Leuchte unter dem Fadenkreuz schalten; sonst Details */
+let toastTimer = 0;
+function walkToast(text) {
+  const el = $('walkToast'); el.textContent = text;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { el.textContent = ''; }, 1400);
+}
+function walkUse(t, onlyToggle) {
+  if (W.echt && t && t.kind === 'dev' && (t.dev.t === 'sw' || t.dev.t === 'li')) {
+    const on = t.dev.t === 'sw' ? H3.toggleSwitch(t.dev, { x: t.nx || 0, y: t.ny || 0 }) : H3.toggleLamp(t.dev);
+    if (on !== null) { walkToast(on ? 'Licht an' : 'Licht aus'); return true; }
+  }
+  if (!onlyToggle) walkActivate(t);
+  return false;
+}
+function devOn(d) {
+  if (W.echt) return (d.t === 'net' ? H3.layers.net : H3.layers.devices) && (H3.xray || !H3.isHidden(d));   // hinter Einbaugeräten nur im Röntgenblick
+  return d.t === 'net' ? S.layers.net : S.layers.devices;
+}
+function cabOn(c) { return W.echt ? H3.xray : cableLayerOn(c); }
 function walkActivate(t) {
   if (!t || !t.kind) return;
   if (document.pointerLockElement) document.exitPointerLock();
@@ -2674,9 +2796,9 @@ function walkActivate(t) {
 }
 
 /* ---------- Ein- und Austritt ---------- */
-function toggleWalk() { if (W.active) exitWalk(); else enterWalk(); }
-function enterWalk() {
-  if (!G.ok || W.active) return;
+function toggleWalk() { if (modeBusy) return; if (W.active) exitWalk(); else enterWalk(); }
+function enterWalk(opts = {}) {
+  if (!G.ok || W.active || (modeBusy && !opts.fromMode)) return;
   walkPrepare();
   const el = G.renderer.domElement, v = $('viewer');
   W.saved = { pos: G.camera.position.clone(), target: G.controls.target.clone(), fov: G.camera.fov, floor: S.floor, explode: S.explode, pinned: S.pinned, explodeText: $('explodeOut').textContent };
@@ -2689,15 +2811,25 @@ function enterWalk() {
   $('explode').disabled = true; $('explodeWrap').setAttribute('aria-disabled', 'true');
   $('explodeOut').textContent = '0 m (Begehung)';
   hideCard();
-  for (const f of FLOORS) G.wallFill[f.id].material = G.mats.walkWall;
-  W.floorOpacity = G.mats.floor.opacity; G.mats.floor.opacity = 1; G.mats.floor.depthWrite = true;
-  G.walkLight.intensity = 0.32;
+  if (!W.echt) {
+    for (const f of FLOORS) G.wallFill[f.id].material = G.mats.walkWall;
+    W.floorOpacity = G.mats.floor.opacity; G.mats.floor.opacity = 1; G.mats.floor.depthWrite = true;
+    G.walkLight.intensity = 0.32;
+  } else { H3.endIntro(); $('introCard').hidden = true; }
   walkFov(); walkThemeChanged();
   let start = null;
   if (W.lastRoom && RI[W.lastRoom]) start = walkRoomPose(W.lastRoom, W.lastDev && W.lastDev.room === W.lastRoom ? W.lastDev : null);
+  if (opts.door) start = null;
+  if (opts.pose) start = opts.pose;
   start = start || W.entrance || walkRoomPose(Object.values(RI).find(R => R.floor === 'EG' && R.room.source).id);
   W.floor = null;
   walkPlace(start);
+  if (opts.door && start === W.entrance && !reduceMotion) {   // „Hineingehen“: von draußen durch die Haustür
+    const op = OPENINGS.find(o => o.id === 'egd_haus');
+    W.x = (op.a + op.b) / 2; W.y = op.at + 1.6; W.yaw = -Math.PI / 2;
+    walkTeleport({ ...start });
+    W.tween.dur = 1.6;
+  }
   el.setAttribute('role', 'application');
   el.setAttribute('aria-label', 'Begehungsmodus: W A S D oder Pfeiltasten laufen, Pfeil links/rechts drehen, E/Q Treppe, Leertaste Details, Esc beenden');
   el.focus({ preventScroll: true });
@@ -2714,9 +2846,11 @@ function exitWalk() {
   v.classList.remove('walking');
   $('btnWalk').setAttribute('aria-pressed', 'false');
   $('walkHelp').hidden = true; $('walkStairs').hidden = true; $('walkTarget').hidden = true;
-  for (const f of FLOORS) G.wallFill[f.id].material = G.mats.wall;
-  G.mats.floor.opacity = W.floorOpacity; G.mats.floor.depthWrite = false;
-  G.walkLight.intensity = 0;
+  if (!W.echt) {
+    for (const f of FLOORS) G.wallFill[f.id].material = G.mats.wall;
+    G.mats.floor.opacity = W.floorOpacity; G.mats.floor.depthWrite = false;
+    G.walkLight.intensity = 0;
+  }
   hideCard();
   if (S.pinned !== sv.pinned) {                   // Pinnung von vor der Begehung, ohne Geschosswechsel
     S.pinned = sv.pinned;
@@ -2807,10 +2941,11 @@ function setupWalk(el) {
 
   el.addEventListener('keydown', e => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
-    if (e.code === 'KeyB') { e.preventDefault(); toggleWalk(); return; }
+    if (e.code === 'KeyB') { e.preventDefault(); if (!e.repeat) toggleWalk(); return; }
+    if (e.code === 'KeyR' && isEcht()) { e.preventDefault(); if (!e.repeat) setXray(!H3.xray); return; }
     if (!W.active) return;
     if (WALK_KEYS.has(e.code)) { e.preventDefault(); W.keys.add(e.code); requestRender(); }
-    else if (e.code === 'KeyE' || e.code === 'PageUp') { e.preventDefault(); walkStair(1); }
+    else if (e.code === 'KeyE' || e.code === 'PageUp') { e.preventDefault(); if (e.repeat && e.code === 'KeyE') return; if (!(e.code === 'KeyE' && walkUse(W.tgt, true))) walkStair(1); }
     else if (e.code === 'KeyQ' || e.code === 'PageDown') { e.preventDefault(); walkStair(-1); }
     else if (e.code === 'Space' || e.key === 'Enter') { e.preventDefault(); walkActivate(W.tgt); }
   });
@@ -2840,7 +2975,7 @@ function setupWalk(el) {
   });
   el.addEventListener('pointerup', e => {
     if (!W.active) return;
-    if (W.locked) { if (e.button === 0) walkActivate(W.tgt); return; }
+    if (W.locked) { if (e.button === 0) walkUse(W.tgt); return; }
     const d = W.drag;
     if (!d || d.id !== e.pointerId) return;
     W.drag = null;
@@ -2853,7 +2988,7 @@ function setupWalk(el) {
     }
     const r = el.getBoundingClientRect();
     walkPick((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1, W.tap);
-    if (W.tap.kind) walkActivate(W.tap); else hideCard();
+    if (W.tap.kind) walkUse(W.tap); else hideCard();
   });
   el.addEventListener('pointercancel', () => { W.drag = null; });
   document.addEventListener('pointerlockchange', () => {
@@ -2898,6 +3033,83 @@ function setFloor(fid) {
 function refreshColors() {
   document.querySelectorAll('[data-cid]').forEach(el => { el.style.background = circuitCss(el.dataset.cid); });
   applyThemeColors();
+  if (echtAvailable() && H3.built) H3.recolor();
+}
+/* ---------- Ansicht „Echt“ / „Plan“ ---------- */
+const LAYER_IDS = { lyWalls: 'walls', lyZones: 'zones', lyCables: 'cables', lyDevices: 'devices', lyNet: 'net', lySketch: 'sketch', lyRoof: 'roof' };
+const PLAN_HINT = 'Ziehen: drehen · Rad/Pinch: Zoom · Rechts/2 Finger: verschieben<br>Klick auf Gerät oder Boden: Details · B (3D-Ansicht fokussiert): Begehen';
+const ECHT_HINT = 'Ziehen: drehen · Rad/Pinch: Zoom · Klick auf Schalter: Licht<br>Klick auf Gerät/Boden: Details · R: Röntgen · B: Begehen';
+const PLAN_ZONE = 'Installationszonen erscheinen im gewählten Geschoss (nicht bei „Alle“). Skizze Kollege: aus den Planfotos übertragen, Lage ±20 cm.';
+const ECHT_ZONE = 'Ansicht „Echt“: Wände, Zonen und Skizze gibt es nur im Plan. „Röntgen“ zeigt die Leitungen in der Wand, „Dach“ blendet das Dach aus.';
+function syncModeUi() {
+  const echt = isEcht();
+  $('viewer').classList.toggle('echt', echt); $('panel').classList.toggle('echt', echt);
+  $('btnEcht').setAttribute('aria-checked', String(echt)); $('btnPlan').setAttribute('aria-checked', String(!echt));
+  $('btnEcht').tabIndex = echt ? 0 : -1; $('btnPlan').tabIndex = echt ? -1 : 0;
+  for (const [id, k] of Object.entries(LAYER_IDS)) {
+    const el = $(id), planOnly = k === 'walls' || k === 'zones' || k === 'sketch';
+    el.disabled = echt && planOnly;
+    el.closest('label').style.opacity = el.disabled ? '0.45' : '';
+    el.checked = echt && !planOnly ? (k === 'cables' ? H3.xray : H3.layers[k]) : S.layers[k];
+  }
+  $('lyCables').nextSibling.textContent = echt ? ' Röntgen: Leitungen' : ' Neuplanung Leitungen';
+  $('viewHint').innerHTML = echt ? ECHT_HINT : PLAN_HINT;
+  $('zoneHint').textContent = echt ? ECHT_ZONE : PLAN_ZONE;
+  const ex = echt ? H3.explode : S.explode;
+  if (!W.active) { $('explode').value = String(ex); $('explodeOut').textContent = fmt(ex) + ' m'; }
+  if (echt) {
+    $('btnXray').setAttribute('aria-pressed', String(H3.xray));
+    $('btnNight').setAttribute('aria-pressed', String(!H3.day));
+    $('btnQuality').textContent = 'Qualität: ' + (H3.quality === 'hi' ? 'hoch' : 'niedrig');
+    if (H3.hidden.length) $('hiddenList').textContent = 'Verdeckt (Röntgenblick zeigt sie): ' + H3.hidden.join(' · ') + '.';
+  }
+}
+let modeBusy = false;
+async function setMode(mode, opts = {}) {
+  if (modeBusy || !G.ok) return;
+  if (mode === 'echt' && !echtAvailable()) return;
+  if ((mode === 'echt') === isEcht()) { syncModeUi(); return; }
+  modeBusy = true;
+  const wasWalking = W.active, room = W.room ? W.room.id : null;
+  if (wasWalking) exitWalk();
+  if (mode === 'echt' && !H3.built) {
+    $('loading3d').hidden = false;
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  }
+  let failed = false;
+  if (mode === 'echt') { if (!H3.setMode(true)) { mode = 'plan'; failed = true; } }
+  else if (isEcht()) H3.setMode(false);
+  $('loading3d').hidden = true;
+  if (failed) {
+    $('btnPlan').focus(); $('btnEcht').disabled = true; $('btnEcht').title = 'Ansicht „Echt“ konnte nicht aufgebaut werden';
+    $('echtNote').textContent = 'Die Ansicht „Echt“ konnte auf diesem Gerät nicht aufgebaut werden; der Plan bleibt voll nutzbar.';
+  }
+  syncModeUi();
+  if (opts.user && !failed) { try { localStorage.setItem('ep4.mode', mode); } catch (e) { /* Komfortfunktion */ } }
+  applyVisibility(); applyHighlight(); setView(S.view || 'iso');
+  let seen = false;
+  try { seen = localStorage.getItem('ep4.intro') === '1'; } catch (e) { /* Komfortfunktion */ }
+  if (mode === 'echt' && opts.intro) { H3.startIntro(); if (seen) $('introCard').hidden = true; } else $('introCard').hidden = true;
+  if (wasWalking) { W.lastRoom = room; W.lastDev = null; enterWalk({ fromMode: true }); }
+  modeBusy = false;
+}
+function setXray(v) {
+  if (!isEcht()) return;
+  H3.setXray(v);
+  $('btnXray').setAttribute('aria-pressed', String(v)); $('lyCables').checked = v;
+}
+function closeIntroCard() {
+  if (echtAvailable()) H3.endIntro();
+  $('introCard').hidden = true;
+  try { localStorage.setItem('ep4.intro', '1'); } catch (e) { /* Komfortfunktion */ }
+}
+async function goInside() {
+  if (!isEcht()) await setMode('echt', { user: true });
+  if (!isEcht()) return;
+  closeIntroCard();
+  if (W.active) return;
+  W.lastRoom = null; W.lastDev = null;
+  enterWalk({ door: true });
 }
 function bindControls() {
   document.querySelectorAll('input[name="floor"]').forEach(r => r.addEventListener('change', () => {
@@ -2905,11 +3117,33 @@ function bindControls() {
     if (r.value === 'ALL') { exitWalk(); setFloor('ALL'); } else walkGotoFloor(r.value);
   }));
   $('explode').addEventListener('input', e => {
-    S.explode = parseFloat(e.target.value); $('explodeOut').textContent = fmt(S.explode) + ' m';
-    applyExplode();
+    const v = parseFloat(e.target.value); $('explodeOut').textContent = fmt(v) + ' m';
+    if (isEcht()) { H3.setExplode(v); return; }
+    S.explode = v; applyExplode();
   });
-  const map = { lyWalls: 'walls', lyZones: 'zones', lyCables: 'cables', lyDevices: 'devices', lyNet: 'net', lySketch: 'sketch', lyRoof: 'roof' };
-  for (const [id, k] of Object.entries(map)) $(id).addEventListener('change', e => { S.layers[k] = e.target.checked; applyVisibility(); });
+  for (const [id, k] of Object.entries(LAYER_IDS)) $(id).addEventListener('change', e => {
+    if (isEcht()) { if (k === 'cables') setXray(e.target.checked); else H3.setLayer(k, e.target.checked); return; }
+    S.layers[k] = e.target.checked; applyVisibility();
+  });
+  $('btnEcht').addEventListener('click', () => setMode('echt', { user: true }));
+  $('btnPlan').addEventListener('click', () => setMode('plan', { user: true }));
+  $('modeSeg').addEventListener('keydown', e => {                  // Radiogruppe: Pfeiltasten wechseln
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+    e.preventDefault();
+    const to = isEcht() ? 'plan' : 'echt';
+    if (to === 'echt' && $('btnEcht').disabled) return;
+    setMode(to, { user: true }).then(() => $(to === 'echt' ? 'btnEcht' : 'btnPlan').focus());
+  });
+  $('btnMore').addEventListener('click', () => {
+    const open = !$('viewer').classList.contains('more-open');
+    $('viewer').classList.toggle('more-open', open); $('btnMore').setAttribute('aria-expanded', String(open));
+  });
+  $('btnXray').addEventListener('click', () => setXray(!H3.xray));
+  $('btnNight').addEventListener('click', () => { H3.setDay(!H3.day); $('btnNight').setAttribute('aria-pressed', String(!H3.day)); });
+  $('btnQuality').addEventListener('click', () => { H3.setQuality(H3.quality === 'hi' ? 'lo' : 'hi'); syncModeUi(); });
+  $('btnInside').addEventListener('click', goInside);
+  $('btnInside2').addEventListener('click', goInside);
+  $('btnSkip').addEventListener('click', () => { closeIntroCard(); G.renderer.domElement.focus({ preventScroll: true }); });
   const viewBtns = { btnIso: 'iso', btnTop: 'top' };
   for (const [id, v] of Object.entries(viewBtns)) $(id).addEventListener('click', () => {
     S.view = v; Object.keys(viewBtns).forEach(b => $(b).setAttribute('aria-pressed', String(b === id))); setView(v);
@@ -2919,6 +3153,7 @@ function bindControls() {
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
     if (W.active) { walkEscape(); return; }
+    if (isEcht() && !$('introCard').hidden) { closeIntroCard(); return; }
     if ($('viewer').classList.contains('fs-fallback') && $('infocard').hidden) { setFallbackFs(false); return; }
     hideCard(); if (S.pinned) pinCircuit(null);
   });
@@ -2952,11 +3187,19 @@ async function init() {
       new Promise(r => setTimeout(r, 1500)),
     ]);
   } catch (e) { /* Fallback-Schrift */ }
-  if (initScene()) { setFloor(start); setupWalk(G.renderer.domElement); }
-  else {
+  if (initScene()) {
+    setFloor(start); setupWalk(G.renderer.domElement);
+    let mode = 'echt';
+    try { const m = localStorage.getItem('ep4.mode'); if (m === 'plan' || m === 'echt') mode = m; } catch (e) { /* Komfortfunktion */ }
+    if (!echtAvailable()) { mode = 'plan'; $('btnEcht').disabled = true; $('btnEcht').title = 'Ansicht „Echt“ nicht verfügbar'; }
+    syncModeUi();
+    if (mode === 'echt') setMode('echt', { intro: true });
+  } else {
+    $('btnEcht').disabled = true;
     $('btnWalk').disabled = true; $('btnWalk').title = 'Begehung braucht WebGL';
     $('btnFull').disabled = true; $('btnFull').title = 'Vollbild braucht WebGL'; const inp = document.querySelector(`input[name="floor"][value="${start}"]`); if (inp) inp.checked = true; }
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 </script>
+<script src="haus3d.js"></script>
