@@ -273,12 +273,12 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
   <header class="head">
     <div>
       <h1>Elektroplan Haus 4</h1>
-      <div class="sub">Neuinstallation · KG bis DG · Ausstattung nach Plan des Eigentümers · Planungsstand 11.11.2026</div>
+      <div class="sub">Neuinstallation · KG bis DG · Ausstattung nach Plan des Bauherrn · Planungsstand 11.11.2026</div>
     </div>
     <div class="titleblock" aria-label="Schriftfeld">
       <span>Objekt</span><span>Reihenhaus, Haus 4</span>
       <span>Grundlage</span><span>DIN 18015-1/-2/-3 · RAL-RG 678</span>
-      <span>Ausstattung</span><span>nach Plan des Eigentümers</span>
+      <span>Ausstattung</span><span>nach Plan des Bauherrn</span>
       <span>Verteiler</span><span>HV · UV-EG · UV-OG · UV-DG</span>
       <span>Blatt</span><span>3D-Übersicht + Listen</span>
     </div>
@@ -435,24 +435,28 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
       <header><h2 id="h-notes">Hinweise &amp; offene Punkte</h2><span class="num">04</span></header>
       <ol>
         <li><strong>Fachbetrieb.</strong> Arbeiten am Netz, am Zählerschrank und die Inbetriebnahme nur durch einen im Netzbetreiber-Installateurverzeichnis eingetragenen Elektro-Fachbetrieb (NAV § 13). Eigenleistung (Schlitze, Dosen, Leerrohre, Kabel ziehen) vorher mit dem Betrieb absprechen, der abnimmt und misst (Prüfprotokoll nach VDE 0100-600).</li>
-        <li><strong>Grundlage der Ausstattung.</strong> Steckdosen, Netzwerkdosen, Leuchten, Schalter, Rollladen- und Thermostat-Anschlüsse, Starkstromanschlüsse und die Aufteilung der Stromkreise folgen dem Plan des Eigentümers. Wo der Plan eine Spanne nennt („6–8 Steckdosen“), ist der obere Wert umgesetzt; die Spanne steht in der Infokarte der Geräte. Höhen laut Plan: Steckdosen 0,30 m, Schalter 1,05 m, Rollladen-Bedienstellen 1,10 m über Oberkante Fertigfußboden; Dosen über Arbeitsplatte und Waschtisch höher.</li>
-        <li><strong>Verteiler je Geschoss.</strong> Hauptverteiler HV im KG-Flur an der Wand zum Heizungsraum (Zählerplatz, Hauptschalter, Überspannungsschutz Typ 1+2, mindestens 30 % Reserve). Von dort führt sternförmig je eine 5-adrige Hauptleitung durch den Steigschacht zu UV-EG, UV-OG und UV-DG; jeder Unterverteiler versorgt nur sein Geschoss. Der Plan nennt NYM-J 5×6 für den UV-EG; hier für alle drei angesetzt – Querschnitt, Vorsicherung und Selektivität legt der Elektrofachbetrieb fest. Der UV-OG sitzt über dem UV-EG (14 cm versetzt, damit er nicht Rücken an Rücken mit dem Schalter in Büro 1 liegt). Im DG steht darüber keine Wand, deshalb sitzt der UV-DG an der Südwand des Lofts.</li>
-        <li><strong>Fehlerstromschutz.</strong> Je Verteiler nach Plan aufgeteilt: RCD 1 für Bäder und Feuchträume, RCD 2 für Licht und allgemeine Steckdosen, RCD 3 für Büros, Küche und Großverbraucher; Außensteckdosen (Terrasse, Balkon) haben einen eigenen FI/LS. So bleibt bei einem Fehler nicht das ganze Geschoss dunkel. Alle Steckdosenkreise liegen hinter 30 mA.</li>
+        <li><strong>Grundlage der Ausstattung.</strong> Steckdosen, Netzwerkdosen, Leuchten, Schalter, Rollladen- und Thermostat-Anschlüsse, Starkstromanschlüsse und die Aufteilung der Stromkreise folgen dem Plan des Bauherrn. Wo der Plan eine Spanne nennt („6–8 Steckdosen“), ist der obere Wert umgesetzt; die Spanne steht in der Infokarte der Geräte. Höhen laut Plan: Steckdosen 0,30 m, Schalter 1,05 m, Rollladen-Bedienstellen 1,10 m über Oberkante Fertigfußboden; Dosen über Arbeitsplatte und Waschtisch höher. Was nicht im Plan steht (Lüfter, Rauchwarnmelder, Klingel, Potentialausgleich, Außenleuchten an Kelleraußentreppe, Eingang und Balkon, Ausstattung von Öllager und Abstellraum im DG), ist in der Infokarte als „Ergänzung (nicht im Plan des Bauherrn)“ gekennzeichnet.</li>
+        <li><strong>Verteiler je Geschoss.</strong> Hauptverteiler HV im KG-Flur an der Wand zum Heizungsraum (Zählerplatz, Hauptschalter, Überspannungsschutz Typ 1+2, mindestens 30 % Reserve). Von dort führt sternförmig je eine 5-adrige Hauptleitung durch den Steigschacht zu jedem Unterverteiler; jeder Unterverteiler versorgt nur sein Geschoss. Der Plan nennt NYM-J 5×6 für den UV-EG; hier für alle Hauptleitungen angesetzt – Querschnitt, Vorsicherung und Selektivität legt der Elektrofachbetrieb fest. Der UV-OG sitzt über dem UV-EG (<span id="uvOffset">wenige cm</span> versetzt, damit er nicht Rücken an Rücken mit Schalter und Thermostat in Büro 1 liegt). Im DG steht darüber keine Wand, deshalb sitzt der UV-DG an der Wand des Lofts zum Abstellraum. Alle Unterverteiler sind als Aufputz-Verteiler dargestellt (siehe offene Punkte).</li>
+        <li><strong>Fehlerstromschutz.</strong> Je Verteiler nach Plan aufgeteilt: RCD 1 für Bäder und Feuchträume, RCD 2 für Licht und allgemeine Steckdosen, RCD 3 für die Büros bzw. die Küchengeräte; die Küche hat zusätzlich RCD 4 für Arbeitsplatte und Dunstabzug, der Kühlschrank einen eigenen FI/LS. Außenkreise (Terrasse und Eingang, Balkon, Kelleraußentreppe) haben je einen eigenen FI/LS, auch die Außenleuchten hängen daran. So bleibt bei einem Fehler nicht das ganze Geschoss dunkel. Alle Steckdosenkreise liegen hinter 30 mA. Für die Wärmepumpe gelten Typ und Bemessung des Fehlerstromschutzes laut Hersteller (bei Inverter-Geräten meist Typ B oder F). Die in der Belegung genannten Bemessungsströme der RCDs sind ein Vorschlag.</li>
         <li><strong>Vor dem Schlitzen.</strong> Statik klären: tragende Wände 24 cm nicht ohne Freigabe schwächen. Keine waagerechten Schlitze außerhalb der Installationszonen, Schlitztiefen nach DIN 1053 / Eurocode 6 (DIN EN 1996-1-1/NA) einhalten. Leitungen nur senkrecht oder waagerecht, nie diagonal.</li>
-        <li><strong>Bad und Dusche.</strong> Schutzbereiche nach VDE 0100-701 beachten: keine Steckdose in Bereich 0, 1 und 2. Im Bad (Dusche/WC) sitzen die Waschtisch-Steckdosen außerhalb des 0,60 m breiten Bereichs 2 neben der Wanne; in der separaten Dusche außerhalb von 0,60 m neben der Duschwanne (angenommen am Westende des Raums). Der Abstand steht in der Geräte-Infokarte. Bad und Dusche laufen über den eigenen RCD 1 im UV-OG. Die Rollladen-Bedienstelle des Badfensters sitzt an der Tür, weil das Fenster über der Wanne liegt. Die Dusche hat kein Fenster: eine Lüftung ist im Plan nicht vorgesehen und sollte ergänzt werden.<br><span id="bathCheck" class="small"></span></li>
-        <li><strong>Häufung (VDE 0298-4).</strong> Im Steigschacht neben der Treppe laufen die drei Hauptleitungen, die Netzwerkrohre und die Schalterleitung der Kellertreppe gemeinsam. Hauptleitungen je in einem eigenen Leerrohr M32 mit Abstand; die Spuren in der oberen Installationszone liegen 1,5 cm auseinander. Weil jedes Geschoss seinen eigenen Verteiler hat, laufen keine Endstromkreise mehr durch die Decken – einzige Ausnahme sind die Schalterleitungen der Treppenlichter (Kellertreppe oben im EG, Dachtreppe unten im OG); sie gehören zum Lichtkreis des Geschosses, in dem die Leuchte hängt.</li>
-        <li><strong>Daten getrennt von Energie.</strong> Alle Cat-7-Strecken laufen sternförmig zum zentralen Patchpanel im Medienfeld des HV (EG, OG und DG über den Steigschacht), je Doppeldose ein Leerrohr M25. 230-V-Leitungen und Datenleitungen liegen in getrennten Leerrohren und Schlitzen.</li>
-        <li><strong>Überspannungsschutz.</strong> HV: Typ 1+2. Die Hauptleitung zum UV-DG ist rund 10 m lang, deshalb dort zusätzlich Typ 2; für UV-EG und UV-OG entscheidet der Fachbetrieb nach der tatsächlichen Leitungslänge.</li>
-        <li><strong>PV-Vorbereitung.</strong> Vom HV zwei Leerrohre M40 bis unter das Dach bzw. zum geplanten Wechselrichter: „PV DC“ ausschließlich für die DC-Solarleitungen (getrennt von allen AC-Leitungen, möglichst kurze Strecke) und „PV PE/COM“ für den Erdungsleiter (mindestens 16 mm² Cu) und Kommunikationsleitungen. Eigene Erdungsschiene im HV. In der Materialliste enthalten, im Modell nicht gezeichnet.</li>
-        <li><strong>Schalterleitungen.</strong> Von der Abzweigdose sternförmig zu jeder Schaltstelle. Adern: L + je Schaltstelle (Aus +1, Dimmer +1, Wechsel +2, Kreuz +4, Serie +2, Kontroll +1 und N) + PE → NYM-J 3×, 4×, 5× oder 7×1,5; in der Materialliste getrennt aufgeführt. LED-Spots (Wohnzimmer, Küche) sind dimmbar und werden am Dimmer an der Tür geschaltet; Leuchten mit Bewegungsmelder (Windfang, Ankleide, Außenleuchten) haben keinen Schalter. In beiden Schlafzimmern Wechselschaltung von Tür und Bett.</li>
+        <li><strong>Bad und Dusche.</strong> Schutzbereiche nach VDE 0100-701 beachten: keine Steckdose in Bereich 0, 1 und 2 (Bereich 2 reicht 0,60 m neben Wanne bzw. Duschwanne, bis 2,25 m Höhe). Die Lage der Duschwanne in der separaten Dusche ist eine Annahme (an der Schmalseite gegenüber der Tür), die Maße der Bestandspläne sind nur auf etwa 20 cm genau. Darum gilt hier: weniger als 20 cm Luft zu Bereich 2 heißt „knapp – vor Ort messen“. Spiegelleuchten sind als IP44-Leuchten vorgesehen. Bad und Dusche laufen über den eigenen RCD 1 im UV-OG. Die Rollladen-Bedienstelle des Badfensters sitzt beim Lichtschalter, weil das Fenster über der Wanne liegt. Die Dusche hat kein Fenster: eine Lüftung ist im Plan nicht vorgesehen und sollte ergänzt werden.<br><span id="bathCheck" class="small"></span></li>
+        <li><strong>Türen.</strong> Schalter und Bedienstellen sitzen auf der Schlossseite der Tür; hinter einem geöffneten Türblatt liegt kein Wandgerät. Das wird anhand der Türblätter der Ansicht „Echt“ automatisch geprüft.<br><span id="doorCheck" class="small"></span></li>
+        <li><strong>Häufung (VDE 0298-4).</strong> Im Steigschacht neben der Treppe laufen die Hauptleitungen, die Netzwerkrohre und die Schalterleitung der Kellertreppe gemeinsam. Hauptleitungen je in einem eigenen Leerrohr M32 mit Abstand; die Spuren in der oberen Installationszone liegen 1,5 cm auseinander. Weil jedes Geschoss seinen eigenen Verteiler hat, laufen keine Endstromkreise mehr durch die Decken – einzige Ausnahme sind die Schalterleitungen der Treppenlichter (Kellertreppe oben im EG, Dachtreppe unten im OG); sie gehören zum Lichtkreis des Geschosses, in dem die Leuchte hängt.</li>
+        <li><strong>Daten getrennt von Energie.</strong> Alle Cat-7-Strecken laufen sternförmig zum zentralen Patchfeld im Medienfeld des HV (EG, OG und DG über den Steigschacht): je Doppeldose eine Cat-7-Duplexleitung in einem eigenen Leerrohr M25. 230-V-Leitungen und Datenleitungen liegen in getrennten Leerrohren und Schlitzen. Im Patchfeld ist Reserve vorgesehen; der Plan nennt als Option eine weitere LAN-Dose im Schlafzimmer des DG (nicht umgesetzt).</li>
+        <li><strong>Überspannungsschutz.</strong> HV: Typ 1+2. <span id="spdNote"></span></li>
+        <li><strong>PV-Vorbereitung.</strong> Vom HV zwei Leerrohre M40 bis unter das Dach bzw. zum geplanten Wechselrichter: „PV DC“ ausschließlich für die DC-Solarleitungen (getrennt von allen AC-Leitungen, möglichst kurze Strecke) und „PV PE/COM“ für den Erdungsleiter (mindestens 16 mm² Cu) und Kommunikationsleitungen. Eigene Erdungsschiene im HV. In der Materialliste als Schätzung enthalten (Weg HV – Steigschacht – Dachschräge bis zum First; der Wechselrichterort steht noch nicht fest), im Modell nicht gezeichnet.</li>
+        <li><strong>Schalterleitungen.</strong> Von der Abzweigdose sternförmig zu jeder Schaltstelle. Adern: L + je Schaltstelle (Aus +1, Dimmer +1, Wechsel +2, Kreuz +4, Serie +2, Kontroll +1 und N) + PE → NYM-J 3×, 4×, 5× oder 7×1,5; in der Materialliste getrennt aufgeführt. LED-Spots (Wohnzimmer, Küche) sind dimmbar und werden am Dimmer an der Tür geschaltet; Leuchten mit Bewegungsmelder (Windfang, Außenleuchten an Eingang und Kelleraußentreppe) haben keinen Schalter, die Ankleide hat Bewegungsmelder und Schalter. In beiden Schlafzimmern Wechselschaltung von Tür und Bett.</li>
         <li class="open"><strong>Offene Punkte.</strong>
           <ul>
+            <li>Unterverteiler: Unterputz-Einbau ist in den 11,5 cm starken Innenwänden nicht möglich → Aufputz-Verteiler (so dargestellt) oder Einbau in die Vorwand des Steigschachts. Mit dem Fachbetrieb festlegen.</li>
             <li>Lage des Hausanschlusses/Zählers unbekannt; angenommen im KG-Flur an der Wand zum Heizungsraum.</li>
-            <li>Wohnzimmer: Der Plan sieht die Dimmer nur an der Küchentür vor. An der Tür zum Flur gibt es damit keine Schaltstelle – mit dem Eigentümer klären (Nebenstelle/Taster).</li>
-            <li>Lage von TV-Wand, Sofa, Betten und Schreibtischen ist im Plan nur vermutet („vermutlich obere Wand“); hier nach der Möblierung des Modells gesetzt und vor dem Schlitzen mit dem Eigentümer festzulegen.</li>
+            <li>Wohnzimmer: Der Plan sieht die Dimmer nur an der Küchentür vor. An der Tür zum Flur gibt es damit keine Schaltstelle – mit dem Bauherrn klären (Nebenstelle).</li>
+            <li>Bad (Dusche/WC): Die Tür schlägt an der Wand an, an der Lichtschalter, Thermostat und Rollladen-Bedienstelle sitzen müssten; sie sind deshalb hinter den Bereich des offenen Türblatts gerückt. Besser: Türanschlag wechseln oder den Schalter außen neben die Tür setzen.</li>
+            <li>Separate Dusche: neben der Tür bleiben nur 20 cm Wand; Schalter und Thermostat sitzen deshalb an der Wand zum Schlafzimmer.</li>
+            <li>Lage von TV-Wand, Sofa, Betten und Schreibtischen ist im Plan nur vermutet; hier nach der Möblierung des Modells gesetzt und vor dem Schlitzen mit dem Bauherrn festzulegen.</li>
             <li>„2× LAN-Dosen“ ist als zwei Doppeldosen (vier Anschlüsse) je Stelle umgesetzt.</li>
-            <li>Heizungsraum: Der Plan nennt dort keine Steckdose, nur den Starkstromanschluss der Wärmepumpe. Leitung und Absicherung der Wärmepumpe laut Hersteller.</li>
-            <li>Das Öllager kommt im Plan nicht vor; es behält eine Leuchte mit Schalter.</li>
+            <li>Heizungsraum: Der Plan nennt dort keine Steckdose, nur den Starkstromanschluss der Wärmepumpe. Leitung, Absicherung und Fehlerstromschutz der Wärmepumpe laut Hersteller.</li>
+            <li>Öltank: im Modell als Bestand belassen; Rückbau bei der Umstellung auf die Wärmepumpe klären. Das Öllager kommt im Plan nicht vor und behält eine Leuchte mit Schalter.</li>
             <li>Kellertür: angenommen von der Werkstatt (klein) über einen schmalen Vorbereich des Flurs (y 5,84–6,30) an der Wand y = 5,60; Heizungsraum dafür als L-Form. Lage vor Ort prüfen.</li>
             <li>Tiefe KG laut Foto 10,0 m, Hub-Schätzung für EG 10,6 m; Abweichung vor Ort nachmessen.</li>
             <li>Treppengeometrie in EG, KG und DG vereinfacht dargestellt (Wendeltreppen als Spiralen).</li>
@@ -460,7 +464,7 @@ html.fs-lock, html.fs-lock body{overflow:hidden}
             <li>Fotos zeigen Haus 4; die Nachbarhäuser 3 und 5 sind gespiegelt und nicht betroffen.</li>
           </ul>
         </li>
-        <li><strong>Ansicht „Echt“: Annahmen.</strong> Fenster, Türen und Höhen stammen aus den Plandaten, Türen lichte Höhe 2,01 m (KG 1,85 m), die zwei Dachfenster aus dem Dachumriss. Wandstärken sind abgeleitet: Außen- und Trennwände 24 cm, Innenwände 12 cm mittig auf der Raumgrenze. Annahmen: Gelände 20 cm unter EG-Fußboden, Kellerfenster mit Lichtschacht, Garten als Südseite, Satteldach 35° mit rotbraunen Ziegeln, Schornstein an der Planlage, Nachbarhäuser 3 und 5 gespiegelt und vereinfacht. Die KG-Wendeltreppe ist dort mit 0,78 m Radius etwas versetzt, damit der Antritt der EG-Treppe begehbar bleibt. Die Möblierung ist frei angenommen und an den Dosen ausgerichtet. Dosen hinter Einbaugeräten (Kühlschrank, Geschirrspüler, Herd, Backofen) bleiben verdeckt und sind im Röntgenblick sichtbar. Schalter schalten die Leuchten ihres Stromkreises im selben Raum; Sonderfälle (Treppen, Balkon, Terrasse, Heizungsraum, Öllager) folgen der Beschriftung.<br><span class="small" id="hiddenList"></span></li>
+        <li><strong>Ansicht „Echt“: Annahmen.</strong> Fenster, Türen und Höhen stammen aus den Plandaten, Türen lichte Höhe 2,01 m (KG 1,85 m), die zwei Dachfenster aus dem Dachumriss. Wandstärken sind abgeleitet: Außen- und Trennwände 24 cm, Innenwände 12 cm mittig auf der Raumgrenze. Annahmen: Gelände 20 cm unter EG-Fußboden, Kellerfenster mit Lichtschacht, Garten als Südseite (für den Sonnenstand), Satteldach 35° mit rotbraunen Ziegeln, Schornstein an der Planlage, Nachbarhäuser 3 und 5 gespiegelt und vereinfacht. Die KG-Wendeltreppe ist dort mit 0,78 m Radius etwas versetzt, damit der Antritt der EG-Treppe begehbar bleibt. Die Möblierung ist frei angenommen und an den Dosen ausgerichtet. Dosen hinter Einbaugeräten (Kühlschrank, Geschirrspüler, Herd, Backofen) bleiben verdeckt und sind im Röntgenblick sichtbar. Schalter schalten die Leuchten ihres Stromkreises im selben Raum; Sonderfälle (Treppen, Balkon, Terrasse, Heizungsraum, Öllager) folgen der Beschriftung.<br><span class="small" id="hiddenList"></span></li>
         <li><strong>Quelle der Geometrie.</strong> renovierungs-hub.vercel.app (EG/OG, Wände und Räume) und Planfotos (KG/DG, mit handgezeichneten Leitungen des Kollegen). Maße gerundet, Lage der Geräte als Planungsvorschlag.</li>
       </ol>
     </section>
@@ -579,35 +583,39 @@ const OPENINGS = [
 const OPENING = Object.fromEntries(OPENINGS.map(o => [o.id, o]));
 
 const CABLES = {
-  '3x15': 'NYM-J 3×1,5', '4x15': 'NYM-J 4×1,5', '5x15': 'NYM-J 5×1,5', '7x15': 'NYM-J 7×1,5', '3x25': 'NYM-J 3×2,5', '5x25': 'NYM-J 5×2,5', '5x6': 'NYM-J 5×6', cat7: 'Cat 7 S/FTP',
+  '3x15': 'NYM-J 3×1,5', '4x15': 'NYM-J 4×1,5', '5x15': 'NYM-J 5×1,5', '7x15': 'NYM-J 7×1,5', '3x25': 'NYM-J 3×2,5', '5x25': 'NYM-J 5×2,5', '5x6': 'NYM-J 5×6', cat7: 'Cat 7 Duplex S/FTP',
 };
 
-/* Stromkreise nach dem Plan des Eigentümers. Jedes Geschoss hat seinen eigenen Verteiler (HV im KG, UV-EG, UV-OG, UV-DG).
+/* Stromkreise nach dem Plan des Bauherrn. Jedes Geschoss hat seinen eigenen Verteiler (HV im KG, UV-EG, UV-OG, UV-DG).
    rcd: Fehlerstrom-Gruppe im Verteiler des Geschosses – 1 Bäder/Feuchträume, 2 Licht + allgemeine Steckdosen,
-   3 Büros/Küche/Großverbraucher, A = Außenkreis mit eigenem FI/LS. */
+   3 Büros bzw. Küchengeräte, 4 Küche Arbeitsplatte; 'A' = eigener FI/LS (Außenkreise, Kühlschrank),
+   'H' = Fehlerstromschutz laut Hersteller (Wärmepumpe). */
 const CIRCUITS = [
-  { id: 'K1', floor: 'KG', rcd: 2, name: 'Licht KG inkl. Kelleraußentreppe', prot: 'B10', cable: '3x15' },
+  { id: 'K1', floor: 'KG', rcd: 2, name: 'Licht KG', prot: 'B10', cable: '3x15' },
   { id: 'K2', floor: 'KG', rcd: 2, name: 'Steckdose Flur KG', prot: 'B16', cable: '3x25' },
-  { id: 'K3', floor: 'KG', rcd: 3, name: 'Wärmepumpe 400 V', prot: '3×16–25 A (laut Hersteller)', cable: '5x6', poles: 3 },
+  { id: 'K3', floor: 'KG', rcd: 'H', name: 'Wärmepumpe 400 V', prot: '3×16–25 A (laut Hersteller)', cable: '5x6', poles: 3 },
   { id: 'K4', floor: 'KG', rcd: 1, name: 'Waschmaschine', prot: 'B16', cable: '3x25' },
   { id: 'K5', floor: 'KG', rcd: 1, name: 'Wäschetrockner', prot: 'B16', cable: '3x25' },
   { id: 'K6', floor: 'KG', rcd: 2, name: 'Steckdosen Werkstatt (Vorraum)', prot: 'B16', cable: '3x25' },
   { id: 'K7', floor: 'KG', rcd: 2, name: 'Steckdosen Werkstatt (klein)', prot: 'B16', cable: '3x25' },
+  { id: 'K8', floor: 'KG', rcd: 'A', name: 'Außen KG: Leuchte Kelleraußentreppe', prot: 'B10', cable: '3x15' },
   { id: 'E1', floor: 'EG', rcd: 2, name: 'Licht EG allgemein', prot: 'B10', cable: '3x15' },
   { id: 'E2', floor: 'EG', rcd: 2, name: 'Licht Flur/Treppe EG', prot: 'B10', cable: '3x15' },
   { id: 'E3', floor: 'EG', rcd: 2, name: 'Wohnzimmer Medien (TV-Wand)', prot: 'B16', cable: '3x25' },
-  { id: 'E4', floor: 'EG', rcd: 2, name: 'Wohnzimmer Sofa/Allgemein + Essbereich', prot: 'B16', cable: '3x25' },
+  { id: 'E4', floor: 'EG', rcd: 2, name: 'Wohnzimmer Sofa/Allgemein', prot: 'B16', cable: '3x25' },
   { id: 'E5', floor: 'EG', rcd: 3, name: 'Herd/Kochfeld 400 V', prot: 'B16 3-pol.', cable: '5x25', poles: 3 },
   { id: 'E6', floor: 'EG', rcd: 3, name: 'Backofen', prot: 'B16', cable: '3x25' },
   { id: 'E7', floor: 'EG', rcd: 3, name: 'Geschirrspüler', prot: 'B16', cable: '3x25' },
-  { id: 'E8', floor: 'EG', rcd: 3, name: 'Kühlschrank', prot: 'B16', cable: '3x25' },
-  { id: 'E9', floor: 'EG', rcd: 3, name: 'Küche Arbeitsplatte 1', prot: 'B16', cable: '3x25' },
-  { id: 'E10', floor: 'EG', rcd: 3, name: 'Küche Arbeitsplatte 2', prot: 'B16', cable: '3x25' },
-  { id: 'E11', floor: 'EG', rcd: 3, name: 'Dunstabzug + Unterbaubeleuchtung', prot: 'B16', cable: '3x25' },
-  { id: 'E12', floor: 'EG', rcd: 1, name: 'Steckdosen Flur/WC + Klingeltrafo', prot: 'B16', cable: '3x25' },
-  { id: 'E13', floor: 'EG', rcd: 'A', name: 'Außensteckdose Terrasse', prot: 'B16', cable: '3x25' },
+  { id: 'E8', floor: 'EG', rcd: 'A', name: 'Kühlschrank', prot: 'B16', cable: '3x25' },
+  { id: 'E9', floor: 'EG', rcd: 4, name: 'Küche Arbeitsplatte 1', prot: 'B16', cable: '3x25' },
+  { id: 'E10', floor: 'EG', rcd: 4, name: 'Küche Arbeitsplatte 2', prot: 'B16', cable: '3x25' },
+  { id: 'E11', floor: 'EG', rcd: 4, name: 'Dunstabzug + Unterbaubeleuchtung', prot: 'B16', cable: '3x25' },
+  { id: 'E12', floor: 'EG', rcd: 2, name: 'Steckdosen Flur EG + Klingeltrafo', prot: 'B16', cable: '3x25' },
+  { id: 'E13', floor: 'EG', rcd: 'A', name: 'Außen EG: Terrasse, Eingang', prot: 'B16', cable: '3x25' },
   { id: 'E14', floor: 'EG', rcd: 2, name: 'Rollläden + Thermostate EG', prot: 'B10', cable: '5x15' },
-  { id: 'O1', floor: 'OG', rcd: 2, name: 'Licht OG Zimmer + Balkon', prot: 'B10', cable: '3x15' },
+  { id: 'E15', floor: 'EG', rcd: 2, name: 'Wohnzimmer Essbereich', prot: 'B16', cable: '3x25' },
+  { id: 'E16', floor: 'EG', rcd: 1, name: 'Steckdose WC EG', prot: 'B16', cable: '3x25' },
+  { id: 'O1', floor: 'OG', rcd: 2, name: 'Licht OG Zimmer', prot: 'B10', cable: '3x15' },
   { id: 'O2', floor: 'OG', rcd: 2, name: 'Licht Flur/Treppe OG', prot: 'B10', cable: '3x15' },
   { id: 'O3', floor: 'OG', rcd: 1, name: 'Licht Bad, Vorraum, Dusche + Lüfter', prot: 'B10', cable: '3x15' },
   { id: 'O4', floor: 'OG', rcd: 2, name: 'Schlafzimmer Bettseiten', prot: 'B16', cable: '3x25' },
@@ -616,11 +624,11 @@ const CIRCUITS = [
   { id: 'O7', floor: 'OG', rcd: 3, name: 'Büro 1 allgemein', prot: 'B16', cable: '3x25' },
   { id: 'O8', floor: 'OG', rcd: 3, name: 'Büro 2 Schreibtisch', prot: 'B16', cable: '3x25' },
   { id: 'O9', floor: 'OG', rcd: 3, name: 'Büro 2 allgemein', prot: 'B16', cable: '3x25' },
-  { id: 'O10', floor: 'OG', rcd: 1, name: 'Bad (Dusche/WC): Steckdosen + Handtuchheizkörper', prot: 'B16', cable: '3x25' },
-  { id: 'O11', floor: 'OG', rcd: 1, name: 'Dusche: Steckdosen + Handtuchheizkörper', prot: 'B16', cable: '3x25' },
+  { id: 'O10', floor: 'OG', rcd: 1, name: 'Bad (Dusche/WC): Steckdosen', prot: 'B16', cable: '3x25' },
+  { id: 'O11', floor: 'OG', rcd: 1, name: 'Dusche: Steckdosen', prot: 'B16', cable: '3x25' },
   { id: 'O12', floor: 'OG', rcd: 2, name: 'Steckdosen Flur OG', prot: 'B16', cable: '3x25' },
-  { id: 'O13', floor: 'OG', rcd: 'A', name: 'Außensteckdose Balkon', prot: 'B16', cable: '3x25' },
-  { id: 'O14', floor: 'OG', rcd: 2, name: 'Rollläden + Thermostate OG', prot: 'B10', cable: '5x15' },
+  { id: 'O13', floor: 'OG', rcd: 'A', name: 'Außen OG: Balkon', prot: 'B16', cable: '3x25' },
+  { id: 'O14', floor: 'OG', rcd: 2, name: 'Rollläden, Thermostate, Handtuchheizkörper OG', prot: 'B10', cable: '5x15' },
   { id: 'D1', floor: 'DG', rcd: 2, name: 'Licht DG', prot: 'B10', cable: '3x15' },
   { id: 'D2', floor: 'DG', rcd: 1, name: 'Licht Toilette + Lüfter', prot: 'B10', cable: '3x15' },
   { id: 'D3', floor: 'DG', rcd: 1, name: 'Steckdosen Toilette', prot: 'B16', cable: '3x25' },
@@ -645,18 +653,21 @@ const FEEDS = [
 ];
 const CIRC = Object.fromEntries([...CIRCUITS, ...NETS, ...FEEDS].map(c => [c.id, c]));
 const DIST_OF = { KG: 'HV', EG: 'UV-EG', OG: 'UV-OG', DG: 'UV-DG' };
-const RCD_NAME = { 1: 'RCD 1', 2: 'RCD 2', 3: 'RCD 3', A: 'eigener FI/LS' };
-const protOf = c => (c.rcd ? `${c.prot} · ${RCD_NAME[c.rcd]}${c.rcd === 'A' ? '' : ' 30 mA'}` : c.prot || '–');
+const RCD_NAME = { 1: 'RCD 1', 2: 'RCD 2', 3: 'RCD 3', 4: 'RCD 4', A: 'eigener FI/LS', H: 'RCD laut Hersteller' };
+const RCD_TEXT = { A: 'eigener FI/LS 30 mA', H: 'Fehlerstromschutz: Typ und Bemessung laut Hersteller (bei Inverter meist Typ B oder F)' };
+const protOf = c => (c.rcd ? `${c.prot} · ${RCD_TEXT[c.rcd] || RCD_NAME[c.rcd] + ' 30 mA'}` : c.prot || '–');
 
 /* Geräte. t: sd Steckdose, sw Schalter, li Leuchte, net Netzwerk, fa Festanschluss, rl Rollladen-Anschluss,
    th Thermostat-Anschluss, rm Rauchmelder, uv Verteiler, kl Klingel/Sprechstelle, pas Potentialausgleichsschiene.
    Lage: side+at (Wand, Koordinate entlang der Wand) | spread+groups | ceil:[x,y] | door (an der Tür, wie der Schalter).
    lightRoom: Schalter sitzt in einem anderen Raum als seine Leuchte(n). lights: Leuchten je Wippe.
-   Stückzahlen folgen dem Plan des Eigentümers; bei Spannen („6–8“) gilt der obere Wert. */
+   doorRef: Schalter an fester Lage, der zur Schlossseite dieser Tür gehört (Türanschlag richtet sich danach).
+   extra: Ergänzung, die nicht im Plan des Bauherrn steht. zone2ok: im Bad in Bereich 2 zulässig (IP44, laut Hersteller).
+   Stückzahlen folgen dem Plan des Bauherrn; bei Spannen („6–8“) gilt der obere Wert. */
 const DEVICE_SPECS = [
   // ---------- KG ----------
   { room: 'kg_flur', t: 'uv', id: 'HV', side: 'E', at: 7.9, h: 1.1, w: 1.0, hh: 1.6, label: 'Hauptverteiler HV',
-    note: 'An der Wand zum Heizungsraum, neben der Zuleitung (Annahme: Hausanschluss im KG). Zählerplatz, Hauptschalter, Überspannungsschutz Typ 1+2, RCDs, Abgänge zu UV-EG, UV-OG und UV-DG, mindestens 30 % Reserve. Medienfeld mit zentralem Patchpanel. PV-Vorbereitung: zwei Leerrohre M40 bis unters Dach, beschriftet „PV DC“ und „PV PE/COM“, eigene Erdungsschiene (Leiter mind. 16 mm² Cu).' },
+    note: 'An der Wand zum Heizungsraum, neben der Zuleitung (Annahme: Hausanschluss im KG). Zählerplatz, Hauptschalter, Überspannungsschutz Typ 1+2, Fehlerstromschutz, Abgänge zu UV-EG, UV-OG und UV-DG, mindestens 30 % Reserve. Medienfeld mit zentralem Patchpanel. PV-Vorbereitung: zwei Leerrohre M40 bis unters Dach, beschriftet „PV DC“ und „PV PE/COM“, eigene Erdungsschiene (Leiter mind. 16 mm² Cu).' },
   { room: 'kg_flur', t: 'sd', c: 'K2', side: 'N', at: 3.45, n: 1, label: 'Steckdose Flur' },
   { room: 'kg_flur', t: 'li', c: 'K1', ceil: [2.9, 6.9], label: 'Deckenleuchte Treppe/Flur' },
   { room: 'kg_flur', t: 'sw', c: 'K1', side: 'N', at: 2.95, kinds: { Wechsel: 1 }, label: 'Wechselschalter Treppe unten' },
@@ -664,13 +675,13 @@ const DEVICE_SPECS = [
   { room: 'kg_flur', t: 'sw', c: 'K1', side: 'E', at: 6.45, kinds: { Aus: 1 }, label: 'Schalter Heizungsraum (im Flur neben der Tür)', lightRoom: 'kg_heiz',
     note: 'Laut Plan sitzt der Schalter der Heizungsraum-Leuchte außerhalb des Raums neben der Tür.' },
   { room: 'kg_heiz', t: 'fa', c: 'K3', side: 'E', at: 7.15, h: 1.3, label: 'Wärmepumpe 400 V (Starkstromanschluss)',
-    note: 'Eigener Stromkreis, 3 Phasen. Leitung NYM-J 5×4 bis 5×6 und Absicherung 3×16–25 A laut Hersteller; eigener Zähler möglich. Ersetzt den früheren Ölbrenner-Anschluss samt Heizungsnotschalter.' },
+    note: 'Eigener Stromkreis, 3 Phasen. Leitung NYM-J 5×4 bis 5×6, Absicherung 3×16–25 A und Fehlerstromschutz (Typ, Bemessung) laut Hersteller; eigener Zähler möglich.' },
   { room: 'kg_heiz', t: 'li', c: 'K1', ceil: [5.0, 6.85], label: 'Deckenleuchte' },
-  { room: 'kg_heiz', t: 'sw', c: 'K1', side: 'S', at: 5.6, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Öllager-Leuchte', lightRoom: 'kg_oel' },
-  { room: 'kg_heiz', t: 'pas', side: 'W', at: 7.5, h: 0.3, label: 'Potentialausgleichsschiene',
+  { room: 'kg_heiz', t: 'sw', c: 'K1', side: 'S', at: 5.6, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Öllager-Leuchte', lightRoom: 'kg_oel', extra: true },
+  { room: 'kg_heiz', t: 'pas', side: 'W', at: 7.5, h: 0.3, extra: true, label: 'Potentialausgleichsschiene',
     note: 'Anschluss Wasser, Heizung, Fundamenterder, Haupterdungsleitung.' },
-  { room: 'kg_oel', t: 'li', c: 'K1', ceil: [5.38, 8.05], label: 'Deckenleuchte (mind. IP54)',
-    note: 'Der Raum kommt im Plan des Eigentümers nicht vor: nur Leuchte, Schalter im Heizungsraum (Kontrollschalter).' },
+  { room: 'kg_oel', t: 'li', c: 'K1', ceil: [5.38, 8.05], label: 'Deckenleuchte (mind. IP54)', extra: true,
+    note: 'Der Raum kommt im Plan nicht vor: nur Leuchte, Schalter im Heizungsraum (Kontrollschalter).' },
   { room: 'kg_wasch', t: 'sd', c: 'K4', side: 'S', at: 0.75, h: 1.2, n: 1, label: 'Steckdose Waschmaschine' },
   { room: 'kg_wasch', t: 'sd', c: 'K5', side: 'S', at: 1.25, h: 1.2, n: 2, label: 'Steckdosen Wäschetrockner 2-fach',
     note: 'Laut Plan 1–2 Steckdosen für den Wäschetrockner, umgesetzt 2. Feuchtraum: über RCD 1.' },
@@ -688,7 +699,8 @@ const DEVICE_SPECS = [
   { room: 'kg_keller', t: 'sd', c: 'K7', side: 'N', at: 4.55, n: 1 },
   { room: 'kg_keller', t: 'li', c: 'K1', ceil: [5.38, 2.92], label: 'Deckenleuchte' },
   { room: 'kg_keller', t: 'sw', c: 'K1', door: true, kinds: { Aus: 1 } },
-  { room: 'kg_aussen', t: 'li', c: 'K1', side: 'S', at: 1.42, h: 2.0, wall: true, label: 'Außenleuchte IP44 mit Bewegungsmelder' },
+  { room: 'kg_aussen', t: 'li', c: 'K8', side: 'S', at: 1.42, h: 2.0, wall: true, extra: true, label: 'Außenleuchte IP44 mit Bewegungsmelder',
+    note: 'Eigener Außenkreis mit FI/LS im HV. Mit Bewegungsmelder, ohne Schalter.' },
   // ---------- EG ----------
   { room: 'eg_wohnen', t: 'sd', c: 'E3', side: 'W', at: 1.75, n: 4, label: 'Steckdosen TV/Media 4-fach',
     note: 'TV/Media-Wand: laut Plan 6–8 Steckdosen, umgesetzt 8 (2 × 4-fach).' },
@@ -696,26 +708,27 @@ const DEVICE_SPECS = [
     note: 'TV/Media-Wand: laut Plan 6–8 Steckdosen, umgesetzt 8 (2 × 4-fach).' },
   { room: 'eg_wohnen', t: 'net', c: 'NE', side: 'W', at: 2.23, label: 'Netzwerkdose TV (2× RJ45)' },
   { room: 'eg_wohnen', t: 'net', c: 'NE', side: 'W', at: 2.47, label: 'Netzwerkdose TV (2× RJ45)' },
-  { room: 'eg_wohnen', t: 'sd', c: 'E4', side: 'S', at: 0.6, n: 3, label: 'Steckdosen Sofa links 3-fach',
+  { room: 'eg_wohnen', t: 'sd', c: 'E4', side: 'S', at: 0.5, n: 3, label: 'Steckdosen Sofa links 3-fach',
     note: 'Sofa-Bereich: laut Plan 2–3 Steckdosen je Seite, umgesetzt 3 je Seite. Der Plan nennt als Möglichkeit Bodendosen; hier als Wanddosen an der Sofa-Wand.' },
-  { room: 'eg_wohnen', t: 'sd', c: 'E4', side: 'S', at: 2.2, n: 3, label: 'Steckdosen Sofa rechts 3-fach',
+  { room: 'eg_wohnen', t: 'sd', c: 'E4', side: 'S', at: 1.5, n: 3, label: 'Steckdosen Sofa rechts 3-fach',
     note: 'Sofa-Bereich: laut Plan 2–3 Steckdosen je Seite, umgesetzt 3 je Seite.' },
-  { room: 'eg_wohnen', t: 'sd', c: 'E4', side: 'E', at: 4.7, n: 3, label: 'Steckdosen Essbereich 3-fach',
-    note: 'Essbereich (rechte Wand): laut Plan 2–3 Steckdosen, umgesetzt 3.' },
+  { room: 'eg_wohnen', t: 'sd', c: 'E15', side: 'E', at: 4.7, n: 3, label: 'Steckdosen Essbereich 3-fach',
+    note: 'Essbereich (rechte Wand): laut Plan 2–3 Steckdosen, umgesetzt 3. Eigener Stromkreis (Tischgrill, Laptop).' },
   { room: 'eg_wohnen', t: 'sd', c: 'E4', side: 'N', at: 0.35, n: 1, label: 'Steckdose Ecke Gartenfenster' },
-  { room: 'eg_wohnen', t: 'sd', c: 'E4', side: 'S', at: 6.3, n: 1, label: 'Steckdose Ecke Essbereich' },
+  { room: 'eg_wohnen', t: 'sd', c: 'E15', side: 'S', at: 6.3, n: 1, label: 'Steckdose Ecke Essbereich' },
   { room: 'eg_wohnen', t: 'li', c: 'E1', ceil: [1.9, 2.6], label: 'LED-Spots Sofa-Bereich', note: 'Dimmbar, geschaltet am Dimmer neben der Küchentür.' },
   { room: 'eg_wohnen', t: 'li', c: 'E1', ceil: [5.5, 3.6], label: 'LED-Spots Ess-Bereich', note: 'Dimmbar, geschaltet am Dimmer neben der Küchentür.' },
   { room: 'eg_wohnen', t: 'sw', c: 'E1', door: 'egd_wk', kinds: { Dimmer: 2 }, label: 'Dimmer 2-fach Sofa/Essen (Küchentür)',
     lights: [['LED-Spots Sofa-Bereich'], ['LED-Spots Ess-Bereich']] },
-  { room: 'eg_wohnen', t: 'sw', c: 'E1', side: 'N', at: 4.35, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Terrassenleuchte', lightRoom: 'eg_terr' },
+  { room: 'eg_wohnen', t: 'sw', c: 'E13', side: 'N', at: 4.33, doorRef: 'egd_terr', kinds: { Kontroll: 1 }, label: 'Kontrollschalter Terrassenleuchte', lightRoom: 'eg_terr',
+    note: 'Auf der Schlossseite der Terrassentür. Schaltet die Terrassenleuchte am Außenkreis E13.' },
   { room: 'eg_wohnen', t: 'rl', c: 'E14', side: 'N', at: 3.8, label: 'Rollladen-Anschluss Gartenfenster' },
   { room: 'eg_wohnen', t: 'rl', c: 'E14', side: 'N', at: 6.8, label: 'Rollladen-Anschluss Terrassentür' },
   { room: 'eg_wohnen', t: 'th', c: 'E14', door: 'egd_wk', label: 'Thermostat-Anschluss (neben Küchentür)' },
   { room: 'eg_terr', t: 'sd', c: 'E13', side: 'S', at: 6.2, h: 0.5, n: 1, label: 'Außensteckdose IP44 (Klappdeckel)',
     note: 'Spritzwassergeschützt, eigener Stromkreis mit eigenem FI/LS im UV-EG.' },
-  { room: 'eg_terr', t: 'li', c: 'E1', side: 'S', at: 4.28, h: 2.1, wall: true, label: 'Außenleuchte Terrasse IP44',
-    note: 'Geschaltet über den Kontrollschalter im Wohnzimmer neben der Terrassentür.' },
+  { room: 'eg_terr', t: 'li', c: 'E13', side: 'S', at: 4.28, h: 2.1, wall: true, label: 'Außenleuchte Terrasse IP44',
+    note: 'Am Außenkreis E13 mit eigenem FI/LS. Geschaltet über den Kontrollschalter im Wohnzimmer neben der Terrassentür.' },
   { room: 'eg_kueche', t: 'fa', c: 'E5', side: 'E', at: 8.78, h: 0.6, label: 'Herd-Anschlussdose 400 V (hinter Gerät)' },
   { room: 'eg_kueche', t: 'sd', c: 'E6', side: 'E', at: 8.5, h: 0.6, n: 1, label: 'Steckdose Backofen (hinter Gerät)' },
   { room: 'eg_kueche', t: 'sd', c: 'E7', side: 'S', at: 5.45, h: 0.5, n: 1, label: 'Steckdose Geschirrspüler (unter Spüle)' },
@@ -734,9 +747,9 @@ const DEVICE_SPECS = [
   { room: 'eg_kueche', t: 'sw', c: 'E1', door: true, kinds: { Dimmer: 1 }, label: 'Dimmer LED-Spots (Küchentür)' },
   { room: 'eg_kueche', t: 'th', c: 'E14', door: true, label: 'Thermostat-Anschluss (neben Tür)' },
   { room: 'eg_kueche', t: 'rl', c: 'E14', side: 'S', at: 4.4, label: 'Rollladen-Anschluss Küchenfenster' },
-  { room: 'eg_diele', t: 'uv', id: 'UV-EG', side: 'E', at: 7.33, h: 1.3, w: 0.4, hh: 0.9, label: 'Unterverteiler UV-EG',
-    note: 'An der Wand gegenüber der Treppe, zwischen Küchentür und Steigschacht. Versorgt nur das EG. Hauptleitung NYM-J 5×6 vom HV durch den Steigschacht; Querschnitt legt der Elektrofachbetrieb fest.' },
-  { room: 'eg_diele', t: 'sd', c: 'E12', side: 'N', at: 1.7, n: 1, label: 'Steckdose Flur (Treppe)' },
+  { room: 'eg_diele', t: 'uv', id: 'UV-EG', side: 'E', at: 7.33, h: 1.3, w: 0.4, hh: 1.05, label: 'Unterverteiler UV-EG',
+    note: 'An der Wand gegenüber der Treppe, zwischen Küchentür und Steigschacht. Versorgt nur das EG. Aufputz-Verteiler (Unterputz ist in der 11,5-cm-Wand nicht möglich; Alternative: Vorwand des Steigschachts). Hauptleitung NYM-J 5×6 vom HV durch den Steigschacht; Querschnitt legt der Elektrofachbetrieb fest.' },
+  { room: 'eg_diele', t: 'sd', c: 'E12', side: 'N', at: 2.0, n: 1, label: 'Steckdose Flur (Treppe)' },
   { room: 'eg_diele', t: 'sd', c: 'E12', side: 'W', at: 8.75, n: 1, label: 'Steckdose Flur (bei der WC-Tür)' },
   { room: 'eg_diele', t: 'net', c: 'NE', side: 'E', at: 7.22, label: 'Netzwerkdose Router/Smart Home (2× RJ45)' },
   { room: 'eg_diele', t: 'net', c: 'NE', side: 'E', at: 7.44, label: 'Netzwerkdose Router/Smart Home (2× RJ45)' },
@@ -745,21 +758,21 @@ const DEVICE_SPECS = [
   { room: 'eg_diele', t: 'sw', c: 'E2', side: 'N', at: 2.45, kinds: { Wechsel: 1 }, label: 'Wechselschalter Treppe' },
   { room: 'eg_diele', t: 'sw', c: 'K1', side: 'S', at: 3.8, kinds: { Wechsel: 1 }, label: 'Wechselschalter Kellertreppe oben', lightRoom: 'kg_flur',
     note: 'Gehört zum Lichtkreis K1 des Kellers (die Leuchte hängt im KG); die Schalterleitung läuft durch den Steigschacht zum HV.' },
-  { room: 'eg_diele', t: 'rm', ceil: [2.6, 7.4], label: 'Rauchwarnmelder' },
-  { room: 'eg_diele', t: 'kl', side: 'S', at: 2.65, h: 1.5, label: 'Sprechstelle innen',
+  { room: 'eg_diele', t: 'rm', ceil: [2.6, 7.4], extra: true, label: 'Rauchwarnmelder' },
+  { room: 'eg_diele', t: 'kl', side: 'S', at: 2.65, h: 1.5, extra: true, label: 'Sprechstelle innen',
     note: 'Fernmeldeleitung J-Y(St)Y 2×2×0,8 zum Klingeltrafo im UV-EG, nicht in der Kabelbilanz.' },
   { room: 'eg_wind', t: 'li', c: 'E2', ceil: [3.2, 9.5], label: 'Deckenleuchte Windfang (Bewegungsmelder)', note: 'Mit Bewegungsmelder, ohne Schalter.' },
-  { room: 'eg_wind', t: 'li', c: 'E2', side: 'S', at: 3.78, h: 2.1, wall: true, label: 'Außenleuchte Eingang (Bewegungsmelder)',
-    note: 'Bestand aus der bisherigen Planung, im Plan des Eigentümers nicht genannt. Mit Bewegungsmelder, ohne Schalter.' },
-  { room: 'eg_wind', t: 'kl', side: 'S', at: 2.55, h: 1.2, label: 'Klingeltaster außen',
+  { room: 'eg_wind', t: 'li', c: 'E13', side: 'S', at: 3.78, h: 2.1, wall: true, extra: true, label: 'Außenleuchte Eingang (Bewegungsmelder)',
+    note: 'Am Außenkreis E13 mit eigenem FI/LS. Mit Bewegungsmelder, ohne Schalter.' },
+  { room: 'eg_wind', t: 'kl', side: 'S', at: 2.55, h: 1.2, extra: true, label: 'Klingeltaster außen',
     note: 'Klingel/Sprechanlage über Trafo im UV-EG (E12), Fernmeldeleitung.' },
-  { room: 'eg_wc', t: 'sd', c: 'E12', side: 'E', at: 9.7, h: 1.2, n: 1, label: 'Steckdose Waschbecken' },
+  { room: 'eg_wc', t: 'sd', c: 'E16', side: 'E', at: 9.7, h: 1.2, n: 1, label: 'Steckdose Waschbecken' },
   { room: 'eg_wc', t: 'li', c: 'E1', ceil: [0.56, 9.5], label: 'Deckenleuchte' },
-  { room: 'eg_wc', t: 'fa', c: 'E1', side: 'W', at: 10.2, h: 2.25, label: 'Lüfter mit Nachlauf', note: 'Geschaltet über den Lichtschalter.' },
+  { room: 'eg_wc', t: 'fa', c: 'E1', side: 'W', at: 10.2, h: 2.25, extra: true, label: 'Lüfter mit Nachlauf', note: 'Geschaltet über den Lichtschalter.' },
   { room: 'eg_wc', t: 'sw', c: 'E1', door: true, kinds: { Aus: 1 } },
   // ---------- OG ----------
   { room: 'og_flur', t: 'uv', id: 'UV-OG', side: 'E', at: 7.47, h: 1.3, w: 0.4, hh: 0.9, label: 'Unterverteiler UV-OG',
-    note: 'Senkrecht über dem UV-EG, zwischen der Tür zu Büro 1 und dem Steigschacht. Versorgt nur das OG. Hauptleitung NYM-J 5×6 vom HV; Querschnitt legt der Elektrofachbetrieb fest. Mindestens 2 freie Automatenplätze.' },
+    note: 'Senkrecht über dem UV-EG, zwischen der Tür zu Büro 1 und dem Steigschacht. Versorgt nur das OG. Aufputz-Verteiler (Unterputz ist in der 11,5-cm-Wand nicht möglich; Alternative: Vorwand des Steigschachts). Hauptleitung NYM-J 5×6 vom HV; Querschnitt legt der Elektrofachbetrieb fest. Mindestens 2 freie Automatenplätze.' },
   { room: 'og_flur', t: 'sd', c: 'O12', side: 'S', at: 3.55, n: 1, label: 'Steckdose Flur' },
   { room: 'og_flur', t: 'sd', c: 'O12', side: 'E', at: 5.8, n: 1, label: 'Steckdose Flur (unter dem Schalter)' },
   { room: 'og_flur', t: 'li', c: 'O2', ceil: [2.6, 6.6], label: 'Deckenleuchte Flur/Treppe' },
@@ -768,26 +781,26 @@ const DEVICE_SPECS = [
   { room: 'og_flur', t: 'sw', c: 'O2', side: 'S', at: 1.35, kinds: { Wechsel: 1 }, label: 'Wechselschalter Treppe/Bad' },
   { room: 'og_flur', t: 'sw', c: 'D1', side: 'W', at: 5.72, kinds: { Wechsel: 1 }, label: 'Wechselschalter Dachtreppe unten', lightRoom: 'dg_trep',
     note: 'Gehört zum Lichtkreis D1 des Dachgeschosses (die Leuchte hängt im DG); die Schalterleitung läuft nach oben zum UV-DG.' },
-  { room: 'og_flur', t: 'rm', ceil: [3.0, 6.4], label: 'Rauchwarnmelder' },
+  { room: 'og_flur', t: 'rm', ceil: [3.0, 6.4], extra: true, label: 'Rauchwarnmelder' },
   { room: 'og_eltern', t: 'sd', c: 'O4', side: 'E', at: 1.55, n: 3, label: 'Steckdosen Bettseite links 3-fach',
     note: 'Laut Plan 2–3 Steckdosen je Bettseite, umgesetzt 3 je Seite.' },
   { room: 'og_eltern', t: 'sd', c: 'O4', side: 'E', at: 3.85, n: 3, label: 'Steckdosen Bettseite rechts 3-fach',
     note: 'Laut Plan 2–3 Steckdosen je Bettseite, umgesetzt 3 je Seite.' },
-  { room: 'og_eltern', t: 'sd', c: 'O5', side: 'W', at: 3.3, n: 2, note: 'Übrige Wände: laut Plan 4–6 Steckdosen, umgesetzt 6 (2 + 2 + 1 + 1).' },
+  { room: 'og_eltern', t: 'sd', c: 'O5', side: 'W', at: 3.6, n: 2, note: 'Übrige Wände: laut Plan 4–6 Steckdosen, umgesetzt 6 (2 + 1 + 2 + 1).' },
+  { room: 'og_eltern', t: 'sd', c: 'O5', side: 'W', at: 2.75, n: 1 },
   { room: 'og_eltern', t: 'sd', c: 'O5', side: 'S', at: 1.0, n: 2 },
-  { room: 'og_eltern', t: 'sd', c: 'O5', side: 'S', at: 3.5, n: 1 },
-  { room: 'og_eltern', t: 'sd', c: 'O5', side: 'N', at: 3.7, n: 1 },
+  { room: 'og_eltern', t: 'sd', c: 'O5', side: 'N', at: 1.6, n: 1, label: 'Steckdose unter dem Fenster' },
   { room: 'og_eltern', t: 'li', c: 'O1', ceil: [1.97, 2.25], label: 'Deckenleuchte' },
   { room: 'og_eltern', t: 'sw', c: 'O1', door: true, kinds: { Wechsel: 1 }, label: 'Wechselschalter Tür' },
   { room: 'og_eltern', t: 'sw', c: 'O1', side: 'E', at: 3.85, kinds: { Wechsel: 1 }, label: 'Wechselschalter am Bett' },
-  { room: 'og_eltern', t: 'sw', c: 'O1', side: 'E', at: 1.38, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Balkonleuchte', lightRoom: 'og_loggia' },
-  { room: 'og_eltern', t: 'rl', c: 'O14', side: 'N', at: 3.4, label: 'Rollladen-Anschluss Fenster' },
+  { room: 'og_eltern', t: 'sw', c: 'O13', side: 'E', at: 1.54, kinds: { Kontroll: 1 }, label: 'Kontrollschalter Balkonleuchte', lightRoom: 'og_loggia', extra: true },
+  { room: 'og_eltern', t: 'rl', c: 'O14', side: 'E', at: 1.38, label: 'Rollladen-Anschluss Balkontür', note: 'Laut Plan an der Balkontür: auf der Schlossseite, NYM-J 5×1,5.' },
   { room: 'og_eltern', t: 'th', c: 'O14', door: true, label: 'Thermostat-Anschluss (neben Tür)' },
-  { room: 'og_eltern', t: 'rm', ceil: [1.97, 3.0], label: 'Rauchwarnmelder' },
+  { room: 'og_eltern', t: 'rm', ceil: [1.97, 3.0], extra: true, label: 'Rauchwarnmelder' },
   { room: 'og_loggia', t: 'sd', c: 'O13', side: 'S', at: 5.0, h: 0.5, n: 1, label: 'Außensteckdose Balkon IP44',
     note: 'Spritzwassergeschützt, eigener Stromkreis mit eigenem FI/LS im UV-OG.' },
-  { room: 'og_loggia', t: 'li', c: 'O1', side: 'S', at: 6.7, h: 2.1, wall: true, label: 'Wandleuchte Balkon IP44',
-    note: 'Bestand aus der bisherigen Planung, im Plan des Eigentümers nicht genannt. Schalter im Schlafzimmer.' },
+  { room: 'og_loggia', t: 'li', c: 'O13', side: 'S', at: 6.7, h: 2.1, wall: true, extra: true, label: 'Wandleuchte Balkon IP44',
+    note: 'Am Außenkreis O13 mit eigenem FI/LS. Schalter im Schlafzimmer neben der Balkontür.' },
   { room: 'og_kindg', t: 'sd', c: 'O8', side: 'E', at: 2.9, n: 4, label: 'Steckdosen Schreibtisch 4-fach',
     note: 'Schreibtisch-Wand: laut Plan 6–8 Steckdosen in 2 Blöcken, umgesetzt 8 (2 × 4-fach).' },
   { room: 'og_kindg', t: 'sd', c: 'O8', side: 'E', at: 3.7, n: 4, label: 'Steckdosen Schreibtisch 4-fach',
@@ -802,7 +815,7 @@ const DEVICE_SPECS = [
   { room: 'og_kindg', t: 'sw', c: 'O1', door: true, kinds: { Aus: 1 } },
   { room: 'og_kindg', t: 'th', c: 'O14', door: true, label: 'Thermostat-Anschluss (neben Tür)' },
   { room: 'og_kindg', t: 'rl', c: 'O14', side: 'N', at: 6.58, label: 'Rollladen-Anschluss Fenster' },
-  { room: 'og_kindg', t: 'rm', ceil: [5.48, 4.1], label: 'Rauchwarnmelder' },
+  { room: 'og_kindg', t: 'rm', ceil: [5.48, 4.1], extra: true, label: 'Rauchwarnmelder' },
   { room: 'og_kinde', t: 'sd', c: 'O6', side: 'E', at: 8.0, n: 4, label: 'Steckdosen Schreibtisch 4-fach',
     note: 'Schreibtisch-Wand: laut Plan 6–8 Steckdosen in 2 Blöcken, umgesetzt 8 (2 × 4-fach).' },
   { room: 'og_kinde', t: 'sd', c: 'O6', side: 'E', at: 8.8, n: 4, label: 'Steckdosen Schreibtisch 4-fach',
@@ -817,31 +830,31 @@ const DEVICE_SPECS = [
   { room: 'og_kinde', t: 'sw', c: 'O1', door: true, kinds: { Aus: 1 } },
   { room: 'og_kinde', t: 'th', c: 'O14', door: true, label: 'Thermostat-Anschluss (neben Tür)' },
   { room: 'og_kinde', t: 'rl', c: 'O14', side: 'S', at: 6.58, label: 'Rollladen-Anschluss Fenster' },
-  { room: 'og_kinde', t: 'rm', ceil: [5.48, 7.4], label: 'Rauchwarnmelder' },
-  { room: 'og_abst', t: 'sd', c: 'O11', side: 'S', at: 1.78, h: 1.2, n: 3, label: 'Steckdosen Waschtisch 3-fach',
+  { room: 'og_kinde', t: 'rm', ceil: [5.48, 7.4], extra: true, label: 'Rauchwarnmelder' },
+  { room: 'og_abst', t: 'sd', c: 'O11', side: 'S', at: 1.84, h: 1.2, n: 3, label: 'Steckdosen Waschtisch 3-fach',
     note: 'Laut Plan 2–3 Steckdosen neben dem Waschbecken, umgesetzt 3.' },
   { room: 'og_abst', t: 'li', c: 'O3', ceil: [1.3, 5.0], label: 'Deckenleuchte IP44' },
-  { room: 'og_abst', t: 'li', c: 'O3', side: 'S', at: 1.62, h: 1.95, wall: true, label: 'Spiegelleuchte' },
-  { room: 'og_abst', t: 'fa', c: 'O11', side: 'N', at: 1.6, h: 0.5, label: 'Handtuchheizkörper elektrisch', note: 'Geräteanschlussdose.' },
-  { room: 'og_abst', t: 'sw', c: 'O3', door: true, kinds: { Serie: 1 }, label: 'Serienschalter Decke/Spiegel',
-    lights: [['Deckenleuchte IP44'], ['Spiegelleuchte']] },
-  { room: 'og_abst', t: 'th', c: 'O14', door: true, label: 'Thermostat-Anschluss (neben Tür)' },
+  { room: 'og_abst', t: 'li', c: 'O3', side: 'S', at: 1.74, h: 1.95, wall: true, zone2ok: true, label: 'Spiegelleuchte IP44' },
+  { room: 'og_abst', t: 'fa', c: 'O14', side: 'N', at: 1.92, h: 0.25, label: 'Handtuchheizkörper elektrisch', note: 'Geräteanschlussdose, laut Plan NYM-J 5×1,5.' },
+  { room: 'og_abst', t: 'sw', c: 'O3', side: 'N', at: 1.75, kinds: { Serie: 1 }, label: 'Serienschalter Decke/Spiegel',
+    lights: [['Deckenleuchte IP44'], ['Spiegelleuchte IP44']], note: 'Innen neben der Tür an der Wand zum Schlafzimmer; neben der Tür selbst bleiben nur 20 cm Wand.' },
+  { room: 'og_abst', t: 'th', c: 'O14', side: 'N', at: 1.75, label: 'Thermostat-Anschluss (neben Tür)' },
   { room: 'og_bad', t: 'sd', c: 'O10', side: 'S', at: 1.92, h: 1.2, n: 4, label: 'Steckdosen Waschtisch 4-fach' },
   { room: 'og_bad', t: 'li', c: 'O3', ceil: [1.55, 9.4], label: 'Deckenleuchte IP44' },
-  { room: 'og_bad', t: 'li', c: 'O3', side: 'S', at: 1.52, h: 2.1, wall: true, label: 'Spiegelleuchte' },
-  { room: 'og_bad', t: 'fa', c: 'O3', side: 'E', at: 10.25, h: 2.25, label: 'Lüfter mit Nachlauf', note: 'Geschaltet mit der Deckenleuchte.' },
-  { room: 'og_bad', t: 'fa', c: 'O10', side: 'E', at: 9.2, h: 0.9, label: 'Handtuchheizkörper elektrisch', note: 'Geräteanschlussdose.' },
-  { room: 'og_bad', t: 'sw', c: 'O3', side: 'E', at: 8.6, kinds: { Serie: 1 }, label: 'Serienschalter Decke+Lüfter/Spiegel',
-    lights: [['Deckenleuchte IP44'], ['Spiegelleuchte']],
-    note: 'Bewusst an der Wand x = 2,20 neben der Tür, nicht auf der Wannenseite der Tür.' },
-  { room: 'og_bad', t: 'th', c: 'O14', side: 'E', at: 8.6, label: 'Thermostat-Anschluss (neben Tür)' },
-  { room: 'og_bad', t: 'rl', c: 'O14', side: 'E', at: 8.8, label: 'Rollladen-Anschluss Fenster (Bedienstelle an der Tür)',
-    note: 'Das Fenster liegt über der Wanne im Schutzbereich; die Bedienstelle sitzt deshalb an der Tür, die Motorleitung läuft in der oberen Installationszone zum Rollladenkasten.' },
+  { room: 'og_bad', t: 'li', c: 'O3', side: 'S', at: 1.9, h: 2.1, wall: true, zone2ok: true, label: 'Spiegelleuchte IP44' },
+  { room: 'og_bad', t: 'fa', c: 'O3', side: 'E', at: 10.3, h: 2.25, extra: true, label: 'Lüfter mit Nachlauf', note: 'Geschaltet mit der Deckenleuchte.' },
+  { room: 'og_bad', t: 'fa', c: 'O14', side: 'E', at: 10.1, h: 0.25, label: 'Handtuchheizkörper elektrisch', note: 'Geräteanschlussdose, NYM-J 5×1,5 wie in der Dusche.' },
+  { room: 'og_bad', t: 'sw', c: 'O3', side: 'E', at: 9.45, kinds: { Serie: 1 }, label: 'Serienschalter Decke+Lüfter/Spiegel',
+    lights: [['Deckenleuchte IP44'], ['Spiegelleuchte IP44']],
+    note: 'Die Badtür schlägt an dieser Wand an; der Schalter sitzt deshalb hinter dem Bereich des offenen Türblatts. Alternative: Türanschlag wechseln oder Schalter außen im Flur.' },
+  { room: 'og_bad', t: 'th', c: 'O14', side: 'E', at: 9.45, label: 'Thermostat-Anschluss' },
+  { room: 'og_bad', t: 'rl', c: 'O14', side: 'E', at: 9.65, label: 'Rollladen-Anschluss Fenster (Bedienstelle neben dem Lichtschalter)',
+    note: 'Das Fenster liegt über der Wanne im Schutzbereich; die Bedienstelle sitzt deshalb beim Lichtschalter, die Motorleitung läuft in der oberen Installationszone zum Rollladenkasten.' },
   { room: 'og_wasch', t: 'li', c: 'O3', ceil: [3.07, 9.4], label: 'Deckenleuchte' },
   { room: 'og_wasch', t: 'sw', c: 'O3', door: true, kinds: { Aus: 1 } },
   // ---------- DG ----------
   { room: 'dg_flur', t: 'uv', id: 'UV-DG', side: 'S', at: 4.45, h: 1.3, w: 0.4, hh: 0.9, label: 'Unterverteiler UV-DG',
-    note: 'Im DG steht über dem UV-OG keine Wand; deshalb an der nächsten Wand des Lofts (Südwand, rund 0,5 m versetzt). Versorgt nur das DG. Hauptleitung NYM-J 5×6 vom HV; Querschnitt legt der Elektrofachbetrieb fest.' },
+    note: 'Im DG steht über dem UV-OG keine Wand; deshalb an der nächsten Wand des Lofts (Wand zum Abstellraum, rund 0,5 m versetzt). Versorgt nur das DG. Aufputz-Verteiler. Hauptleitung NYM-J 5×6 vom HV; Querschnitt legt der Elektrofachbetrieb fest.' },
   { room: 'dg_flur', t: 'sd', c: 'D4', side: 'S', at: 2.45, n: 4, label: 'Steckdosen Loft 4-fach',
     note: 'Loft/Studio: laut Plan 6–8 Steckdosen, umgesetzt 8 (4 + 2 + 2). Die freien Wandflächen sind kurz, deshalb Mehrfachrahmen an drei Wänden.' },
   { room: 'dg_flur', t: 'sd', c: 'D4', side: 'N', at: 2.15, n: 2 },
@@ -851,41 +864,42 @@ const DEVICE_SPECS = [
   { room: 'dg_flur', t: 'li', c: 'D1', ceil: [3.4, 6.4], label: 'Deckenleuchte Loft' },
   { room: 'dg_flur', t: 'sw', c: 'D1', side: 'N', at: 3.5, kinds: { Aus: 1 }, label: 'Ausschalter Loft' },
   { room: 'dg_flur', t: 'th', c: 'D9', side: 'N', at: 3.5, label: 'Thermostat-Anschluss Loft' },
-  { room: 'dg_flur', t: 'rm', ceil: [2.9, 6.6], label: 'Rauchwarnmelder' },
+  { room: 'dg_flur', t: 'rm', ceil: [2.9, 6.6], extra: true, label: 'Rauchwarnmelder' },
   { room: 'dg_trep', t: 'li', c: 'D1', ceil: [1.1, 6.3], label: 'Deckenleuchte Treppe' },
   { room: 'dg_trep', t: 'sw', c: 'D1', side: 'N', at: 1.6, kinds: { Wechsel: 1 }, label: 'Wechselschalter Treppe oben' },
   { room: 'dg_trep', t: 'sd', c: 'D8', side: 'N', at: 1.6, n: 2, label: 'Steckdosen Flur 2-fach (unter dem Lichtschalter)' },
   { room: 'dg_wc', t: 'sd', c: 'D3', side: 'E', at: 6.85, h: 1.2, n: 3, label: 'Steckdosen Waschbecken 3-fach',
     note: 'Laut Plan 2–3 Steckdosen neben dem Waschbecken, umgesetzt 3.' },
   { room: 'dg_wc', t: 'li', c: 'D2', ceil: [5.45, 6.8], label: 'Deckenleuchte' },
-  { room: 'dg_wc', t: 'li', c: 'D2', side: 'E', at: 6.43, h: 1.8, wall: true, label: 'Spiegelleuchte' },
-  { room: 'dg_wc', t: 'fa', c: 'D2', side: 'N', at: 5.4, h: 2.2, label: 'Lüfter mit Nachlauf', note: 'Geschaltet mit der Deckenleuchte.' },
+  { room: 'dg_wc', t: 'li', c: 'D2', side: 'E', at: 6.43, h: 1.8, wall: true, label: 'Spiegelleuchte IP44' },
+  { room: 'dg_wc', t: 'fa', c: 'D2', side: 'N', at: 5.4, h: 2.2, extra: true, label: 'Lüfter mit Nachlauf', note: 'Geschaltet mit der Deckenleuchte.' },
   { room: 'dg_wc', t: 'sw', c: 'D2', door: true, kinds: { Serie: 1 }, label: 'Serienschalter Decke+Lüfter/Spiegel',
-    lights: [['Deckenleuchte'], ['Spiegelleuchte']] },
+    lights: [['Deckenleuchte'], ['Spiegelleuchte IP44']] },
   { room: 'dg_kr', t: 'sd', c: 'D6', side: 'E', at: 2.45, n: 3, label: 'Steckdosen Bettseite links 3-fach',
     note: 'Laut Plan 2–3 Steckdosen je Bettseite, umgesetzt 3 je Seite.' },
   { room: 'dg_kr', t: 'sd', c: 'D6', side: 'E', at: 4.55, n: 3, label: 'Steckdosen Bettseite rechts 3-fach',
     note: 'Laut Plan 2–3 Steckdosen je Bettseite, umgesetzt 3 je Seite.' },
   { room: 'dg_kr', t: 'li', c: 'D1', ceil: [5.13, 4.0], label: 'Deckenleuchte' },
-  { room: 'dg_kr', t: 'sw', c: 'D1', door: true, kinds: { Wechsel: 1 }, label: 'Wechselschalter Tür' },
+  { room: 'dg_kr', t: 'sw', c: 'D1', side: 'S', at: 4.95, doorRef: 'dgd_kr', kinds: { Wechsel: 1 }, label: 'Wechselschalter Tür' },
   { room: 'dg_kr', t: 'sw', c: 'D1', side: 'E', at: 4.55, kinds: { Wechsel: 1 }, label: 'Wechselschalter am Bett' },
-  { room: 'dg_kr', t: 'th', c: 'D9', door: true, label: 'Thermostat-Anschluss (neben Tür)' },
-  { room: 'dg_kr', t: 'rm', ceil: [5.6, 4.7], label: 'Rauchwarnmelder' },
+  { room: 'dg_kr', t: 'th', c: 'D9', side: 'S', at: 4.95, label: 'Thermostat-Anschluss (neben Tür)' },
+  { room: 'dg_kr', t: 'rm', ceil: [5.6, 4.7], extra: true, label: 'Rauchwarnmelder' },
   { room: 'dg_kl', t: 'sd', c: 'D7', side: 'N', at: 1.0, n: 2, label: 'Steckdosen am Kniestock 2-fach',
     note: 'Ankleide: laut Plan 4–6 Steckdosen, umgesetzt 6 (2 + 1 + 2 + 1), z. B. für Spiegel und Bügeleisen.' },
   { room: 'dg_kl', t: 'sd', c: 'D7', side: 'N', at: 2.55, n: 1, label: 'Steckdose am Kniestock' },
   { room: 'dg_kl', t: 'sd', c: 'D7', side: 'E', at: 3.0, n: 2, label: 'Steckdosen Trennwand 2-fach' },
-  { room: 'dg_kl', t: 'sd', c: 'D7', side: 'E', at: 4.6, n: 1, label: 'Steckdose Trennwand' },
-  { room: 'dg_kl', t: 'li', c: 'D1', ceil: [1.8, 4.0], label: 'Deckenleuchte Ankleide (Bewegungsmelder)', note: 'Mit Bewegungsmelder, ohne Schalter.' },
-  { room: 'dg_kl', t: 'rm', ceil: [1.3, 4.7], label: 'Rauchwarnmelder' },
-  { room: 'dg_trock', t: 'sd', c: 'D5', side: 'W', at: 8.6, n: 1 },
-  { room: 'dg_trock', t: 'li', c: 'D1', ceil: [4.9, 8.4], label: 'Deckenleuchte' },
-  { room: 'dg_trock', t: 'sw', c: 'D1', door: true, kinds: { Aus: 1 } },
+  { room: 'dg_kl', t: 'sd', c: 'D7', side: 'E', at: 4.0, n: 1, label: 'Steckdose Trennwand' },
+  { room: 'dg_kl', t: 'li', c: 'D1', ceil: [1.8, 4.0], label: 'Deckenleuchte Ankleide', note: 'Laut Plan mit Bewegungsmelder; zusätzlich der im Plan genannte Schalter innen neben der Tür.' },
+  { room: 'dg_kl', t: 'sw', c: 'D1', door: true, kinds: { Aus: 1 } },
+  { room: 'dg_kl', t: 'rm', ceil: [1.3, 4.7], extra: true, label: 'Rauchwarnmelder' },
+  { room: 'dg_trock', t: 'sd', c: 'D5', side: 'W', at: 8.6, n: 1, extra: true },
+  { room: 'dg_trock', t: 'li', c: 'D1', ceil: [4.9, 8.4], extra: true, label: 'Deckenleuchte' },
+  { room: 'dg_trock', t: 'sw', c: 'D1', door: true, extra: true, kinds: { Aus: 1 } },
 ];
 
 /* Bäder: Wanne bzw. Duschwanne + Schutzbereiche (VDE 0100-701). Bereich 1 = über der Wanne, Bereich 2 = 0,60 m daneben. */
 const TUB = { floor: 'OG', room: 'og_bad', what: 'Wanne', x0: 0.1, x1: 0.85, y0: 8.45, y1: 10.5, zone2: 0.6, rim: 0.55 };
-const SHOWER = { floor: 'OG', room: 'og_abst', what: 'Duschwanne', x0: 0.03, x1: 0.9, y0: 4.53, y1: 5.47, zone2: 0.6, rim: 0.06 };
+const SHOWER = { floor: 'OG', room: 'og_abst', what: 'Duschwanne', assumed: true, x0: 0.03, x1: 0.9, y0: 4.53, y1: 5.47, zone2: 0.6, rim: 0.06 };
 const WET = [TUB, SHOWER];
 
 /* Ausstattung: Treppen, Schornstein, Öltank */
@@ -894,7 +908,7 @@ const FIXTURES = [
   { floor: 'EG', type: 'straight', x0: 0.1, x1: 1.0, y0: 5.75, y1: 8.3, steps: 15, dir: -1 },
   { floor: 'OG', type: 'straight', x0: 0.1, x1: 1.0, y0: 5.6, y1: 8.3, steps: 15, dir: -1 },
   { floor: 'DG', type: 'spiral', cx: 1.1, cy: 7.0, r: 0.8, from: 0.5, turn: 1.0, steps: 0 },
-  { floor: 'KG', type: 'box', x0: 4.4, x1: 6.4, y0: 8.2, y1: 9.6, h: 1.5, label: 'Öltank 5000 l' },
+  { floor: 'KG', type: 'box', x0: 4.4, x1: 6.4, y0: 8.2, y1: 9.6, h: 1.5, label: 'Öltank (Bestand – Rückbau bei Umstellung auf Wärmepumpe klären)' },
 ];
 const CHIMNEY = { x0: 5.9, x1: 6.6, y0: 5.9, y1: 6.2 };
 
@@ -1119,7 +1133,7 @@ function doorSideS(R, opId) {
    GERÄTE PLATZIEREN
    ===================================================================== */
 const DEVICES = [];
-const SWITCH_NAME = { Aus: 'Ausschalter', Wechsel: 'Wechselschalter', Kreuz: 'Kreuzschalter', Taster: 'Taster', Kontroll: 'Kontrollschalter', Notschalter: 'Notschalter', Serie: 'Serienschalter', SerieWechsel: 'Serien-Wechselschalter', Dimmer: 'Dimmer' };
+const SWITCH_NAME = { Aus: 'Ausschalter', Wechsel: 'Wechselschalter', Kreuz: 'Kreuzschalter', Kontroll: 'Kontrollschalter', Serie: 'Serienschalter', Dimmer: 'Dimmer' };
 /* Höhen laut Plan: Steckdosen 0,30 m, Schalter 1,05 m, Rollladen-Bedienstelle 1,10 m über OKFF */
 const DEFAULT_H = { sd: 0.3, sw: 1.05, net: 0.3, fa: 1.2, li: 2.0, kl: 1.2, pas: 0.3, uv: 1.1, rl: 1.1, th: 1.3 };
 function wallPoint(R, side, at) {
@@ -1183,7 +1197,7 @@ function placeDevices() {
       id: spec.id || `d${++seq}`, t: spec.t, c: spec.c || null, room: R.id, floor: R.floor,
       x: p.x, y: p.y, s: p.s ?? null, nx: p.e ? p.e.nx : 0, ny: p.e ? p.e.ny : 0, h,
       mount: spec.ceil ? 'ceil' : 'wall', n: spec.n || 1, kinds: spec.kinds || null,
-      label: spec.label || defaultLabel(spec), note: spec.note || '', w: spec.w, hh: spec.hh, lights: spec.lights || null, lightRoom: spec.lightRoom || null, ...extra,
+      label: spec.label || defaultLabel(spec), note: spec.note || '', w: spec.w, hh: spec.hh, lights: spec.lights || null, lightRoom: spec.lightRoom || null, extra: !!spec.extra, zone2ok: !!spec.zone2ok, ...extra,
     });
   };
   for (const spec of DEVICE_SPECS) {
@@ -1200,19 +1214,40 @@ function placeDevices() {
       const s = opId === R.room.exit ? R.ad : doorSideS(R, opId);
       push(spec, R, pointAt(R.loop, s), { door: opId });
     } else {
-      push(spec, R, wallPoint(R, spec.side, spec.at));
+      push(spec, R, wallPoint(R, spec.side, spec.at), spec.doorRef ? { door: spec.doorRef } : {});
     }
   }
-  // Bäder: euklidischer Abstand jedes Geräts zur Wanne bzw. Duschwanne (Bereich 1), Bereich 2 = +0,60 m bis 2,25 m Höhe
+  // Bäder: Abstand der Gerätekante zur Wanne bzw. Duschwanne (Bereich 1), Bereich 2 = +0,60 m bis 2,25 m Höhe.
+  // Die Bestandsmaße sind nur auf etwa 20 cm genau: weniger als 20 cm Luft zu Bereich 2 gilt als „knapp“.
   for (const T of WET) for (const d of DEVICES.filter(x => x.room === T.room)) {
-    const half = d.t === 'sd' ? 0.04 + d.n * 0.075 : 0.06, alongX = Math.abs(d.ny) > 0.5;
-    const hx = alongX ? half : 0, hy = alongX ? 0 : half;
+    const half = deviceHalfWidth(d), alongX = Math.abs(d.ny) > 0.5, wallDev = d.mount !== 'ceil';
+    const hx = wallDev && alongX ? half : 0, hy = wallDev && !alongX ? half : 0;
     const dx = Math.max(T.x0 - (d.x + hx), 0, (d.x - hx) - T.x1), dy = Math.max(T.y0 - (d.y + hy), 0, (d.y - hy) - T.y1);
     d.tubDist = Math.hypot(dx, dy);
-    d.bathViolation = d.tubDist < T.zone2 && d.h < 2.25 && d.t !== 'rm';
-    const txt = `Abstand zur ${T.what} ${fmt(d.tubDist, 2)} m (Bereich 2 reicht ${fmt(T.zone2, 2)} m weit, bis 2,25 m Höhe)`;
-    d.note = (d.bathViolation ? `WARNUNG: liegt in Schutzbereich 2 – ${txt}. Gerät versetzen!` : `${txt} → außerhalb der Schutzbereiche (VDE 0100-701).`) + (d.note ? ' ' + d.note : '');
+    const low = d.h < 2.25 && d.t !== 'rm', inZone = low && d.tubDist < T.zone2;
+    d.bathState = !low ? 'hoch' : inZone ? (d.zone2ok ? 'zone2' : 'verstoss') : d.tubDist < T.zone2 + BATH_TOL ? 'knapp' : 'ok';
+    d.bathViolation = d.bathState === 'verstoss';
+    const about = `rund ${fmt(d.tubDist, 1)} m neben der ${T.what}${T.assumed ? ' (deren Lage ist angenommen)' : ''}`;
+    const txt = {
+      hoch: `Über 2,25 m Höhe und damit oberhalb der Schutzbereiche (VDE 0100-701).`,
+      ok: `${about}; Bereich 2 endet bei ${fmt(T.zone2, 2)} m → außerhalb der Schutzbereiche (VDE 0100-701).`,
+      knapp: `KNAPP: ${about}, Bereich 2 endet bei ${fmt(T.zone2, 2)} m. Weniger als 20 cm Luft – die Bestandsmaße sind nur auf etwa 20 cm genau, vor Ort messen.${d.zone2ok ? ' Als IP44-Leuchte wäre sie auch in Bereich 2 zulässig (laut Hersteller).' : ''}`,
+      zone2: `Liegt in Schutzbereich 2 (${about}): dort nur als Leuchte in IP44 und laut Herstellerangabe zulässig.`,
+      verstoss: `WARNUNG: liegt in Schutzbereich 2 (${about}). Gerät versetzen!`,
+    }[d.bathState];
+    d.note = txt + (d.note ? ' ' + d.note : '');
   }
+}
+/* halbe sichtbare Breite eines Wandgeräts entlang der Wand (Rahmen 80 mm, Mehrfachrahmen im 71-mm-Raster) */
+const BATH_TOL = 0.2;
+function deviceHalfWidth(d) {
+  const frame = n => (0.08 + (n - 1) * 0.071) / 2;
+  if (d.t === 'sd') return frame(d.n);
+  if (d.t === 'sw') return frame(Object.values(d.kinds || { Aus: 1 }).reduce((a, b) => a + b, 0));
+  if (d.t === 'uv') return d.w / 2;
+  if (d.t === 'li') return d.mount === 'ceil' ? 0.15 : /Spiegel/.test(d.label) ? 0.23 : 0.08;
+  if (d.t === 'fa') return /Lüfter/.test(d.label) ? 0.08 : 0.04;
+  return 0.04;
 }
 
 /* =====================================================================
@@ -1249,8 +1284,8 @@ const isHome = (fid, cid) => homeFloor(cid) === fid;
 /* Oberkante des Verteilers eines Geschosses: dort werden die Leitungen eingeführt */
 const distTop = fid => { const d = DEVICES.find(x => x.t === 'uv' && x.floor === fid); return d.h + d.hh / 2; };
 
-/* Adern einer Schalterleitung: L + je Schaltstelle (Aus/Not/Dimmer +1, Wechsel +2, Kreuz +4, Kontroll +1 und N, Serie +2, Serien-Wechsel +4) + PE */
-const CORES = { Aus: 1, Notschalter: 1, Taster: 1, Dimmer: 1, Wechsel: 2, Kreuz: 4, Kontroll: 2, Serie: 2, SerieWechsel: 4 };
+/* Adern einer Schalterleitung: L + je Schaltstelle (Aus/Dimmer +1, Wechsel +2, Kreuz +4, Kontroll +1 und N, Serie +2, Serien-Wechsel +4) + PE */
+const CORES = { Aus: 1, Dimmer: 1, Wechsel: 2, Kreuz: 4, Kontroll: 2, Serie: 2 };
 const switchCores = kinds => 1 + Object.entries(kinds || { Aus: 1 }).reduce((t, [k, n]) => t + (CORES[k] || 1) * n, 0) + 1;
 function switchCable(kinds) {
   const n = switchCores(kinds);
@@ -1325,7 +1360,7 @@ function tail(fid, cid) {
 }
 
 /* ---------- Sammelobjekt: Geometrie (zum Zeichnen) + Längen je Kabeltyp ---------- */
-function newAcc() { return { arcs: new Map(), polys: [], byCable: {}, ads: [], boxes: 0, tails: new Set() }; }
+function newAcc() { return { arcs: new Map(), polys: [], byCable: {}, ads: [], boxes: 0, tails: new Map() }; }
 function addLen(acc, cable, m) { acc.byCable[cable] = (acc.byCable[cable] || 0) + m; }
 function addPoly(acc, poly, cable) { acc.polys.push(poly); addLen(acc, cable, polyLen(poly)); }
 /* Bogen in ZW-o als 3D-Punkte; unter der Dachschräge fein unterteilt, damit er der Zone folgt */
@@ -1424,14 +1459,18 @@ function feeder(R, cid, acc, cable, star) {
    (Treppenlicht) enden an einer Steig-Abzweigdose, von dort läuft eine Leitung zum Heimatverteiler */
 function toSource(fid, cid, acc, cable, star) {
   if (star || isHome(fid, cid)) { addPoly(acc, tail(fid, cid), cable); addLen(acc, cable, ZONE.reserveDist); }
-  else { acc.tails.add(fid); addLen(acc, cable, ZONE.reserve); }
+  else { acc.tails.set(fid, widerCable(acc.tails.get(fid), cable)); addLen(acc, cable, ZONE.reserve); }
 }
-function closeTails(acc, cid, cable) {
-  for (const fid of acc.tails) {
-    addPoly(acc, tail(fid, cid), cable);
+/* die aderreichere von zwei Leitungen (Schalterleitungen 3×/4×/5×/7×1,5) */
+const CABLE_RANK = ['3x15', '4x15', '5x15', '7x15'];
+const widerCable = (a, b) => (!a ? b : CABLE_RANK.indexOf(b) > CABLE_RANK.indexOf(a) ? b : a);
+/* von der Steig-Abzweigdose zum Heimatverteiler: mit der Aderzahl der dort endenden Schalterleitung */
+function closeTails(acc) {
+  for (const [fid, cable] of acc.tails) {
+    const t = tail(fid, acc.cid);
+    addPoly(acc, t, cable);
     addLen(acc, cable, ZONE.reserve + ZONE.reserveDist);
-    const p = tail(fid, cid)[0];
-    acc.ads.push(p);
+    acc.ads.push(t[0]);
   }
 }
 /* Bögen je Raum vereinigen – nur für die Darstellung */
@@ -1448,6 +1487,7 @@ const sumCables = bc => Object.values(bc).reduce((a, b) => a + b, 0);
 const ROUTES = {};
 function routePower(c) {
   const acc = newAcc(), devs = DEVICES.filter(d => d.c === c.id), main = c.cable;
+  acc.cid = c.id;
   const byRoom = new Map();
   devs.forEach(d => { if (!byRoom.has(d.room)) byRoom.set(d.room, []); byRoom.get(d.room).push(d); });
   for (const [rid, list] of byRoom) {
@@ -1464,10 +1504,10 @@ function routePower(c) {
       });
     if (!src) { addLen(acc, main, ZONE.reserve); feeder(R, c.id, acc, main, false); }
   }
-  closeTails(acc, c.id, main);
+  closeTails(acc);
   ROUTES[c.id] = { polys: drawPolys(acc), ads: acc.ads, byCable: acc.byCable, length: sumCables(acc.byCable), devs, boxes: acc.boxes };
 }
-/* Netzwerk sternförmig: je Doppeldose zwei Kabel bis ins Patchfeld */
+/* Netzwerk sternförmig: je Doppeldose eine Cat-7-Duplexleitung (zwei Adernpaar-Bündel in einem Mantel) bis ins Patchfeld */
 function routeNet(c) {
   const geo = newAcc(), devs = DEVICES.filter(d => d.c === c.id);
   let path = 0;
@@ -1478,7 +1518,7 @@ function routeNet(c) {
     if (R.room.source) toSource(R.floor, c.id, acc, 'cat7', true); else feeder(R, c.id, acc, 'cat7', true);
     addLen(acc, 'cat7', ZONE.reserve);
     path += acc.byCable.cat7 - ZONE.reserve - ZONE.reserveDist;
-    addLen(geo, 'cat7', 2 * acc.byCable.cat7);
+    addLen(geo, 'cat7', acc.byCable.cat7);
     geo.polys.push(...acc.polys);
     for (const [rid, v] of acc.arcs) { if (!geo.arcs.has(rid)) geo.arcs.set(rid, { lane: v.lane, list: [] }); geo.arcs.get(rid).list.push(...v.list); }
   }
@@ -1759,7 +1799,10 @@ function buildFixtures(fid, grp) {
     l.position.set(sh.x0 - 0.7, 0.014, (sh.y0 + sh.y1) / 2); parts.push(l);
   }
   for (const fx of FIXTURES.filter(q => q.floor === fid)) {
-    if (fx.type === 'box') box(fx.x0, fx.x1, fx.y0, fx.y1, 0, fx.h);
+    if (fx.type === 'box') {
+      box(fx.x0, fx.x1, fx.y0, fx.y1, 0, fx.h);
+      if (fx.label) { const l = textPlane(fx.label.split(' – '), '--scene-label', 0.3, [40, 26]); l.position.set((fx.x0 + fx.x1) / 2, fx.h + 0.02, (fx.y0 + fx.y1) / 2); parts.push(l); }
+    }
     if (fx.type === 'straight') {
       const rise = (f.h + 0.25) / fx.steps, run = (fx.y1 - fx.y0) / fx.steps;
       for (let k = 0; k < fx.steps; k++) {
@@ -2197,7 +2240,7 @@ function circuitCardHtml(id) {
   return `<h3><i class="cdot" data-cid="${id}" style="background:${circuitCss(id)}"></i>${esc(id)} · ${esc(c.name)}</h3>
     <dl><dt>Verteiler</dt><dd>${esc(c.feed ? 'HV → ' + c.uv : c.net ? 'Patchpanel im Medienfeld des HV' : DIST_OF[c.floor])}</dd>
     <dt>Absicherung</dt><dd>${esc(c.net ? 'Patchfeld' : protOf(c))}</dd>
-    <dt>Kabel</dt><dd class="mono">${byCableList(r.byCable).map(([k, v]) => `${esc(CABLES[k])}: ${fmt(v)} m`).join('<br>')}${c.net ? '<br>(2 Kabel je Dose)' : ''}</dd>
+    <dt>Kabel</dt><dd class="mono">${byCableList(r.byCable).map(([k, v]) => `${esc(CABLES[k])}: ${fmt(v)} m`).join('<br>')}${c.net ? '<br>(eine Duplexleitung je Doppeldose)' : ''}</dd>
     <dt>Länge</dt><dd class="mono">${fmt(r.length)} m berechnet · ${fmt(r.length * (1 + ZONE.waste))} m inkl. 15 %</dd>
     <dt>Geräte</dt><dd>${esc(summarize(r.devs))}</dd></dl>
     ${items ? `<ul>${items}</ul>` : ''}`;
@@ -2230,10 +2273,11 @@ function showDeviceCard(d) {
   if (d.t === 'sw') note = (note ? note + ' ' : '') + 'Schalterleitung sternförmig von der Abzweigdose des Raums zu jeder Schaltstelle; bei Wechsel-/Kreuzschaltungen werden die Korrespondierenden in der Abzweigdose verbunden. Adern: L + je Schaltstelle + PE.';
   if (!note && d.t === 'sd' && d.h >= 1.0) note = 'Über Arbeitsfläche bzw. Waschtisch, Zuführung in ZW-m bzw. als senkrechter Stich.';
   if (!note && d.t === 'rm') note = 'Batteriegerät (10-Jahres-Batterie), keine Leitung. Pflicht in Schlaf-, Kinderzimmern und Fluren als Rettungsweg.';
-  if (!note && d.t === 'net') note = 'Sternförmig zum zentralen Patchpanel im Medienfeld des HV (Keller), je Dose ein Leerrohr M25 mit 2× Cat 7, getrennt von den 230-V-Leitungen.';
+  if (!note && d.t === 'net') note = 'Sternförmig zum zentralen Patchpanel im Medienfeld des HV (Keller), je Doppeldose ein Leerrohr M25 mit einer Cat-7-Duplexleitung, getrennt von den 230-V-Leitungen.';
   if (!note && d.t === 'rl') note = 'Anschluss für elektrischen Rollladen, NYM-J 5×1,5 (Gruppensteuerung möglich). Bedienstelle 1,10 m über OKFF, 15 cm neben der Öffnung.';
   if (!note && d.t === 'th') note = 'Anschluss für Raumthermostat (Fußbodenheizung), NYM-J 5×1,5.';
-  const warn = d.bathViolation ? ' style="border-left-color:var(--accent);color:var(--accent);font-weight:600"' : '';
+  if (d.extra) note = 'Ergänzung (nicht im Plan des Bauherrn). ' + (note || '');
+  const warn = d.bathViolation || d.bathState === 'knapp' ? ' style="border-left-color:var(--accent);color:var(--accent);font-weight:600"' : '';
   openCard(`<h3>${SYM[d.t] ? `<span style="width:22px;display:inline-flex;color:var(--ink)">${SYM[d.t]}</span>` : ''}${esc(d.label)}</h3><dl>${rows}</dl>${note ? `<p class="note"${warn}>${esc(note)}</p>` : ''}`);
 }
 
@@ -2308,8 +2352,11 @@ function computeMaterial() {
   const wayLen = ids => ids.reduce((t, id) => t + ROUTES[id].polys.reduce((u, p) => u + polyLen(p), 0), 0);
   const netPath = NETS.reduce((t, n) => t + ROUTES[n.id].path, 0);
   const feedPath = FEEDS.reduce((t, f) => t + ROUTES[f.id].path, 0);
-  // PV-Vorbereitung: zwei Leerrohre M40 vom HV bis unter das Dach (First), je + 1,5 m Reserve
-  const pvLen = (FLOOR.DG.z + roofH(ROOF.ridgeY)) - (FLOOR.KG.z + distTop('KG')) + 1.5;
+  // PV-Vorbereitung (Schätzung): zwei Leerrohre M40 vom HV waagerecht zum Steigschacht, senkrecht bis unter die Dachfläche,
+  // dann in der Dachschräge bis zum First; je + 1,5 m Reserve. Der Wechselrichterort steht noch nicht fest.
+  const hv = onLoop(sourcePoint('KG', 0)), sh = onLoop(riserPoint('EG', 'FD'));
+  const pvRise = (FLOOR.DG.z + roofH(sh.y)) - (FLOOR.KG.z + distTop('KG'));
+  const pvLen = Math.hypot(sh.x - hv.x, sh.y - hv.y) + pvRise + Math.abs(sh.y - ROOF.ridgeY) * Math.hypot(1, ROOF.slope) + 1.5;
   const tubes = {
     M20: ceil5(wayLen(CIRCUITS.filter(c => c.floor === 'DG').map(c => c.id)) * 1.1),
     M25: ceil5(netPath * 1.1),
@@ -2317,7 +2364,7 @@ function computeMaterial() {
     M40: ceil5(2 * pvLen * 1.1),
   };
   // Schutzgeräte aus der Verteilerbelegung
-  const prot = { ls1: 0, ls3: 0, rcd: 0, rcbo: 0 };
+  const prot = { ls1: 0, ls3: 0, rcd: 0, rcdH: 0, rcbo: 0, lts: 0, spd2: 0 };
   for (const D of Object.values(DIST)) for (const row of D.rows) for (const it of row) {
     if (typeof it === 'object') { if (it.kind) prot[it.kind]++; continue; }
     const c = CIRC[it];
@@ -2327,7 +2374,7 @@ function computeMaterial() {
 }
 
 function ringHint(m, k) {
-  if (k === 'cat7') return m <= 100 ? '1 Ring 100 m' : m <= 500 ? `Spule 500 m oder ${Math.ceil(m / 100)}× 100 m` : 'Trommel 1000 m';
+  if (k === 'cat7') return m <= 100 ? '1 Ring 100 m Duplex' : m <= 500 ? `Trommel 500 m Duplex oder ${Math.ceil(m / 100)}× 100 m` : 'Trommel 1000 m Duplex';
   if (k === '5x6') return 'nach Maß (Meterware)';
   const h = Math.floor(m / 100), rest = m - h * 100;
   if (rest === 0) return `${h}× 100 m`;
@@ -2340,11 +2387,11 @@ function renderMaterial() {
   let a = '<div class="kv"><span class="h">Kabel (inkl. 15 % Verschnitt)</span>';
   for (const k of CABLE_ORDER) {
     if (!M.cable[k]) continue;
-    const what = { '4x15': ' · Schalterleitung', '5x15': ' · Rollläden, Thermostate, Schalterleitung', '7x15': ' · Schalterltg. Kreuz', '5x6': ' · 3 Hauptleitungen + Wärmepumpe' }[k] || '';
+    const what = { '4x15': ' · Schalterleitung', '5x15': ' · Rollläden, Thermostate, Schalterleitung', '7x15': ' · Schalterltg. Kreuz', '5x6': ` · ${FEEDS.length} Hauptleitungen + Wärmepumpe` }[k] || '';
     a += kv(`<span class="mono">${CABLES[k]}</span><br><span class="small">${fmt(M.cable[k])} m berechnet${what} · ${ringHint(M.withWaste[k], k)}</span>`, `${M.withWaste[k]} m`);
   }
-  a += kv('<span class="mono">Erdungsleiter 16 mm² Cu (PV)</span><br><span class="small">im Leerrohr „PV PE/COM“, HV bis unters Dach</span>', `${ceil5(M.pvLen * (1 + ZONE.waste))} m`);
-  a += `<span class="small" style="grid-column:1/-1">NYM-J 5×6 für die Hauptleitungen ist der im Plan für den UV-EG genannte Wert; den Querschnitt aller drei Hauptleitungen und der Wärmepumpen-Leitung legt der Elektrofachbetrieb fest. Cat 7: je Doppeldose zwei Kabel bis zum Patchpanel am HV.</span></div>`;
+  a += kv('<span class="mono">Erdungsleiter 16 mm² Cu (PV)</span><br><span class="small">im Leerrohr „PV PE/COM“, HV bis unters Dach · Schätzung</span>', `${ceil5(M.pvLen * (1 + ZONE.waste))} m`);
+  a += `<span class="small" style="grid-column:1/-1">NYM-J 5×6 für die Hauptleitungen ist der im Plan für den UV-EG genannte Wert; den Querschnitt aller Hauptleitungen und der Wärmepumpen-Leitung legt der Elektrofachbetrieb fest. Cat 7: je Doppeldose eine Duplexleitung (zwei Anschlüsse) bis zum Patchfeld am HV.</span></div>`;
   let b = '<div class="kv"><span class="h">Dosen</span>';
   b += kv('UP-Gerätedosen Mauerwerk (KG–OG)', M.boxes.mauer) + kv('Hohlwanddosen (DG-Trockenbau)', M.boxes.hohl);
   b += kv('Deckenauslassdosen', M.liCeil);
@@ -2356,17 +2403,20 @@ function renderMaterial() {
   b += kv('Rollladen-Anschlüsse', M.rl) + kv('Thermostat-Anschlüsse', M.th);
   b += kv('Netzwerk-Doppeldosen Cat 7', M.net) + kv('Rauchwarnmelder', M.rm) + '</div>';
   let c = '<div class="kv"><span class="h">Verteilung</span>';
-  c += kv('Hauptverteiler HV mit Zählerplatz + Medienfeld', 1) + kv('Unterverteiler UV-EG, UV-OG, UV-DG (je 12 TE breit)', 3);
-  c += kv('Hauptschalter 3-pol. (HV)', 1) + kv('Überspannungsschutz Typ 1+2 (HV)', 1) + kv('Überspannungsschutz Typ 2 (UV-DG)', 1);
-  c += kv('Abgänge 3-pol. zu den Unterverteilern (HV)', FEEDS.length) + kv('Lasttrennschalter 3-pol. (je UV)', 3);
-  c += kv('RCD 30 mA (Gruppen 1–3 je Verteiler)', M.prot.rcd) + kv('FI/LS 30 mA für Außenkreise', M.prot.rcbo);
+  const ports = 2 * M.net, panels = patchPanels(ports);
+  c += kv('Hauptverteiler HV mit Zählerplatz + Medienfeld', 1) + kv(`Unterverteiler ${UV_KEYS.join(', ')} (Aufputz, je 12 TE breit)`, UV_KEYS.length);
+  c += kv('Hauptschalter 3-pol. (HV)', 1) + kv('Überspannungsschutz Typ 1+2 (HV)', 1);
+  c += kv(`Überspannungsschutz Typ 2 (${UV_KEYS.filter(k => DIST[k].rows.flat().includes(SYS.spd2)).join(', ') || 'keiner'})`, M.prot.spd2);
+  c += kv('Abgänge 3-pol. zu den Unterverteilern (HV)', FEEDS.length) + kv('Lasttrennschalter 3-pol. (je UV)', M.prot.lts);
+  c += kv('RCD 40 A/30 mA (Gruppen je Verteiler)', M.prot.rcd) + kv('Fehlerstromschutz Wärmepumpe (Typ laut Hersteller)', M.prot.rcdH);
+  c += kv('FI/LS 30 mA (Außenkreise, Kühlschrank)', M.prot.rcbo);
   c += kv('Leitungsschutzschalter 1-pol.', M.prot.ls1) + kv('Leitungsschutzschalter 3-pol.', M.prot.ls3);
-  c += kv('Patchpanel 24 Port + Switch (Medienfeld HV)', 1);
+  c += kv(`Patchfeld 24 Port (${ports} Anschlüsse belegt, ${panels * 24 - ports} Reserve) + Switch`, panels);
   c += '<span class="h">Leerrohr (grob, aus Leitungswegen, +10 %)</span>';
   c += kv('M20 – DG-Leitungswege (Dämmebene)', `${M.tubes.M20} m`);
-  c += kv(`M25 – Netzwerk, je Dose ein Rohr bis zum Patchpanel (${M.net} Dosen)`, `${M.tubes.M25} m`);
-  c += kv('M32 – drei Hauptleitungen HV → UV', `${M.tubes.M32} m`);
-  c += kv('M40 – PV-Vorbereitung, 2 Leerrohre HV → Dach („PV DC“, „PV PE/COM“)', `${M.tubes.M40} m`);
+  c += kv(`M25 – Netzwerk, je Doppeldose ein Rohr bis zum Patchfeld (${M.net} Dosen)`, `${M.tubes.M25} m`);
+  c += kv(`M32 – ${FEEDS.length} Hauptleitungen HV → UV`, `${M.tubes.M32} m`);
+  c += kv('M40 – PV-Vorbereitung, 2 Leerrohre HV → Steigschacht → Dach („PV DC“, „PV PE/COM“), Schätzung', `${M.tubes.M40} m`);
   c += '</div>';
   $('material').innerHTML = a + b + c;
   return M;
@@ -2378,89 +2428,143 @@ function renderMaterial() {
 const SYS = {
   hs: { sys: 'HS', t: 'Hauptschalter 3-pol.', te: 3 },
   spd: { sys: 'SPD', t: 'ÜSS Typ 1+2', te: 4 },
-  spd2: { sys: 'SPD', t: 'ÜSS Typ 2', te: 4 },
-  lts: { sys: 'LTS', t: 'Lasttrennschalter', te: 3 },
+  spd2: { sys: 'SPD', t: 'ÜSS Typ 2', te: 4, kind: 'spd2' },
+  lts: { sys: 'LTS', t: 'Lasttrennschalter', te: 3, kind: 'lts' },
   tr: { sys: 'TR', t: 'Klingeltrafo', te: 2 },
-  rcd: (n, t) => ({ sys: 'RCD ' + n, t, te: 4, kind: 'rcd', rcd: true }),
+  /* group = Wert von CIRCUITS[].rcd, den dieser RCD schützt; amps = Bemessungsstrom (Vorschlag, 4-polig) */
+  rcd: (group, t, amps = 40) => (group === 'H'
+    ? { sys: 'RCD WP', t: 'Typ/Bemessung lt. Hersteller', te: 4, kind: 'rcdH', rcd: true, group }
+    : { sys: 'RCD ' + group, t: `${t} · ${amps} A/30 mA`, te: 4, kind: 'rcd', rcd: true, group }),
   feed: id => ({ sys: CIRC[id].uv, t: 'Abgang 3-pol.', te: 3, cid: id }),
 };
+/* Belegung von Hand angeordnet (Reihen), aber beim Laden gegen CIRCUITS geprüft (checkDist): jeder Kreis genau einmal,
+   im Verteiler seines Geschosses und hinter dem RCD seiner Gruppe. Ein Kreis steht hinter dem zuletzt genannten RCD. */
 const DIST = {
   HV: {
     title: 'Hauptverteiler HV · KG-Flur, Wand zum Heizungsraum', device: 'HV', minFree: 0.3,
     rows: [
       [SYS.hs, SYS.spd, SYS.feed('FE')],
-      [SYS.feed('FO'), SYS.feed('FD')],
-      [SYS.rcd(1, 'Feuchtraum 40 A'), 'K4', 'K5'],
+      [SYS.feed('FO'), SYS.feed('FD'), 'K8'],
+      [SYS.rcd(1, 'Feuchtraum'), 'K4', 'K5'],
       [SYS.rcd(2, 'Licht + Steckd.'), 'K1', 'K2', 'K6', 'K7'],
-      [SYS.rcd(3, 'Wärmepumpe'), 'K3'],
+      [SYS.rcd('H', 'Wärmepumpe'), 'K3'],
     ],
-    media: 'Medienfeld: APZ (Hausübergabe), Router, Switch 24 Port, zentrales Patchpanel 24 Port (alle Cat-7-Strecken des Hauses), Steckdose für Netzteile',
-    note: 'Zählerplatz (eHZ, SLS) links daneben, hier nicht dargestellt. Die drei Abgänge speisen sternförmig UV-EG, UV-OG und UV-DG; Art der Vorsicherung, Selektivität und Leitungsquerschnitt legt der Elektrofachbetrieb fest. RCD 3 der Wärmepumpe: Typ und Bemessung laut Hersteller. Freie Plätze für PV, Wallbox und Speicher. PV-Vorbereitung: zwei Leerrohre M40 bis unters Dach („PV DC“ getrennt von allen AC-Leitungen, „PV PE/COM“ mit Erdungsleiter mind. 16 mm² Cu), eigene Erdungsschiene im HV.',
+    media: true,
+    note: 'Zählerplatz (eHZ, SLS) links daneben, hier nicht dargestellt. Die Abgänge speisen sternförmig die Unterverteiler; Art der Vorsicherung, Selektivität und Leitungsquerschnitt legt der Elektrofachbetrieb fest. Wärmepumpe: Fehlerstromschutz nach Typ und Bemessung laut Hersteller (bei Inverter-Geräten meist Typ B oder F, kein Standard-RCD Typ A). K8 (Leuchte Kelleraußentreppe) ist ein FI/LS für den Außenkreis. Freie Plätze für PV, Wallbox und Speicher. PV-Vorbereitung: zwei Leerrohre M40 bis unters Dach („PV DC“ getrennt von allen AC-Leitungen, „PV PE/COM“ mit Erdungsleiter mind. 16 mm² Cu), eigene Erdungsschiene im HV.',
   },
   'UV-EG': {
-    title: 'Unterverteiler UV-EG · Flur EG, Wand gegenüber der Treppe', device: 'UV-EG', minFree: 0.2,
+    title: 'Unterverteiler UV-EG · Flur EG, Wand gegenüber der Treppe', device: 'UV-EG', minFree: 0.25,
     rows: [
-      [SYS.lts, SYS.rcd(1, 'WC/Flur'), 'E12', SYS.tr],
-      [SYS.rcd(2, 'Licht + Steckd.'), 'E1', 'E2', 'E3', 'E4', 'E14'],
-      [SYS.rcd(3, 'Küche 4-pol.'), 'E5', 'E6', 'E7', 'E8', 'E9', 'E10'],
-      ['E11', 'E13'],
+      [SYS.lts, SYS.rcd(1, 'WC'), 'E16'],
+      [SYS.rcd(2, 'Licht + Steckd.'), 'E1', 'E2', 'E3', 'E4', 'E15', 'E12', 'E14'],
+      [SYS.rcd(3, 'Küche Geräte'), 'E5', 'E6', 'E7'],
+      [SYS.rcd(4, 'Küche Arbeitspl.'), 'E9', 'E10', 'E11', 'E8'],
+      ['E13', SYS.tr],
     ],
-    note: 'E11 gehört zu RCD 3 (Küche) und sitzt aus Platzgründen in Reihe 4. E13 (Terrasse) ist ein FI/LS und damit ein eigener Fehlerstromschutz für den Außenkreis.',
+    note: 'Die Küche ist auf zwei RCDs verteilt: RCD 3 für Herd, Backofen und Geschirrspüler, RCD 4 für Arbeitsplatte, Dunstabzug und Unterbaubeleuchtung. Der Kühlschrank (E8) hat einen eigenen FI/LS und läuft bei einem Fehler in der übrigen Küche weiter. E13 (Terrasse, Eingang) ist der FI/LS des Außenkreises, an ihm hängen auch die beiden Außenleuchten. Der Klingeltrafo wird aus E12 versorgt.',
   },
   'UV-OG': {
-    title: 'Unterverteiler UV-OG · Flur OG, über dem UV-EG', device: 'UV-OG', minFree: 0.2, minFreeTE: 2,
+    title: 'Unterverteiler UV-OG · Flur OG, über dem UV-EG', device: 'UV-OG', minFree: 0.25, minFreeTE: 2,
     rows: [
       [SYS.lts, SYS.rcd(1, 'Bad + Dusche'), 'O3', 'O10', 'O11'],
       [SYS.rcd(2, 'Licht + Steckd.'), 'O1', 'O2', 'O4', 'O5', 'O12', 'O14'],
       [SYS.rcd(3, 'Büros'), 'O6', 'O7', 'O8', 'O9'],
       ['O13'],
     ],
-    note: 'Bad und Dusche laufen über den eigenen RCD 1, beide Büros über den eigenen RCD 3 (weniger Störungen durch PC-Netzteile). O13 (Balkon) ist ein FI/LS. Der Plan verlangt mindestens 2 freie Automatenplätze für Nachrüstungen (z. B. LED-Band, Präsenzmelder).',
+    note: 'Bad und Dusche laufen über den eigenen RCD 1, beide Büros über den eigenen RCD 3 (weniger Störungen durch PC-Netzteile). O13 (Balkon: Steckdose und Wandleuchte) ist ein FI/LS. Der Plan verlangt mindestens 2 freie Automatenplätze für Nachrüstungen (z. B. LED-Band, Präsenzmelder).',
   },
   'UV-DG': {
-    title: 'Unterverteiler UV-DG · Loft, Südwand', device: 'UV-DG', minFree: 0.2,
+    title: 'Unterverteiler UV-DG · Loft, Wand zum Abstellraum', device: 'UV-DG', minFree: 0.25,
     rows: [
-      [SYS.lts, SYS.spd2],
+      [SYS.lts],
       [SYS.rcd(1, 'Toilette'), 'D2', 'D3'],
       [SYS.rcd(2, 'Licht + Steckd.'), 'D1', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9'],
     ],
-    note: 'Überspannungsschutz Typ 2, weil die Hauptleitung vom HV rund 10 m lang ist. Freie Plätze für die im Plan genannten Reserven (1–2 Automaten, Reserveleitungen für LED-Band, Klimagerät, Rollladen).',
+    note: 'Freie Plätze für die im Plan genannten Reserven (1–2 Automaten, Reserveleitungen für LED-Band, Klimagerät, Rollladen).',
   },
 };
-const ROW_TE = 12;
+const ROW_TE = 12, SPD2_FROM = 10;   // ab 10 m Hauptleitung zusätzlicher Überspannungsschutz Typ 2 im Unterverteiler
+const UV_KEYS = Object.keys(DIST).filter(k => k !== 'HV');
+/* nach der Leitungsführung: Überspannungsschutz Typ 2 in jeden Unterverteiler, dessen Hauptleitung länger als 10 m ist */
+function finalizeDist() {
+  for (const f of FEEDS) {
+    const row = DIST[f.uv].rows[0];
+    if (ROUTES[f.id].path > SPD2_FROM && !row.includes(SYS.spd2)) row.splice(1, 0, SYS.spd2);
+  }
+}
+/* Selbstprüfung: Belegung gegen CIRCUITS, Einführungen gegen die Schrankbreite. Liefert eine Liste von Verstößen. */
+function checkDist() {
+  const bad = [], seen = {};
+  for (const [key, D] of Object.entries(DIST)) {
+    let group = null;
+    D.rows.forEach((row, ri) => {
+      let te = 0;
+      for (const it of row) {
+        te += moduleOf(it).te;
+        if (typeof it === 'object') { if (it.rcd) group = it.group; continue; }
+        const c = CIRCUITS.find(x => x.id === it);
+        if (!c) { bad.push(`${key}: unbekannter Kreis ${it}`); continue; }
+        seen[it] = (seen[it] || 0) + 1;
+        if (DIST_OF[c.floor] !== key) bad.push(`${it} steht im ${key}, gehört aber in den ${DIST_OF[c.floor]}`);
+        if (c.rcd !== 'A' && c.rcd !== group) bad.push(`${it} steht hinter ${group === null ? 'keinem RCD' : RCD_NAME[group]}, laut Kreisliste ${RCD_NAME[c.rcd]}`);
+      }
+      if (te > ROW_TE) bad.push(`${key}, Reihe ${ri + 1}: ${te} TE in einer Reihe mit ${ROW_TE} TE`);
+    });
+  }
+  for (const c of CIRCUITS) if (seen[c.id] !== 1) bad.push(`${c.id} kommt ${seen[c.id] || 0}-mal in der Belegung vor`);
+  for (const f of FLOORS) {
+    const uv = DEVICES.find(d => d.t === 'uv' && d.floor === f.id);
+    for (const id of LANES[f.id].filter(x => isHome(f.id, x))) {
+      const q = onLoop(sourcePoint(f.id, laneOf(id, f.id)));
+      if (Math.hypot(q.x - uv.x, q.y - uv.y) > uv.w / 2 - 0.01) bad.push(`Einführung ${id} liegt außerhalb der Schrankbreite des ${uv.id}`);
+    }
+  }
+  return bad;
+}
 function moduleOf(x) {
   if (typeof x === 'object') return { label: x.sys, sub: x.t, te: x.te, sys: true, cid: x.cid, rcd: x.rcd };
   const c = CIRC[x], fils = c.rcd === 'A';
   return { label: x, sub: fils ? 'FI/LS ' + c.prot : c.poles ? c.prot.replace(' (laut Hersteller)', '') : c.prot, te: fils ? 2 : c.poles ? 3 : 1, cid: x };
 }
+function distStats(D) {
+  let used = 0;
+  for (const row of D.rows) for (const it of row) used += moduleOf(it).te;
+  const cap = D.rows.length * ROW_TE;
+  return { used, cap, free: cap - used, share: (cap - used) / cap };
+}
 function renderDist() {
   let html = '';
+  const problems = checkDist();
+  if (problems.length) {
+    console.error('Verteilerbelegung fehlerhaft:', problems);
+    html += `<p class="note" style="border-left-color:var(--accent);color:var(--accent);font-weight:600">Selbstprüfung der Verteilerbelegung: ${problems.map(esc).join(' · ')}</p>`;
+  }
+  const ports = 2 * DEVICES.filter(d => d.t === 'net').length;
   for (const [key, D] of Object.entries(DIST)) {
-    let used = 0, cap = 0, rows = '';
+    let rows = '';
     D.rows.forEach((items, ri) => {
       let cells = '', te = 0;
       for (const it of items) {
         const m = moduleOf(it); te += m.te;
         cells += `<div class="mod ${m.sys ? 'sys' : ''}" style="grid-column:span ${m.te}${m.rcd ? ';font-weight:600' : ''}" title="${esc(m.sub)}"><span><b>${esc(m.label)}</b>${esc(m.sub)}</span>${m.cid ? `<span class="bar" data-cid="${m.cid}" style="background:${circuitCss(m.cid)}"></span>` : ''}</div>`;
       }
-      if (te > ROW_TE) throw new Error(`Verteiler ${key}, Reihe ${ri + 1}: ${te} TE belegt`);
-      const free = ROW_TE - te;
+      const free = Math.max(0, ROW_TE - te);
       if (free > 0) cells += `<div class="mod res" style="grid-column:span ${free}">${te ? 'frei' : 'Reserve'} ${free} TE</div>`;
-      used += te; cap += ROW_TE;
       rows += `<div class="rail" data-row="Reihe ${ri + 1}" style="grid-template-columns:repeat(${ROW_TE}, minmax(0,1fr))">${cells}</div>`;
     });
-    const res = (cap - used) / cap, ok = res >= D.minFree && (!D.minFreeTE || cap - used >= D.minFreeTE);
+    const st = distStats(D), ok = st.share >= D.minFree && (!D.minFreeTE || st.free >= D.minFreeTE);
     const feed = FEEDS.find(f => f.uv === key);
-    const feedTxt = feed ? ` Hauptleitung vom HV: ${fmt(ROUTES[feed.id].path)} m ${CABLES[feed.cable]}.` : '';
-    const groups = [1, 2, 3, 'A'].map(g => {
+    const feedTxt = feed ? ` Hauptleitung vom HV: ${fmt(ROUTES[feed.id].path)} m ${CABLES[feed.cable]}${ROUTES[feed.id].path > SPD2_FROM ? `, länger als ${SPD2_FROM} m – deshalb zusätzlicher Überspannungsschutz Typ 2` : ''}.` : '';
+    const groups = [1, 2, 3, 4, 'H', 'A'].map(g => {
       const ids = CIRCUITS.filter(c => DIST_OF[c.floor] === key && c.rcd === g).map(c => c.id);
       return ids.length ? `${RCD_NAME[g]}: ${ids.join(', ')}` : '';
     }).filter(Boolean).join(' · ');
+    const media = D.media ? `Medienfeld: APZ (Hausübergabe), Router, Switch, zentrales Patchfeld für alle Cat-7-Strecken des Hauses – ${ports} Anschlüsse belegt, vorgesehen ${patchPanels(ports)}× 24 Port (Reserve ${patchPanels(ports) * 24 - ports}), Steckdose für Netzteile` : '';
     html += `<div class="dist"><h3><button type="button" class="linkbtn" data-distdev="${esc(D.device)}">${esc(D.title)}</button></h3><div class="distwrap"><div class="distbox" style="min-width:${ROW_TE * 44}px">${rows}
-      ${D.media ? `<div class="rail" data-row="Medien" style="grid-template-columns:1fr"><div class="mod sys" style="text-align:left;padding:6px 8px">${esc(D.media)}</div></div>` : ''}</div></div>
-      <p class="distmeta">Kapazität ${cap} TE · belegt ${used} TE · frei ${cap - used} TE = ${Math.round(res * 100)} % ${ok ? `(≥ ${Math.round(D.minFree * 100)} % erfüllt)` : `(unter ${Math.round(D.minFree * 100)} %!)`} · LS 1 TE, 3-pol. 3 TE, RCD 4 TE, FI/LS 2 TE</p>
+      ${media ? `<div class="rail" data-row="Medien" style="grid-template-columns:1fr"><div class="mod sys" style="text-align:left;padding:6px 8px">${esc(media)}</div></div>` : ''}</div></div>
+      <p class="distmeta">Kapazität ${st.cap} TE · belegt ${st.used} TE · frei ${st.free} TE = ${Math.round(st.share * 100)} % ${ok ? `(≥ ${Math.round(D.minFree * 100)} % erfüllt)` : `(unter ${Math.round(D.minFree * 100)} %!)`} · LS 1 TE, 3-pol. 3 TE, RCD 4 TE, FI/LS 2 TE</p>
       <p class="small">${esc(groups)}</p>
-      <p class="small">${esc(D.note)}${esc(feedTxt)}</p></div>`;
+      <p class="small">${esc(D.note)}${esc(feedTxt)} Bemessungsströme der RCDs sind ein Vorschlag (4-polig 40 A); die Auslegung nach Belastung und Gleichzeitigkeit macht der Elektrofachbetrieb.</p></div>`;
   }
   $('distPlans').innerHTML = html;
   $('distPlans').querySelectorAll('[data-distdev]').forEach(b => b.addEventListener('click', () => {
@@ -2471,6 +2575,8 @@ function renderDist() {
     if (G.ok) $('viewer').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
   }));
 }
+/* Patchfelder: belegte Anschlüsse + 25 % Reserve, in Feldern zu 24 Port */
+const patchPanels = ports => Math.max(1, Math.ceil(ports * 1.25 / 24));
 
 /* =====================================================================
    BEGEHUNGSMODUS  (Ego-Perspektive; eigene Steuerung, keine Zusatzbibliothek)
@@ -2726,7 +2832,7 @@ function buildWalkTargets(fid) {
   for (const d of DEVICES) {
     if (d.floor !== fid) continue;
     const wall = d.mount !== 'ceil', off = 0.03 - (d.t === 'uv' ? 0.08 : 0.015);
-    const r = d.t === 'uv' ? Math.max(d.w, d.hh) / 2 : d.t === 'sd' ? Math.max(0.07, (0.04 + 0.075 * d.n) * DS / 2) : d.t === 'li' && !wall ? 0.15 : 0.08;
+    const r = d.t === 'uv' ? Math.min(d.w, d.hh) / 2 : d.t === 'sd' ? Math.max(0.07, (0.04 + 0.075 * d.n) * DS / 2) : d.t === 'li' && !wall ? 0.15 : 0.08;
     devs.push({ d, r, p: new THREE.Vector3(wall ? d.x - d.nx * off : d.x, z + (wall ? d.h : d.h - 0.025), wall ? d.y - d.ny * off : d.y) });
   }
   for (const [cid, r] of Object.entries(ROUTES)) {
@@ -3297,6 +3403,7 @@ function syncModeUi() {
     $('btnNight').setAttribute('aria-pressed', String(!H3.day));
     $('btnQuality').textContent = 'Qualität: ' + (H3.quality === 'hi' ? 'hoch' : 'niedrig');
     if (H3.hidden.length) $('hiddenList').textContent = 'Verdeckt (Röntgenblick zeigt sie): ' + H3.hidden.join(' · ') + '.';
+    if (H3.built) { const dc = H3.doorConflicts(); $('doorCheck').textContent = dc.length ? 'WARNUNG – hinter einem offenen Türblatt: ' + dc.join(' · ') + '.' : 'Automatische Prüfung: kein Wandgerät liegt hinter einem offenen Türblatt oder auf der Scharnierseite im Schwenkbereich einer Tür.'; if (dc.length) $('doorCheck').style.color = 'var(--accent)'; }
   }
 }
 let modeBusy = false;
@@ -3401,16 +3508,25 @@ function bindControls() {
 }
 
 async function init() {
-  buildRooms(); placeDevices(); routeAll();
+  buildRooms(); placeDevices(); routeAll(); finalizeDist();
   renderChips(); renderLegend(); renderCircuitTable(); renderDist();
   const M = renderMaterial();
-  const bad = DEVICES.filter(d => d.tubDist !== undefined), viol = bad.filter(d => d.bathViolation);
-  $('bathCheck').textContent = viol.length
-    ? `WARNUNG: ${viol.length} Gerät(e) liegen in Schutzbereich 2: ${viol.map(d => `${d.label} (${roomName(d.room)})`).join(', ')}.`
-    : `Automatische Prüfung: alle ${bad.length} Geräte in Bad und Dusche liegen mindestens 0,60 m von Wanne bzw. Duschwanne entfernt oder über 2,25 m Höhe (kleinster Abstand unterhalb 2,25 m: ${fmt(Math.min(...bad.filter(d => d.h < 2.25).map(d => d.tubDist)), 2)} m).`;
-  if (viol.length) $('bathCheck').style.color = 'var(--accent)';
+  // Badprüfung: Ergebnis in Klassen, ohne Scheingenauigkeit (Bestandsmaße ±20 cm, Lage der Duschwanne angenommen)
+  const bad = DEVICES.filter(d => d.bathState), by = k => bad.filter(d => d.bathState === k), names = l => l.map(d => `${d.label} (${roomName(d.room)})`).join(', ');
+  const parts = [`${by('ok').length + by('hoch').length} von ${bad.length} Geräten in Bad und Dusche liegen mit mindestens 20 cm Luft außerhalb von Bereich 2 oder über 2,25 m Höhe`];
+  if (by('knapp').length) parts.push(`knapp – vor Ort messen: ${names(by('knapp'))}`);
+  if (by('zone2').length) parts.push(`in Bereich 2, nur als IP44-Leuchte laut Hersteller zulässig: ${names(by('zone2'))}`);
+  if (by('verstoss').length) parts.push(`WARNUNG, in Schutzbereich 2: ${names(by('verstoss'))}`);
+  $('bathCheck').textContent = 'Automatische Prüfung (Maße der Bestandspläne etwa ±20 cm, Lage der Duschwanne angenommen): ' + parts.join(' · ') + '.';
+  if (by('verstoss').length) $('bathCheck').style.color = 'var(--accent)';
+  // abgeleitete Angaben in den Hinweisen
+  const uvE = DEVICES.find(d => d.id === 'UV-EG'), uvO = DEVICES.find(d => d.id === 'UV-OG');
+  $('uvOffset').textContent = `${Math.round(Math.hypot(uvE.x - uvO.x, uvE.y - uvO.y) * 100)} cm`;
+  const long = FEEDS.filter(f => ROUTES[f.id].path > SPD2_FROM), short = FEEDS.filter(f => ROUTES[f.id].path <= SPD2_FROM);
+  $('spdNote').textContent = (long.length ? `${long.map(f => `Die Hauptleitung zum ${f.uv} ist nach dem Modell ${fmt(ROUTES[f.id].path)} m lang`).join('; ')} (über ${SPD2_FROM} m), deshalb dort zusätzlich Typ 2. ` : '')
+    + (short.length ? `${short.map(f => `${f.uv} ${fmt(ROUTES[f.id].path)} m`).join(', ')}: nach dem Modell unter ${SPD2_FROM} m; ` : '') + 'maßgeblich ist die tatsächlich verlegte Länge, die Entscheidung trifft der Fachbetrieb.';
   const kb = Math.round(document.documentElement.outerHTML.length / 1024);
-  $('foot').textContent = `${CIRCUITS.length} Stromkreise in 4 Verteilern · ${DEVICES.filter(d => !['uv', 'pas', 'kl'].includes(d.t)).length} Geräte-Positionen · ${M.sd} Steckdosen-Einsätze · Seite ca. ${kb} KB · Planungsvorschlag, keine Ausführungsplanung.`;
+  $('foot').textContent = `${CIRCUITS.length} Stromkreise in ${Object.keys(DIST).length} Verteilern · ${DEVICES.filter(d => !['uv', 'pas', 'kl'].includes(d.t)).length} Geräte-Positionen · ${M.sd} Steckdosen-Einsätze · Seite ca. ${kb} KB · Planungsvorschlag, keine Ausführungsplanung.`;
   bindControls();
   $('btnIso').setAttribute('aria-pressed', 'true');
   let start = 'ALL';
