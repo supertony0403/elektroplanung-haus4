@@ -45,11 +45,11 @@ window.H3 = (() => { try {
   const EAVE = { a: -0.60, b: 11.20 };
   const ROW = { x0: -7.49, x1: 14.50 };                    // Reihe Haus 3 – 5
   const ROOF_WINDOWS = [[1.3, 2.3], [4.6, 5.6]].map(([x0, x1]) => ({ x0, x1, y0: 1.6, y1: 2.6 }));
-  const TILE_H = { og_bad: 2.0, og_wasch: 1.2, eg_wc: 1.2, dg_wc: 1.2 };
+  const TILE_H = { og_bad: 2.0, og_abst: 2.0, og_wasch: 1.2, eg_wc: 1.2, dg_wc: 1.2 };
   const FLOOR_MAT = {
     kg_hobby: 'screed', kg_keller: 'screed', kg_flur: 'screed', kg_heiz: 'screed', kg_oel: 'screed', kg_wasch: 'tileKG', kg_aussen: 'concrete',
     eg_wohnen: 'parquet', eg_terr: 'pavers', eg_diele: 'tileFloor', eg_wc: 'tileFloor', eg_wind: 'tileFloor', eg_kueche: 'tileFloor',
-    og_eltern: 'parquet', og_loggia: 'tileOut', og_kindg: 'parquet', og_abst: 'parquet', og_flur: 'parquet', og_bad: 'tileBath', og_wasch: 'tileBath', og_kinde: 'parquet',
+    og_eltern: 'parquet', og_loggia: 'tileOut', og_kindg: 'parquet', og_abst: 'tileBath', og_flur: 'parquet', og_bad: 'tileBath', og_wasch: 'tileBath', og_kinde: 'parquet',
     dg_kl: 'parquet', dg_kr: 'parquet', dg_flur: 'parquet', dg_trep: 'parquet', dg_wc: 'tileBath', dg_trock: 'screed',
   };
   const E = {
@@ -905,6 +905,7 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
     let into = exitOwner && exitOwner.room.kind !== 'out' ? exitOwner : owners.find(R => R.room.kind !== 'out');
     if (op.id === 'egd_wk') into = RI.eg_kueche;
     if (op.id === 'egd_haus') into = RI.eg_wind;
+    if (op.id === 'ogd_ab') into = RI.og_flur;          // Dusche: Tür schlägt in den Flur auf
     const other = owners.find(R => R !== into) || null;
     const outdoor = !other || other.room.kind === 'out';
     const glazed = outdoor && other && other.room.kind === 'out' && op.floor !== 'KG';
@@ -1514,7 +1515,7 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
         bx('plastic', 5.1, 5.85, 4.95, 5.6, 0, 0.85); bx('plasticGrey', 5.1, 5.85, 4.95, 5.6, 0.85, 0.88, '');
         fb.push([6.37, 6.77, 0.5, 5.0, 2.0], [3.99, 4.39, 0.6, 3.6, 2.0], [5.1, 5.85, 4.95, 5.6, 0.88]);
         R('kg_heiz');
-        bx('plastic', 5.95, 6.6, 6.25, 6.9, 0, 1.25); bx('elecRed', 6.1, 6.45, 6.21, 6.25, 0.3, 0.55, '');
+        bx('plastic', 5.95, 6.6, 6.25, 6.9, 0, 1.25); bx('screen', 6.1, 6.45, 6.21, 6.25, 0.3, 0.55, '');   // Wärmepumpen-Innengerät mit Bedienfeld
         bx('plasticGrey', 6.02, 6.53, 6.21, 6.25, 0.95, 1.18, '');
         cyl('darkMetal', 6.27, 6.4, 1.25, 0.55, 0.075, 14);
         bx('darkMetal', 6.2, 6.34, 6.15, 6.47, 1.68, 1.82, '');
@@ -1585,28 +1586,32 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
       case 'OG':
         R('og_eltern');
         cabinet(0.0, 0.62, 0.15, 2.35, 0, 2.2, 'E', 'cabinet', 4);
-        bed(0.45, 2.05, 2.42, 4.44, 'S', 'fabricWarm');
-        bx('oak', 0.03, 0.4, 4.02, 4.44, 0, 0.5); cyl('lampBody', 0.22, 4.25, 0.5, 0.32, 0.07, 12, 0.1);
-        desk(3.29, 3.89, 2.15, 3.55, 'W');
-        rug(0.7, 2.3, 1.6, 2.42); plant(3.5, 0.35, 0.9);
+        // Bett mit dem Kopfteil an der Ostwand: beide Bettseiten haben Wandfläche für Steckdosen und Wechselschalter
+        bed(1.85, 3.85, 1.9, 3.5, 'E', 'fabricWarm');
+        bx('oak', 3.49, 3.89, 1.42, 1.84, 0.34, 0.5, ''); bx('oak', 3.49, 3.89, 3.56, 3.98, 0.34, 0.5, '');
+        for (const y of [1.63, 3.77]) { for (const x of [3.53, 3.85]) bx('darkMetal', x - 0.015, x + 0.015, y - 0.015, y + 0.015, 0, 0.34); cyl('lampBody', 3.7, y, 0.5, 0.32, 0.07, 12, 0.1); }
+        rug(0.9, 1.9, 1.9, 3.5); plant(3.6, 0.5, 0.8);
         fb.push([0, 0.62, 0.15, 2.35, 2.2]);
         R('og_loggia');
         chair(5.0, 0.6, 'N'); chair(5.8, 0.6, 'N'); plant(6.7, 0.35, 0.9); plant(4.4, 0.3, 0.7);
         R('og_kindg');
-        bed(6.12, 7.01, 3.75, 5.54, 'E', 'fabricBlue');
-        desk(4.01, 4.71, 1.95, 3.15, 'E');
+        desk(6.33, 6.98, 2.5, 4.1, 'W');                                 // Büro 2: Schreibtisch an der Ostwand
         cabinet(4.01, 4.56, 3.25, 4.2, 0, 1.9, 'E', 'cabinet', 2);
-        shelf(6.2, 6.95, 1.55, 1.85, 0.9, 3, 'lacquer');
+        shelf(6.2, 6.95, 4.9, 5.5, 1.9, 5, 'lacquer');
         rug(4.9, 6.0, 2.3, 4.6, 'fabricBlue');
         fb.push([4.01, 4.56, 3.25, 4.2, 1.9]);
         R('og_kinde');
-        bed(6.12, 7.01, 7.8, 9.8, 'E', 'fabricWarm');
-        desk(4.01, 4.71, 8.3, 9.5, 'E');
+        desk(6.33, 6.98, 7.6, 9.2, 'W');                                 // Büro 1: Schreibtisch an der Ostwand
         cabinet(5.3, 7.01, 5.66, 6.3, 0, 2.2, 'S', 'cabinet', 3);
         rug(4.9, 5.9, 7.0, 9.4);
         fb.push([5.3, 7.01, 5.66, 6.3, 2.2]);
-        R('og_abst');
-        shelf(0.0, 0.4, 4.6, 5.38, 2.1, 5, 'lacquer');
+        R('og_abst');                                                     // separate Dusche: Duschwanne im Westen, Waschtisch an der Flurwand
+        bx('ceramic', 0.0, 0.9, 4.56, 5.44, 0, 0.06);
+        bx('tileWall', 0.06, 0.84, 4.62, 5.38, 0.06, 0.065, '');
+        bx('chrome', 0.0, 0.03, 4.98, 5.02, 1.0, 2.05, ''); bx('chrome', 0.0, 0.18, 4.93, 5.07, 2.05, 2.08, '');
+        bx('glass', 0.9, 0.91, 4.56, 5.2, 0.06, 2.0, '');
+        basin(1.08, 1.5, 5.14, 5.44, 'N', 0.86, false); mirror(1.1, 1.95, 5.43, 5.44, 1.35, 1.85);
+        for (let z = 0.6; z < 1.5; z += 0.1) bx('chrome', 1.35, 1.85, 4.56, 4.575, z, z + 0.02, '');
         R('og_bad');
         bx('ceramic', 0.0, 0.85, 8.39, 10.6, 0, 0.56);
         bx('ceramic', 0.08, 0.77, 8.47, 10.52, 0.3, 0.565, '');
@@ -1621,22 +1626,21 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
         R('og_wasch');
         cabinet(3.34, 3.89, 9.0, 9.95, 0.1, 0.86, 'W', 'cabinetGrey', 2); bx('worktop', 3.32, 3.89, 8.98, 10.56, 0.86, 0.9, '');
         bx('ceramic', 3.4, 3.8, 9.15, 9.5, 0.9, 0.96, ''); cyl('chrome', 3.83, 9.32, 0.9, 0.22, 0.016, 8);
-        machine(3.3, 3.86, 9.97, 10.55, 'W', 'wm');
+        cabinet(3.34, 3.89, 9.97, 10.55, 0.1, 0.86, 'W', 'cabinetGrey', 1);
         mirror(3.88, 3.89, 8.95, 9.45, 1.35, 1.95);
         fb.push([3.32, 3.89, 8.98, 10.56, 0.9]);
         break;
       case 'DG':
         R('dg_kl');
-        bed(0.24, 1.14, 2.6, 4.6, 'W', 'fabricBlue');
-        desk(2.7, 3.315, 2.8, 4.0, 'W');
+        cabinet(0.27, 0.87, 3.0, 4.8, 0, 2.0, 'E', 'cabinet', 3);          // Ankleide: Schrankwand statt Bett
         cabinet(0.3, 1.4, 4.85, 5.36, 0, 2.0, 'N', 'cabinet', 2);
+        mirror(3.33, 3.34, 3.5, 4.1, 0.3, 1.9);
         rug(1.3, 2.5, 2.6, 4.3, 'fabricWarm');
         R('dg_kr');
-        bed(5.87, 6.77, 2.6, 4.6, 'E', 'fabricWarm');
-        desk(3.555, 4.17, 2.8, 4.0, 'E');
+        bed(4.73, 6.73, 2.7, 4.3, 'E', 'fabricWarm');                      // Schlafzimmer DG: Doppelbett, Kopfteil an der Ostwand
         cabinet(5.4, 6.7, 4.85, 5.36, 0, 2.0, 'N', 'cabinet', 2);
         rug(4.4, 5.6, 2.6, 4.3, 'fabricBlue');
-        fb.push([0.3, 1.4, 4.85, 5.36, 2.0], [5.4, 6.7, 4.85, 5.36, 2.0]);
+        fb.push([0.3, 1.4, 4.85, 5.36, 2.0], [5.4, 6.7, 4.85, 5.36, 2.0], [0.27, 0.87, 3.0, 4.8, 2.0]);
         R('dg_wc');
         bx('tileWall', 5.45, 6.05, 7.12, 7.29, 0, 1.1, 'b'); wc(5.75, 7.12, 'N');
         basin(6.47, 6.77, 6.25, 6.62, 'W', 0.85, false); mirror(6.76, 6.77, 6.25, 6.62, 1.15, 1.6);
@@ -1671,7 +1675,8 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
   }
   function makeParts() {
     const P = (name, geo, mat) => { PART[name] = { geo, mat }; };
-    for (const n of [1, 2, 3]) { P('sdFrame' + n, frameGeo(n, true), 'elec'); P('swFrame' + n, frameGeo(n, false), 'elec'); }
+    for (const n of [1, 2, 3, 4, 5]) P('sdFrame' + n, frameGeo(n, true), 'elec');
+    for (const n of [1, 2, 3]) P('swFrame' + n, frameGeo(n, false), 'elec');
     // Schuko-Einsatz (je Gang): Vertiefung, Boden, Kontaktbuchsen, Schutzkontakte
     { const t = new T.CylinderGeometry(0.0205, 0.0205, 0.016, 28, 1, true); t.rotateX(Math.PI / 2); t.translate(0, 0, -0.002); t.scale(-1, 1, 1); P('sdRecess', t, 'elec'); }
     { const d = new T.CircleGeometry(0.0205, 28); d.translate(0, 0, -0.0095); P('sdBottom', d, 'plasticGrey'); }
@@ -1686,6 +1691,15 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
     { const parts = [0.017, -0.017].map(y => { const b = new T.BoxGeometry(0.006, 0.0012, 0.0004); b.translate(0, y, 0.0127); return b; }); P('markWechsel', T.BufferGeometryUtils.mergeBufferGeometries(parts), 'elecDark'); parts.forEach(g => g.dispose()); }
     { const parts = [Math.PI / 4, -Math.PI / 4].map(a => { const b = new T.BoxGeometry(0.009, 0.0012, 0.0004); b.rotateZ(a); b.translate(0, 0.018, 0.0127); return b; }); P('markKreuz', T.BufferGeometryUtils.mergeBufferGeometries(parts), 'elecDark'); parts.forEach(g => g.dispose()); }
     { const b = new T.BoxGeometry(0.008, 0.004, 0.002); b.translate(0, 0.019, 0.0128); P('led', b, 'ledOrange'); }
+    // Dimmer: Drehknopf; Rollladen-Bedienstelle: Wippe mit Pfeilen auf/ab; Raumthermostat: Gehäuse mit Anzeige
+    { const c = new T.CylinderGeometry(0.017, 0.019, 0.012, 24); c.rotateX(Math.PI / 2); c.translate(0, 0, 0.0185); P('dimKnob', c, 'elec'); }
+    { const b = new T.BoxGeometry(0.0014, 0.008, 0.0006); b.translate(0, 0.011, 0.0248); P('dimMark', b, 'elecDark'); }
+    { const g = new T.BoxGeometry(0.054, 0.0262, 0.006); g.translate(0, 0, 0.0095); P('rockerHalfH', g, 'elec'); }
+    { const g = new T.BoxGeometry(0.054, 0.0008, 0.0068); g.translate(0, 0, 0.0095); P('rockerGapH', g, 'elecDark'); }
+    { const parts = [1, -1].map(sg => { const t = new T.CylinderGeometry(0.0001, 0.005, 0.006, 3); t.rotateX(sg > 0 ? 0 : Math.PI); t.scale(1, 1, 0.08); t.translate(0, sg * 0.0137, 0.0127); return t; }); P('rlArrows', T.BufferGeometryUtils.mergeBufferGeometries(parts), 'elecDark'); }
+    { const g = new T.BoxGeometry(0.078, 0.078, 0.016); g.translate(0, 0, 0.008); P('thBody', g, 'elec'); }
+    { const g = new T.BoxGeometry(0.038, 0.022, 0.001); g.translate(0, 0.012, 0.0165); P('thDisplay', g, 'screen'); }
+    { const c = new T.CylinderGeometry(0.011, 0.011, 0.004, 20); c.rotateX(Math.PI / 2); c.translate(0, -0.018, 0.018); P('thKnob', c, 'plasticGrey'); }
     // Netzwerkdose: Einsatzplatte + 2 RJ45 (schräg), Beschriftungsfeld
     { const g = new T.BoxGeometry(0.052, 0.052, 0.004); g.translate(0, 0, 0.008); P('netPlate', g, 'elec'); }
     { const parts = [-0.012, 0.012].map(x => { const b = new T.BoxGeometry(0.0125, 0.011, 0.004); b.rotateX(-0.35); b.translate(x, -0.004, 0.0105); return b; }); P('netJack', T.BufferGeometryUtils.mergeBufferGeometries(parts), 'elecDark'); parts.forEach(g => g.dispose()); }
@@ -1741,10 +1755,9 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
       const P = (part, along = 0, up = 0) => put(fid, layer, part, devMatrix(p, z, along, up), gate, d);
       switch (d.t) {
         case 'sd': {
-          const n = Math.min(3, d.n);
+          const n = Math.min(5, d.n);                         // Mehrfachrahmen bis 5-fach in einer Reihe
           P('sdFrame' + n);
           for (let k = 0; k < n; k++) { const a = (k - (n - 1) / 2) * GANG; P('sdRecess', a); P('sdBottom', a); P('sdPins', a); P('sdClips', a); }
-          if (d.n > 3) { P('sdFrame' + (d.n - 3), 0, -0.09); }
           break;
         }
         case 'sw': {
@@ -1754,6 +1767,7 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
             const a = (k - (n - 1) / 2) * GANG;
             if (kind === 'Serie' || kind === 'SerieWechsel') { P('rockerHalf', a - 0.0137); P('rockerHalf', a + 0.0137); P('rockerGap', a); if (kind === 'SerieWechsel') { P('markWechsel', a - 0.0137); P('markWechsel', a + 0.0137); } }
             else if (kind === 'Notschalter') P('rockerRed', a);
+            else if (kind === 'Dimmer') { P('netPlate', a); P('dimKnob', a); P('dimMark', a); }
             else { P('rocker', a); if (kind === 'Wechsel') P('markWechsel', a); if (kind === 'Kreuz') P('markKreuz', a); }
             if (kind === 'Kontroll') P('led', a);
           });
@@ -1764,6 +1778,8 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
           if (/Lüfter/.test(d.label)) { P('fanPlate'); P('fanSlots'); }
           else { P('faPlate'); P('faGland'); }
           break;
+        case 'rl': P('swFrame1'); P('rockerHalfH', 0, 0.0137); P('rockerHalfH', 0, -0.0137); P('rockerGapH'); P('rlArrows'); break;
+        case 'th': P('thBody'); P('thDisplay'); P('thKnob'); break;
         case 'rm': P('rmBody'); P('rmRings'); P('rmLed'); break;
         case 'kl':
           if (/außen/i.test(d.label)) { P('ktPlate'); P('ktButton'); P('ktName'); } else { P('klBody'); P('klGrille'); P('klButton'); }
@@ -1786,9 +1802,9 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
       E.floors[fid].userData[layer === 'net' ? 'net' : 'dev'].add(mesh);
     }
   }
-  /* Zählerschrank (Aufputz) bzw. Unterverteilung (Unterputz) mit Tür, Griff, Lüftungsschlitzen */
+  /* Hauptverteiler mit Zählerplatz (Aufputz) bzw. Unterverteiler je Geschoss (Unterputz) mit Tür, Griff, Lüftungsschlitzen */
   function buildCabinet(d, p) {
-    const grp = d.floor, gate = gateOf(d.room), w = d.w, h = d.hh, dep = d.id === 'ZS' ? 0.21 : 0.02;
+    const grp = d.floor, gate = gateOf(d.room), w = d.w, h = d.hh, dep = d.id === 'HV' ? 0.21 : 0.02;
     const zc = d.h, b = buf(grp, 'cabinetSteel'), dk = buf(grp, 'darkMetal');
     const X = [p.ny, -p.nx], N = [p.nx, p.ny];
     const at = (a, n) => [p.x + X[0] * a + N[0] * n, p.y + X[1] * a + N[1] * n];
@@ -1800,8 +1816,8 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
     // Türfuge + Griff + Schlitze
     quadBox(-0.002, 0.002, dep, dep + 0.002, zc - h / 2 + 0.03, zc + h / 2 - 0.03, dk);
     quadBox(w / 2 - 0.07, w / 2 - 0.05, dep, dep + 0.02, zc - 0.06, zc + 0.06, dk);
-    if (d.id === 'ZS') quadBox(-w / 2 + 0.06, w / 2 - 0.06, dep, dep + 0.002, zc + h / 2 - 0.14, zc + h / 2 - 0.12, dk);
-    for (let k = 0; k < 6; k++) quadBox(-w / 2 + 0.08, -w / 2 + 0.3, dep, dep + 0.002, zc - h / 2 + 0.06 + k * 0.02, zc - h / 2 + 0.067 + k * 0.02, dk);
+    if (d.id === 'HV') quadBox(-w / 2 + 0.06, w / 2 - 0.06, dep, dep + 0.002, zc + h / 2 - 0.14, zc + h / 2 - 0.12, dk);
+    for (let k = 0; k < 6; k++) quadBox(-w / 2 + 0.08, -w / 2 + Math.min(0.3, w / 2 - 0.02), dep, dep + 0.002, zc - h / 2 + 0.06 + k * 0.02, zc - h / 2 + 0.067 + k * 0.02, dk);
     // Warnschild (gelb) oben links
     quadBox(-w / 2 + 0.06, -w / 2 + 0.12, dep, dep + 0.002, zc + h / 2 - 0.12, zc + h / 2 - 0.07, buf(grp, 'ledOrange'));
   }
@@ -1809,17 +1825,18 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
   /* ---------- Leuchten: Typ aus Raum und Lage, Leuchtkörper an/aus ---------- */
   function lampType(d) {
     const r = d.room, l = d.label;
-    if (d.mount !== 'ceil') return /Unterbau/.test(l) ? 'strip' : /Lese/.test(l) ? 'sconce' : 'lantern';
+    if (d.mount !== 'ceil') return /Spiegel/.test(l) ? 'bar' : /Unterbau/.test(l) ? 'strip' : /Lese/.test(l) ? 'sconce' : 'lantern';
+    if (/Spots/.test(l)) return 'spots';
     if (/Essen/.test(l)) return 'pendant';
     if (/Wohnen/.test(l)) return 'drumL';
     if (r === 'dg_trock') return 'bulb';
     if (d.floor === 'KG' && r !== 'kg_flur') return 'batten';
-    if (/bad|wc|kueche|wasch/.test(r)) return 'disc';
-    if (/flur|diele|wind|abst|trep/.test(r)) return 'globe';
+    if (/bad|wc|kueche|wasch|og_abst/.test(r)) return 'disc';
+    if (/flur|diele|wind|trep/.test(r)) return 'globe';
     return 'drum';
   }
   const LUM_SCALE = 0.022;                          // Lumen → Szenen-Einheiten (Sonne ≈ 4)
-  const LUMEN = { pendant: 900, drumL: 1500, drum: 1100, disc: 1000, globe: 750, batten: 1900, strip: 380, sconce: 450, lantern: 420, bulb: 800 };
+  const LUMEN = { pendant: 900, drumL: 1500, drum: 1100, disc: 1000, globe: 750, batten: 1900, strip: 380, sconce: 450, lantern: 420, bulb: 800, spots: 1300, bar: 420 };
   function buildLamps() {
     const onParts = {};
     const diff = (fid, kind, geo, m) => { const k = fid + '|' + kind; if (onParts[k]) geo.dispose(); (onParts[k] = onParts[k] || { geo, list: [] }).list.push(m); };
@@ -1873,6 +1890,22 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
           lightPos = [p.x, p.y, zc - 0.15];
           break;
         }
+        case 'spots': {                                     // LED-Einbauspots: Reihe aus drei Spots um den Auslass
+          for (const k of [-1, 0, 1]) {
+            const sx = p.x, sy = p.y + k * 0.75;
+            { const c = new T.CylinderGeometry(0.048, 0.048, 0.006, 20); addGeo(B('lampBody'), c, M(sx, sy, zc - 0.003), gate, 0); c.dispose(); }
+            { const c = new T.CylinderGeometry(0.036, 0.036, 0.004, 20); c.userData.v = 'p'; addDiff(c, M(sx, sy, zc - 0.008)); }
+          }
+          lightPos = [p.x, p.y, zc - 0.2];
+          break;
+        }
+        case 'bar': {                                       // Spiegelleuchte: waagerechtes Lichtband an der Wand
+          const m = devMatrix(p, zc);
+          { const g = new T.BoxGeometry(0.46, 0.035, 0.05); g.translate(0, 0, 0.025); addGeo(B('chrome'), g, m, gate, 0); g.dispose(); }
+          { const g = new T.BoxGeometry(0.42, 0.012, 0.03); g.translate(0, -0.022, 0.03); g.userData.v = 'r'; addDiff(g, m); }
+          lightPos = [p.x + p.nx * 0.25, p.y + p.ny * 0.25, zc - 0.1];
+          break;
+        }
         case 'strip': {                                     // unter dem Oberschrank (Küche Ostwand)
           { const g = new T.BoxGeometry(0.02, 0.012, 1.8); g.userData.v = 's'; addDiff(g, M(6.8, 7.3, 1.512)); }
           lightPos = [6.6, 7.3, 1.4];
@@ -1915,11 +1948,10 @@ float lightGate( float lr ) { return ( lr < -0.5 || abs( lr - floor( vRoom + 0.5
     for (const sw of DEVICES.filter(d => d.t === 'sw')) {
       const l = sw.label, by = rid => E.lamps.filter(x => x.room === rid);
       let all = E.lamps.filter(x => x.d.c === sw.c && x.room === sw.room);
-      if (/Öllager/.test(l)) all = by('kg_oel');
-      else if (/Loggia/.test(l)) all = by('og_loggia');
-      else if (/Terrasse/.test(l)) all = by('eg_terr');
-      else if (/Kellertreppe/.test(l)) all = by('kg_flur');
-      else if (/Dachtreppe/.test(l)) all = by('dg_flur');
+      if (sw.lightRoom) {                                // Schalter sitzt in einem anderen Raum als seine Leuchte(n)
+        all = by(sw.lightRoom).filter(x => x.d.c === sw.c);
+        if (!all.length) console.warn('Schalter', sw.id, l, 'findet keine Leuchte in', sw.lightRoom);
+      }
       const gangs = gangsOf(sw), n = Math.min(3, gangs.length), chans = [];
       gangs.slice(0, 3).forEach((kind, k) => {
         const a0 = (k - (n - 1) / 2) * GANG;

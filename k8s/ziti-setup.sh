@@ -33,7 +33,7 @@ kubectl -n monitoring exec -i "$POD" -- env \
   SVC_PORT=443 \
   BIND_IDENTITY='KDHTBVzr.' \
   DIAL_ROLE='#simonhaus.clients' \
-  GRANT_IDS='openziti-tony-arch,tony-handy,win-esko-anthony,anthony.benz' \
+  GRANT_IDS='openziti-tony-arch,tony-handy,win-esko-anthony,anthony.benz,simon-pc' \
   python3 - < "$SCRIPT"
 
 cat <<'HINWEIS'
